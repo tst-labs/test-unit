@@ -7,6 +7,7 @@ import java.util.*;
 import org.apache.commons.lang3.*;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
+import org.slf4j.*;
 
 import br.jus.tst.tstunit.Configuracao;
 
@@ -17,6 +18,8 @@ import br.jus.tst.tstunit.Configuracao;
  * @since 4 de jul de 2016
  */
 public class DbUnitRunner {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DbUnitRunner.class);
 
     private final class DbUnitStatement extends Statement {
 
@@ -70,20 +73,25 @@ public class DbUnitRunner {
         Objects.requireNonNull(method, "method");
 
         UsarDataSet usarDataSet = ObjectUtils.defaultIfNull(method.getAnnotation(UsarDataSet.class), classeTeste.getAnnotation(UsarDataSet.class));
-        Properties propriedadesJdbc = configuracao.getSubPropriedades("jdbc");
+        if (usarDataSet != null) {
+            Properties propriedadesJdbc = configuracao.getSubPropriedades("jdbc");
 
-        String datasetsDir = StringUtils.defaultIfBlank((String) configuracao.getSubPropriedades("dbunit").get("datasets.dir"), "datasets");
+            String datasetsDir = StringUtils.defaultIfBlank((String) configuracao.getSubPropriedades("dbunit").get("datasets.dir"), "datasets");
 
-        DbUnitDatabaseLoader databaseLoader = new DbUnitDatabaseLoader(datasetsDir + File.separatorChar + usarDataSet.value(), () -> {
-            try {
-                Class.forName(propriedadesJdbc.getProperty("driverClass").toString());
-                return DriverManager.getConnection(propriedadesJdbc.get("url").toString(), propriedadesJdbc);
-            } catch (SQLException | ClassNotFoundException exception) {
-                throw new RuntimeException("Erro ao abrir conexão JDBC", exception);
-            }
-        });
-        databaseLoader.setSchema(nomeSchema);
+            DbUnitDatabaseLoader databaseLoader = new DbUnitDatabaseLoader(datasetsDir + File.separatorChar + usarDataSet.value(), () -> {
+                try {
+                    Class.forName(propriedadesJdbc.getProperty("driverClass").toString());
+                    return DriverManager.getConnection(propriedadesJdbc.get("url").toString(), propriedadesJdbc);
+                } catch (SQLException | ClassNotFoundException exception) {
+                    throw new RuntimeException("Erro ao abrir conexão JDBC", exception);
+                }
+            });
+            databaseLoader.setSchema(nomeSchema);
 
-        return new DbUnitStatement(databaseLoader, statement);
+            return new DbUnitStatement(databaseLoader, statement);
+        } else {
+            LOGGER.warn("Nenhuma anotação @UsarDataSet definida no teste nem na classe: {}", method.getName());
+            return statement;
+        }
     }
 }
