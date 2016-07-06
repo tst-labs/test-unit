@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>br.jus.tst</groupId>
+        <artifactId>tst-maven-parent</artifactId>
+        <version>2.0.53</version>
+    </parent>
+
+    <artifactId>tst-unit-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>TST Unit</name>
+    <description>Projeto que oferece funcionalidades de auxílio no desenvolvimento de testes.</description>
+
+    <properties>
+        <ciManagement.project.id>${project.artifactId}</ciManagement.project.id>
+        <git.group.name>tst</git.group.name>
+        <git.project.name>${project.artifactId}</git.project.name>
+
+        <junit.version>4.12</junit.version>
+
+        <java.version>1.8</java.version>
+    </properties>
+
+    <modules>
+        <module>tst-unit-core</module>
+        <module>tst-unit-cdi</module>
+        <module>tst-unit-dbunit</module>
+        <module>tst-unit-mockito</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>br.jus.tst</groupId>
+                <artifactId>tst-unit-core</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
