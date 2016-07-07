@@ -12,9 +12,13 @@ import br.jus.tst.tstunit.*;
  * @author Thiago Miranda
  * @since 5 de jul de 2016
  */
-public class MockitoExtensao implements Extensao {
+public class MockitoExtensao extends AbstractExtensao<HabilitarMockito> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockitoExtensao.class);
+
+    public MockitoExtensao(Class<?> classeTeste) {
+        super(classeTeste);
+    }
 
     @Override
     public void beforeTestes(Object instancia) {
@@ -22,17 +26,12 @@ public class MockitoExtensao implements Extensao {
     }
 
     @Override
-    public boolean isHabilitada(Class<?> classeTeste) {
-        return classeTeste.getAnnotation(HabilitarMockito.class) != null;
-    }
-
-    @Override
-    public void inicializar(Class<?> classeTeste, Configuracao configuracao, RunNotifier notifier) {
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) {
         LOGGER.info("Mockito habilitado");
     }
 
     @Override
-    public Statement criarStatement(Class<?> classeTeste, Statement defaultStatement, FrameworkMethod method) {
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) {
         return defaultStatement;
     }
 }

@@ -22,7 +22,7 @@ import br.jus.tst.tstunit.*;
  * @author Thiago Miranda
  * @since 5 de jul de 2016
  */
-public class CdiExtensao implements Extensao {
+public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CdiExtensao.class);
 
@@ -30,8 +30,13 @@ public class CdiExtensao implements Extensao {
     private WeldContainer container;
     private Throwable startupException;
 
+    public CdiExtensao(Class<?> classeTeste) {
+        super(classeTeste);
+    }
+
     @Override
-    public <T> Optional<T> getInstanciaPersonalizadaParaTestes(Class<T> classeTeste) {
+    @SuppressWarnings("unchecked")
+    public <T> Optional<T> getInstanciaPersonalizadaParaTestes() {
         try {
             weld = new Weld() {
 
@@ -46,6 +51,7 @@ public class CdiExtensao implements Extensao {
                 }
 
                 // CDI 1.0
+                @SuppressWarnings("unused")
                 protected Deployment createDeployment(ResourceLoader resourceLoader, Bootstrap bootstrap) {
                     try {
                         return new WeldTestUrlDeployment(resourceLoader, bootstrap, classeTeste);
@@ -70,25 +76,20 @@ public class CdiExtensao implements Extensao {
             startupException = new Exception("Unable to start weld", e);
         }
 
-        return createTest(classeTeste);
+        return (Optional<T>) createTest(classeTeste);
     }
 
-    private <T> Optional<T> createTest(Class<T> testClass) {
+    private Optional<?> createTest(Class<?> testClass) {
         return Optional.of(container.instance().select(testClass).get());
     }
 
     @Override
-    public boolean isHabilitada(Class<?> classeTeste) {
-        return classeTeste.getAnnotation(HabilitarCdiAndMockito.class) != null;
-    }
-
-    @Override
-    public void inicializar(Class<?> classeTeste, Configuracao configuracao, RunNotifier notifier) {
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) {
         LOGGER.info("CDI habilitado");
     }
 
     @Override
-    public Statement criarStatement(Class<?> classeTeste, Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
         LOGGER.info("Ativando contexto CDI");
 
         return new Statement() {

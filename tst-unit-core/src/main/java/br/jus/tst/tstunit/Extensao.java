@@ -1,5 +1,7 @@
 package br.jus.tst.tstunit;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 import java.util.Optional;
 
 import org.junit.runner.Runner;
@@ -7,63 +9,76 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.*;
 
 /**
+ * Uma extensão adiciona novas funcionalidades ao contexto de testes.
  * 
  * @author Thiago Miranda
  * @since 5 de jul de 2016
  */
-public interface Extensao {
+public interface Extensao<A extends Annotation> {
 
     /**
+     * Obtém a classe de testes.
+     * 
+     * @return a classe de testes.
+     */
+    Class<?> getClasseTeste();
+
+    /**
+     * Verifica se a extensão está habilitada para a classe de teste informada.
      * 
      * @param classeTeste
-     * @return
+     *            a classe de teste
+     * @return {@code true}/{@code false}
      */
-    boolean isHabilitada(Class<?> classeTeste);
+    @SuppressWarnings("unchecked")
+    default boolean isHabilitada() {
+        return getClasseTeste().getAnnotation((Class<A>) ((ParameterizedType) this.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0]) != null;
+    }
 
     /**
+     * Obtém uma instância da classe de testes com algum comportamento customizado para que funcione com essa extensão habilitada.
+     * 
      * @param classeTeste
-     * @return
+     *            a classe de teste
+     * @return a instância persoanlizada - vazio indica que será utilizada a instância padrão
      */
-    default <T> Optional<T> getInstanciaPersonalizadaParaTestes(Class<T> classeTeste) {
+    default <T> Optional<T> getInstanciaPersonalizadaParaTestes() {
         return Optional.empty();
     };
 
     /**
+     * Método a ser executado antes dos testes da classe de testes serem executados.
      * 
      * @param instancia
-     * @return
+     *            a instância utilizada para testes
      */
     default void beforeTestes(Object instancia) {
     }
 
     /**
-     * 
-     * @param instancia
+     * Método a ser executado após todos os testes da classe de testes serem executados.
      */
-    default void afterTestes(Class<?> classeTeste) {
+    default void afterTestes() {
     }
 
     /**
      * Inicializa a extensão. Este método é invocado assim que a execução dos testes é acionada.
      * 
-     * @param classeTeste
-     *            classe de teste
      * @param configuracao
      * @param notifier
      *            notificador do JUnit
      * @see Runner#run(RunNotifier)
      */
-    void inicializar(Class<?> classeTeste, Configuracao configuracao, RunNotifier notifier);
+    void inicializar(Configuracao configuracao, RunNotifier notifier);
 
     /**
      * Obtém um {@link Statement} configurado para a extensão.
      * 
-     * @param classeTeste
      * @param defaultStatement
      * @param method
      *            o método de teste sendo executado
      * @return o Statement criado
      * @throws TstUnitException
      */
-    Statement criarStatement(Class<?> classeTeste, Statement defaultStatement, FrameworkMethod method) throws TstUnitException;
+    Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException;
 }

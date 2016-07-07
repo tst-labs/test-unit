@@ -28,6 +28,7 @@
         <module>tst-unit-cdi</module>
         <module>tst-unit-dbunit</module>
         <module>tst-unit-mockito</module>
+        <module>tst-unit-jpa</module>
     </modules>
 
     <build>
@@ -46,6 +47,20 @@
             <dependency>
                 <groupId>br.jus.tst</groupId>
                 <artifactId>tst-unit-core</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>br.jus.tst</groupId>
+                <artifactId>tst-unit-cdi</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>br.jus.tst</groupId>
+                <artifactId>tst-unit-dbunit</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>

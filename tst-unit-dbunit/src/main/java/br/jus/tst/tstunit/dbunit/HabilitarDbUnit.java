@@ -18,16 +18,10 @@ import org.apache.commons.lang3.StringUtils;
 @Inherited
 @Documented
 public @interface HabilitarDbUnit {
-    
-    /**
-     * 
-     * @return
-     */
-    String nomeSchema() default StringUtils.EMPTY;
 
     /**
      * 
      * @return
      */
-    Class<? extends GeradorSchema> geradorSchema();
+    String nomeSchema() default StringUtils.EMPTY;
 }
