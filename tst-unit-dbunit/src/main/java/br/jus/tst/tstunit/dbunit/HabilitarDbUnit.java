@@ -20,8 +20,9 @@ import org.apache.commons.lang3.StringUtils;
 public @interface HabilitarDbUnit {
 
     /**
+     * Nome do <em>schema</em> de banco de dados a ser utilizado pelo DBUnit.
      * 
-     * @return
+     * @return nome do <em>schema</em> de banco de dados
      */
     String nomeSchema() default StringUtils.EMPTY;
 }
