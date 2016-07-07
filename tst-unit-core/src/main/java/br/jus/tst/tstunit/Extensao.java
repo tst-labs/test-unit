@@ -32,7 +32,7 @@ public interface Extensao<A extends Annotation> {
      */
     @SuppressWarnings("unchecked")
     default boolean isHabilitada() {
-        return getClasseTeste().getAnnotation((Class<A>) ((ParameterizedType) this.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0]) != null;
+        return getClasseTeste().getAnnotation((Class<A>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]) != null;
     }
 
     /**

@@ -60,7 +60,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
         Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(new FilterBuilder().includePackage(PACOTE_EXTENSOES))
                 .setUrls(ClasspathHelper.forPackage(PACOTE_EXTENSOES)).setScanners(new SubTypesScanner()));
 
-        Set<Class<? extends Extensao>> classesExtensoes = reflections.getSubTypesOf(Extensao.class);
+        Set<Class<? extends AbstractExtensao>> classesExtensoes = reflections.getSubTypesOf(AbstractExtensao.class);
         extensoes = classesExtensoes.stream().map(this::newInstance).filter(extensao -> extensao.isHabilitada()).collect(Collectors.toList());
         LOGGER.info("Extensões habilitadas: {}", extensoes);
     }
