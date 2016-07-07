@@ -2,7 +2,7 @@ package br.jus.tst.tstunit.dbunit;
 
 import java.io.*;
 import java.sql.*;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 import org.dbunit.DatabaseUnitException;
@@ -16,7 +16,7 @@ import org.slf4j.*;
 import br.jus.tst.tstunit.TstUnitException;
 
 /**
- * TODO Javadoc
+ * Classe responsável por efetuar operações sobre o banco de dados para os testes.
  * 
  * @author Thiago Miranda
  * @since 4 de jul de 2016
@@ -35,14 +35,42 @@ public class DbUnitDatabaseLoader implements Serializable {
     private String schema;
 
     /**
-     * TODO Javadoc
+     * Cria uma nova instância.
      * 
      * @param nomeArquivoDataSet
+     *            nome do arquivo de DataSet do DBUnit sendo utilizado
      * @param jdbcConnectionSupplier
+     *            utilizado para obter conexões JDBC
+     * @throws NullPointerException
+     *             caso qualquer parâmetro seja {@code null}
      */
     public DbUnitDatabaseLoader(String nomeArquivoDataSet, Supplier<Connection> jdbcConnectionSupplier) {
-        this.nomeArquivoDataSet = nomeArquivoDataSet;
-        this.jdbcConnectionSupplier = jdbcConnectionSupplier;
+        this.nomeArquivoDataSet = Objects.requireNonNull(nomeArquivoDataSet, "nomeArquivoDataSet");
+        this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
+    }
+
+    public void carregarBancoDados() throws TstUnitException {
+        LOGGER.debug("Carga do banco de dados");
+
+        try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
+            IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
+            connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new H2DataTypeFactory()); // TODO H2 hard-coded
+            dataSet = carregarDataSet();
+            DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+        } catch (DatabaseUnitException | SQLException exception) {
+            throw new TstUnitException("Erro ao efetuar carga do banco de dados", exception);
+        }
+    }
+
+    public void limparBancoDados() throws TstUnitException {
+        LOGGER.debug("Limpeza do banco de dados");
+
+        try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
+            IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
+            DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
+        } catch (DatabaseUnitException | SQLException exception) {
+            throw new TstUnitException("Erro ao efetuar limpeza do banco de dados", exception);
+        }
     }
 
     public String getSchema() {
@@ -53,31 +81,8 @@ public class DbUnitDatabaseLoader implements Serializable {
         this.schema = schema;
     }
 
-    public void carregarBancoDados() throws TstUnitException {
-        LOGGER.info("Carga do banco de dados");
-        
-        try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
-            IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
-            connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new H2DataTypeFactory());
-            dataSet = carregarDataSet();
-            DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-        } catch (DatabaseUnitException | SQLException exception) {
-            throw new TstUnitException("Erro ao efetuar carga do banco de dados", exception);
-        }
-    }
-
-    public void limparBancoDados() throws TstUnitException {
-        LOGGER.info("Limpeza do banco de dados");
-        
-        try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
-            IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
-            DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
-        } catch (DatabaseUnitException | SQLException exception) {
-            throw new TstUnitException("Erro ao efetuar limpeza do banco de dados", exception);
-        }
-    }
-
     private FlatXmlDataSet carregarDataSet() throws DataSetException, TstUnitException {
+        LOGGER.debug("Carregando arquivo de DataSet: {}", nomeArquivoDataSet);
         Optional<InputStream> dataSetStreamOptional = Optional
                 .ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivoDataSet));
         return new FlatXmlDataSetBuilder().setDtdMetadata(false).build(
@@ -85,6 +90,7 @@ public class DbUnitDatabaseLoader implements Serializable {
     }
 
     private DatabaseConnection openDbUnitConnection(Connection jdbcConnection) throws DatabaseUnitException {
+        LOGGER.debug("Criando conexão do DBUnit a partir da conexão JDBC: {}", jdbcConnection);
         return new DatabaseConnection(jdbcConnection, schema);
     }
 }

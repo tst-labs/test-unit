@@ -2,6 +2,8 @@ package br.jus.tst.tstunit;
 
 import java.lang.annotation.Annotation;
 
+import org.apache.commons.lang3.Validate;
+
 /**
  * Implementação base para todas as extensões.
  * 
@@ -25,5 +27,16 @@ public abstract class AbstractExtensao<A extends Annotation> implements Extensao
     @Override
     public Class<?> getClasseTeste() {
         return classeTeste;
+    }
+
+    /**
+     * Verifica se a extensão está habilitada. Caso não esteja, uma exceção é lançada.
+     * 
+     * @throws IllegalStateException
+     *             caso a extensão não esteja habilitada
+     * @see #isHabilitada()
+     */
+    protected void assertExtensaoHabilitada() {
+        Validate.validState(isHabilitada(), "Extensão não habilitada");
     }
 }

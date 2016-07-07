@@ -79,6 +79,7 @@ public interface Extensao<A extends Annotation> {
      *            o método de teste sendo executado
      * @return o Statement criado
      * @throws TstUnitException
+     *             caso ocorra algum erro durante a operação
      */
     Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException;
 }

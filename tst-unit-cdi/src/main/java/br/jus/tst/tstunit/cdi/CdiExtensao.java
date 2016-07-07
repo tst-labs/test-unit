@@ -85,11 +85,13 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
 
     @Override
     public void inicializar(Configuracao configuracao, RunNotifier notifier) {
+        assertExtensaoHabilitada();
         LOGGER.info("CDI habilitado");
     }
 
     @Override
     public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+        assertExtensaoHabilitada();
         LOGGER.info("Ativando contexto CDI");
 
         return new Statement() {
