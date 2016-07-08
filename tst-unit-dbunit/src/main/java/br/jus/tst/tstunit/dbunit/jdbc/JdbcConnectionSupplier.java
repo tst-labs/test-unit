@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.jdbc;
 
 import java.sql.*;
 import java.util.Properties;

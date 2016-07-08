@@ -8,6 +8,7 @@ import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
+import br.jus.tst.tstunit.dbunit.jdbc.*;
 
 /**
  * Classe responsável por rodar o DBUnit em métodos de teste.
