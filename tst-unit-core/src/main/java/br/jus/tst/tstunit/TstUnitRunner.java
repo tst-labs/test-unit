@@ -2,6 +2,7 @@ package br.jus.tst.tstunit;
 
 import java.util.*;
 
+import org.junit.rules.TestRule;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -119,5 +120,19 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
             }
         }
         return statement;
+    }
+
+    @Override
+    protected List<TestRule> getTestRules(Object target) {
+        List<TestRule> rules = super.getTestRules(target);
+
+        ImprimirNomeTeste imprimirNomeTeste = classeTeste.getAnnotation(ImprimirNomeTeste.class);
+        if (imprimirNomeTeste == null) {
+            rules.add(new PrintTestNameWatcher());
+        } else if (imprimirNomeTeste.value()) {
+            rules.add(new PrintTestNameWatcher(imprimirNomeTeste.formatoMensagem()));
+        }
+
+        return rules;
     }
 }

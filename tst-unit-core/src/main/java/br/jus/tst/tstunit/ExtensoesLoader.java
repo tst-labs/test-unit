@@ -40,7 +40,7 @@ public class ExtensoesLoader implements Serializable {
     }
 
     @SuppressWarnings("rawtypes")
-    public List<? extends Extensao<?>> carregarExtensoes() {
+    public List<Extensao<?>> carregarExtensoes() {
         LOGGER.debug("Carregando extensões a partir do pacote: {}", basePackage);
         Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(new FilterBuilder().includePackage(basePackage))
                 .setUrls(ClasspathHelper.forPackage(basePackage)).setScanners(new SubTypesScanner()));
