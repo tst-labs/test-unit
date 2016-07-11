@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import org.apache.commons.lang3.*;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.junit.runners.model.*;
 import org.slf4j.*;
 
@@ -114,7 +115,7 @@ public class DbUnitRunner implements Serializable {
         return new DbUnitStatement(databaseLoader, scriptRunner, statement);
     }
 
-    private DbUnitDatabaseLoader criarDatabaseLoader(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) {
+    private DbUnitDatabaseLoader criarDatabaseLoader(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
         DbUnitDatabaseLoader databaseLoader;
         UsarDataSet usarDataSet = getUsarDatasetAnnotation(method);
 
@@ -123,6 +124,7 @@ public class DbUnitRunner implements Serializable {
 
             databaseLoader = new DbUnitDatabaseLoader(buildCaminhoArquivo(datasetsDir, usarDataSet.value()), jdbcConnectionSupplier);
             databaseLoader.setSchema(nomeSchema);
+            databaseLoader.setDataTypeFactory(getDataTypeFactory());
 
         } else {
             LOGGER.warn("Nenhuma anotação @UsarDataSet definida no teste nem na classe: {}", method.getName());
@@ -176,6 +178,15 @@ public class DbUnitRunner implements Serializable {
 
     private String getDiretorioScriptsConfigurado() {
         return (String) getConfiguracoesDbUnit().get("scripts.dir");
+    }
+
+    private IDataTypeFactory getDataTypeFactory() throws TstUnitException {
+        String dataTypeFactoryClass = (String) getConfiguracoesDbUnit().get("dataTypeFactoryClass");
+        try {
+            return (IDataTypeFactory) Class.forName(dataTypeFactoryClass).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException exception) {
+            throw new TstUnitException("Erro ao instanciar classe de DataTypeFactory configurada: " + dataTypeFactoryClass, exception);
+        }
     }
 
     private Properties getConnfiguracoesJdbc() {

@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.*;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.xml.*;
-import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.slf4j.*;
 
@@ -32,6 +32,7 @@ public class DbUnitDatabaseLoader implements Serializable {
 
     private transient FlatXmlDataSet dataSet;
 
+    private IDataTypeFactory dataTypeFactory;
     private String schema;
 
     /**
@@ -54,7 +55,11 @@ public class DbUnitDatabaseLoader implements Serializable {
 
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
             IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
-            connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new H2DataTypeFactory()); // TODO H2 hard-coded
+
+            if (dataTypeFactory != null) {
+                connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
+            }
+
             dataSet = carregarDataSet();
             DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
         } catch (DatabaseUnitException | SQLException exception) {
@@ -79,6 +84,14 @@ public class DbUnitDatabaseLoader implements Serializable {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+    
+    public IDataTypeFactory getDataTypeFactory() {
+        return dataTypeFactory;
+    }
+    
+    public void setDataTypeFactory(IDataTypeFactory dataTypeFactory) {
+        this.dataTypeFactory = dataTypeFactory;
     }
 
     private FlatXmlDataSet carregarDataSet() throws DataSetException, TstUnitException {
