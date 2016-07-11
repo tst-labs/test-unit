@@ -1,16 +1,11 @@
 package br.jus.tst.tstunit;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.*;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.*;
 import org.slf4j.*;
 
 /**
@@ -50,28 +45,30 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
      * @throws InitializationError
      *             caso ocorra algum erro ao inicializar o <em>runner</em>
      * @throws TstUnitException
+     *             caso ocorra algum erro ao carregar as configurações
      */
-    @SuppressWarnings("rawtypes")
     public TstUnitRunner(Class<?> classeTeste) throws InitializationError, TstUnitException {
         super(classeTeste);
         this.classeTeste = classeTeste;
         configuracao = new Configuracao();
 
-        Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(new FilterBuilder().includePackage(PACOTE_EXTENSOES))
-                .setUrls(ClasspathHelper.forPackage(PACOTE_EXTENSOES)).setScanners(new SubTypesScanner()));
-
-        Set<Class<? extends AbstractExtensao>> classesExtensoes = reflections.getSubTypesOf(AbstractExtensao.class);
-        extensoes = classesExtensoes.stream().map(this::newInstance).filter(extensao -> extensao.isHabilitada()).collect(Collectors.toList());
+        extensoes = new ExtensoesLoader(PACOTE_EXTENSOES, classeTeste).carregarExtensoes();
         LOGGER.info("Extensões habilitadas: {}", extensoes);
     }
 
-    private Extensao<?> newInstance(Class<?> classeExtensao) {
-        try {
-            return (Extensao<?>) classeExtensao.getConstructor(classeTeste.getClass()).newInstance(classeTeste);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException exception) {
-            throw new RuntimeException("Erro ao instanciar classe da extensão: " + classeExtensao, exception);
-        }
+    /**
+     * Construtor utilizado nos testes desta classe.
+     * 
+     * @param configuracao
+     * @param extensoesLoader
+     * @throws InitializationError
+     */
+    TstUnitRunner(Configuracao configuracao, ExtensoesLoader extensoesLoader) throws InitializationError {
+        super(extensoesLoader.getClasseTeste());
+        this.configuracao = configuracao;
+        this.classeTeste = extensoesLoader.getClasseTeste();
+        extensoes = extensoesLoader.carregarExtensoes();
+        LOGGER.info("Extensões habilitadas: {}", extensoes);
     }
 
     @Override

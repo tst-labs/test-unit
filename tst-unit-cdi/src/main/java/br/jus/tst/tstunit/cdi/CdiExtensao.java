@@ -18,6 +18,7 @@ import org.slf4j.*;
 import br.jus.tst.tstunit.*;
 
 /**
+ * {@link Extensao} que habilita o uso do CDI nos testes.
  * 
  * @author Thiago Miranda
  * @since 5 de jul de 2016
