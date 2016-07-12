@@ -42,6 +42,8 @@ Fazendo apenas isso, seu teste passa a contar com alguns recursos básicos, como
 >>>>>>>>>> Executando: br.jus.tst.teste.MinhaClasseTeste.teste <<<<<<<<<<
 ```
 
+Esse recurso pode ser desativado ou customizado através da anotação `@ImprimirNomeTeste`.
+
 Para utilizar outros recursos, você pode adicionar extensões, que adicionam novas funcionalidades ao TST Unit.
 
 ### Extensões

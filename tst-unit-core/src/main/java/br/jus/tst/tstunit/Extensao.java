@@ -32,6 +32,7 @@ public interface Extensao<A extends Annotation> {
      */
     @SuppressWarnings("unchecked")
     default boolean isHabilitada() {
+        // verifica se a classe de teste possui a anotação definida como parâmetro genérico - A
         return getClasseTeste().getAnnotation((Class<A>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]) != null;
     }
 
