@@ -40,7 +40,7 @@ public class TestEntityManagerFactoryProducer implements Serializable {
     @Produces
     @ApplicationScoped
     public EntityManagerFactory criarEntityManagerFactory() {
-        logger.info("Inicializando contexto de persistência");
+        logger.info("Inicializando contexto de persistência: {}", nomeUnidadePersistencia);
         return Persistence.createEntityManagerFactory(nomeUnidadePersistencia);
     }
 
