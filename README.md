@@ -143,7 +143,7 @@ Além da anotação `@HabilitarDbUnit`, existe um outro conjunto de anotações 
 
 * `@RodarScriptAntes`: define um arquivo de script a ser executado antes de um método de teste ou antes de todos os métodos de teste de uma classe. Por padrão, o arquivo é procurado dentro de um diretório `scripts` no _classpath_.
 * `@RodarScriptDepois`: define um arquivo de script a ser executado após um método de teste ou após todos os métodos de teste de uma classe. Por padrão, o arquivo é procurado dentro de um diretório `scripts` no _classpath_.
-* `@UsarDataSet`: define um arquivo de _dataset_ do DBUnit a ser utilizado pelo teste. O banco é carregado com os dados definidos no arquivo antes da execução do teste (operação _CLEAN-INSERT_).
+* `@UsarDataSet`: define um arquivo de _dataset_ do DBUnit a ser utilizado pelo teste. O banco é carregado com os dados definidos no arquivo antes da execução do teste (operação _CLEAN-INSERT_). Por padrão, o arquivo é procurado dentro de um diretório `datasets` no _classpath_.
 
 ```java
 package br.jus.tst.teste;
@@ -203,6 +203,31 @@ dbunit.dataTypeFactoryClass=
 ```
 
 ##### Uso
+
+Utilize a anotação `@HabilitarJpa` em seus testes.
+
+Atualmente, essa extensão só pode ser usada em conjunto com a _TST Unit CDI_. Sendo assim, normalmente seus testes que a utilizem ficarão com uma estrutura semelhante à essa:
+
+```java
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarCdiAndMockito
+@AdditionalPackages({ TestEntityManagerProducer.class }) // adiciona o produtor de EntityManager ao classpath do CDI Unit
+@HabilitarJpa(persistenceUnitName = "meuPU")
+public class MinhaClasseTeste {
+
+    // @Inject
+    // private EntityManager em;
+    @Inject
+    private MinhaClasseQueUsaEntityManager instancia;
+
+    @Test
+    public void teste() {
+        // ...
+    }
+}
+```
 
 #### TST Unit Mockito
 
