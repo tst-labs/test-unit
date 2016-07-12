@@ -229,6 +229,46 @@ public class MinhaClasseTeste {
 }
 ```
 
+Caso você queira usar essa extensão em conjunto com a _TST Unit DBUnit_, é possível gerar o _schema_ de banco antes de cada teste:
+
+```java
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarCdiAndMockito
+@AdditionalPackages({ TestEntityManagerProducer.class })
+@HabilitarDbUnit
+@HabilitarJpa(persistenceUnitName = "meuPU")
+public class MinhaClasseTeste {
+
+    @Inject
+    private MinhaClasseQueUsaEntityManager instancia;
+
+    @Test
+    @UsarDataSet("meu-dataset.xml")
+    public void teste() {
+        // ...
+    }
+}
+```
+
+Basta definir a propriedade `hibernate.hbm2ddl.auto` no seu arquivo `persistence.xml` utilizado pelos testes com o valor `create`:
+
+```xml
+<persistence-unit name="meuPU">
+
+	...
+	
+    <properties>
+    	...
+    	<property name="hibernate.hbm2ddl.auto" value="create" />
+       ...
+    </properties>
+</persistence-unit>
+```
+
+OBS.: O valor `create-drop` não é suportado dessa forma pois o JPA irá derrubar o _schema_ assim que o último `EntityManager` for fechado, ocasionando erros na execução do _TST Unit DBUnit_, que irá tentar limpar o banco de dados em seguida.
+
 #### TST Unit Mockito
 
 ##### Dependência
