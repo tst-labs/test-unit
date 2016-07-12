@@ -65,7 +65,7 @@ public class ScriptRunner implements Serializable {
 
     private void executarScript(String arquivoScript) throws SQLException, IOException {
         if (StringUtils.isNotBlank(arquivoScript)) {
-            LOGGER.debug("Executando script: {}", arquivoScript);
+            LOGGER.info("Executando script: {}", arquivoScript);
             try (Connection connection = jdbcConnectionSupplier.get(); Reader fileReader = openReader(arquivoScript)) {
                 RunScript.execute(connection, fileReader);
                 connection.commit();

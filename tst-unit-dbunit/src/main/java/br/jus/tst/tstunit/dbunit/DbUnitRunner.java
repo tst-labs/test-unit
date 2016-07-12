@@ -85,7 +85,7 @@ public class DbUnitRunner implements Serializable {
     public DbUnitRunner(Class<?> classeTeste, String nomeSchema, Configuracao configuracao) {
         super();
         this.classeTeste = Objects.requireNonNull(classeTeste, "classeTeste");
-        this.nomeSchema = nomeSchema;
+        this.nomeSchema = StringUtils.stripToNull(nomeSchema);
         this.configuracao = Objects.requireNonNull(configuracao, "configuracao");
     }
 
