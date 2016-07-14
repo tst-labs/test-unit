@@ -191,6 +191,31 @@ dbunit.scripts.dir=
 dbunit.dataTypeFactoryClass=
 ```
 
+##### Gerando DTD
+
+O módulo também fornece um recurso que auxilia na geração de arquivos [DTD](http://www.w3schools.com/xml/xml_dtd.asp) do _schema_ de banco de dados.
+
+Para utilizá-lo, crie uma classe de teste em seu projeto semelhante a essa:
+
+```
+@RunWith(TstUnitRunner.class)
+@HabilitarDbUnit
+public class GeradorDbUnitDtd {
+
+    @Test
+    // @Ignore
+    @GerarDtd("src/test/resources/datasets/pl.dtd")
+    public void gerarDtd() {
+    	/* 
+    	   Pode ser necessário incluir aqui um assertTrue(true) ou deixar um @Ignore no teste para evitar falsos índices de quantidade de testes de seu 
+    	   projeto ou problemas com ferramentas de análise de código, como Sonar.
+    	*/
+    }
+}
+```
+
+Lembre-se que o _schema_ de banco de dados precisa estar criado para que possa ser exportado pela ferramenta. Como opções, você pode usar a anotação `@RodarScriptAntes` para executar um arquivo de script que crie o _schema_ ou também tirar proveito da extensão _TST Unit JPA_ - em conjunto com configurações do próprio JPA, é possível delegar para sua implementação de JPA (ex.: Hibernate) a criação do _schema_. Para maiores informações sobre uso do _TST Unit JPA_, veja abaixo.
+
 #### TST Unit JPA
 
 ##### Dependência

@@ -1,6 +1,7 @@
 package br.jus.tst.tstunit.dbunit;
 
 import java.io.*;
+import java.lang.annotation.Annotation;
 import java.util.*;
 
 import org.apache.commons.lang3.*;
@@ -24,47 +25,6 @@ public class DbUnitRunner implements Serializable {
 
     private static final String DIRETORIO_DATASETS_PADRAO = "datasets";
     private static final String DIRETORIO_SCRIPTS_PADRAO = "scripts";
-
-    private final class DbUnitStatement extends Statement {
-
-        private final DbUnitDatabaseLoader databaseLoader;
-        private final Statement defaultStatement;
-        private final ScriptRunner scriptRunner;
-
-        /**
-         * Cria um novo statement.
-         * 
-         * @param databaseLoader
-         *            utilizado para efetuar operações sobre os dados do banco - opcional
-         * @param scriptRunner
-         *            utilizado para rodar scripts antes e após a execução do statement
-         * @param defaultStatement
-         *            o statement padrão (pai)
-         */
-        public DbUnitStatement(DbUnitDatabaseLoader databaseLoader, ScriptRunner scriptRunner, Statement defaultStatement) {
-            this.databaseLoader = databaseLoader;
-            this.scriptRunner = Objects.requireNonNull(scriptRunner, "scriptRunner");
-            this.defaultStatement = Objects.requireNonNull(defaultStatement, "defaultStatement");
-        }
-
-        @Override
-        public void evaluate() throws Throwable {
-            scriptRunner.executarScriptAntes();
-            if (databaseLoader != null) {
-                databaseLoader.carregarBancoDados();
-            }
-
-            try {
-                defaultStatement.evaluate();
-            } finally {
-                if (databaseLoader != null) {
-                    databaseLoader.limparBancoDados();
-                }
-
-                scriptRunner.executarScriptDepois();
-            }
-        }
-    }
 
     private transient final Class<?> classeTeste;
     private transient final Configuracao configuracao;
@@ -109,15 +69,30 @@ public class DbUnitRunner implements Serializable {
         Properties propriedadesJdbc = getConnfiguracoesJdbc();
         JdbcConnectionSupplier jdbcConnectionSupplier = new JdbcConnectionSupplier(propriedadesJdbc);
 
+        GeradorDtd geradorDtd = criarGeradorDtd(method, jdbcConnectionSupplier);
         ScriptRunner scriptRunner = criarScriptRunner(method, jdbcConnectionSupplier);
         DbUnitDatabaseLoader databaseLoader = criarDatabaseLoader(method, jdbcConnectionSupplier);
 
-        return new DbUnitStatement(databaseLoader, scriptRunner, statement);
+        return new DbUnitStatement(databaseLoader, scriptRunner, geradorDtd, statement);
+    }
+
+    private GeradorDtd criarGeradorDtd(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
+        GeradorDtd geradorDtd;
+
+        GerarDtd gerarDtd = method.getAnnotation(GerarDtd.class);
+        if (gerarDtd != null) {
+            geradorDtd = new GeradorDtd(jdbcConnectionSupplier, new File(gerarDtd.value()));
+            geradorDtd.setDataTypeFactory(getDataTypeFactory());
+        } else {
+            geradorDtd = null;
+        }
+
+        return geradorDtd;
     }
 
     private DbUnitDatabaseLoader criarDatabaseLoader(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
         DbUnitDatabaseLoader databaseLoader;
-        UsarDataSet usarDataSet = getUsarDatasetAnnotation(method);
+        UsarDataSet usarDataSet = getAnnotationFromMethodOrClass(method, UsarDataSet.class);
 
         if (usarDataSet != null) {
             String datasetsDir = StringUtils.defaultIfBlank(getDiretorioDatasetsConfigurado(), DIRETORIO_DATASETS_PADRAO);
@@ -138,7 +113,7 @@ public class DbUnitRunner implements Serializable {
         String scriptsDir = StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO);
 
         String scriptBefore;
-        RodarScriptAntes rodarScriptAntes = getRodarScriptAntesAnnotation(method);
+        RodarScriptAntes rodarScriptAntes = getAnnotationFromMethodOrClass(method, RodarScriptAntes.class);
         if (rodarScriptAntes != null) {
             scriptBefore = buildCaminhoArquivo(scriptsDir, rodarScriptAntes.value());
         } else {
@@ -146,7 +121,7 @@ public class DbUnitRunner implements Serializable {
         }
 
         String scriptAfter;
-        RodarScriptDepois rodarScriptDepois = getRodarScriptDepoisAnnotation(method);
+        RodarScriptDepois rodarScriptDepois = getAnnotationFromMethodOrClass(method, RodarScriptDepois.class);
         if (rodarScriptDepois != null) {
             scriptAfter = buildCaminhoArquivo(scriptsDir, rodarScriptDepois.value());
         } else {
@@ -156,16 +131,8 @@ public class DbUnitRunner implements Serializable {
         return new ScriptRunner(scriptBefore, scriptAfter, jdbcConnectionSupplier);
     }
 
-    private RodarScriptAntes getRodarScriptAntesAnnotation(FrameworkMethod method) {
-        return ObjectUtils.defaultIfNull(method.getAnnotation(RodarScriptAntes.class), classeTeste.getAnnotation(RodarScriptAntes.class));
-    }
-
-    private RodarScriptDepois getRodarScriptDepoisAnnotation(FrameworkMethod method) {
-        return ObjectUtils.defaultIfNull(method.getAnnotation(RodarScriptDepois.class), classeTeste.getAnnotation(RodarScriptDepois.class));
-    }
-
-    private UsarDataSet getUsarDatasetAnnotation(FrameworkMethod method) {
-        return ObjectUtils.defaultIfNull(method.getAnnotation(UsarDataSet.class), classeTeste.getAnnotation(UsarDataSet.class));
+    private <T extends Annotation> T getAnnotationFromMethodOrClass(FrameworkMethod method, Class<T> annotationType) {
+        return ObjectUtils.defaultIfNull(method.getAnnotation(annotationType), classeTeste.getAnnotation(annotationType));
     }
 
     private String buildCaminhoArquivo(String directory, String nomeArquivo) {
