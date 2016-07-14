@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.*;
-import javax.inject.Inject;
 import javax.persistence.*;
 
-import org.slf4j.Logger;
+import org.slf4j.*;
 
 /**
  * Classe que provê acesso a instâncias de {@link EntityManagerFactory} utilizadas nos testes.
@@ -17,12 +16,11 @@ import org.slf4j.Logger;
  */
 public class TestEntityManagerFactoryProducer implements Serializable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestEntityManagerFactoryProducer.class);
+
     private static final long serialVersionUID = 902185891912929393L;
 
     private static String nomeUnidadePersistencia;
-
-    @Inject
-    private transient Logger logger;
 
     public static String getNomeUnidadePersistencia() {
         return nomeUnidadePersistencia;
@@ -40,7 +38,7 @@ public class TestEntityManagerFactoryProducer implements Serializable {
     @Produces
     @ApplicationScoped
     public EntityManagerFactory criarEntityManagerFactory() {
-        logger.info("Inicializando contexto de persistência: {}", nomeUnidadePersistencia);
+        LOGGER.info("Inicializando contexto de persistência: {}", nomeUnidadePersistencia);
         return Persistence.createEntityManagerFactory(nomeUnidadePersistencia);
     }
 
@@ -52,7 +50,7 @@ public class TestEntityManagerFactoryProducer implements Serializable {
      */
     public void fecharEntityManagerFactory(@Disposes EntityManagerFactory entityManagerFactory) {
         if (entityManagerFactory.isOpen()) {
-            logger.info("Encerrando contexto de persistência: {}", entityManagerFactory);
+            LOGGER.info("Encerrando contexto de persistência: {}", entityManagerFactory);
             entityManagerFactory.close();
         }
     }

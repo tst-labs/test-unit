@@ -15,6 +15,7 @@
         <dependency>
             <groupId>br.jus.tst</groupId>
             <artifactId>tst-unit-cdi</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -24,10 +25,27 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>ejb3-persistence</artifactId>
-            <version>3.1</version>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.3.11.Final</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
