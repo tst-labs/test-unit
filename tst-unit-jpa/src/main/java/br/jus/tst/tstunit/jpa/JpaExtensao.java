@@ -16,25 +16,42 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaExtensao.class);
 
-    private final GeradorSchema geradorSchema;
+    private GeradorSchema geradorSchema;
 
     public JpaExtensao(Class<?> classeTestes) {
         super(classeTestes);
-        geradorSchema = new GeradorSchema();
     }
 
     @Override
     public void beforeTestes(Object instancia) {
-        LOGGER.info("Criando schema");
-        geradorSchema.create();
+        LOGGER.info("Criando schema através do {}", geradorSchema);
+        geradorSchema.criar();
     }
 
     @Override
-    public void inicializar(Configuracao configuracao, RunNotifier notifier) {
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
+        HabilitarJpa habilitarJpa = classeTeste.getAnnotation(HabilitarJpa.class);
         LOGGER.info("JPA habilitado");
-        String unidadePersistencia = classeTeste.getAnnotation(HabilitarJpa.class).persistenceUnitName();
+
+        String unidadePersistencia = habilitarJpa.persistenceUnitName();
         LOGGER.info("Unidade de persistência: {}", unidadePersistencia);
         TestEntityManagerFactoryProducer.setNomeUnidadePersistencia(unidadePersistencia);
+
+        geradorSchema = criarGeradorSchema(habilitarJpa);
+    }
+
+    private GeradorSchema criarGeradorSchema(HabilitarJpa habilitarJpa) throws TstUnitException {
+        Class<? extends GeradorSchema> classeGeradorSchema = habilitarJpa.geradorSchema();
+        GeradorSchema instanciaGeradorSchema;
+
+        LOGGER.debug("Criando instância do gerador de schema configurado: {}", classeGeradorSchema);
+        try {
+            instanciaGeradorSchema = classeGeradorSchema.newInstance();
+        } catch (InstantiationException | IllegalAccessException exception) {
+            throw new TstUnitException("Erro ao instanciar gerador de schema: " + classeGeradorSchema, exception);
+        }
+
+        return instanciaGeradorSchema;
     }
 
     @Override

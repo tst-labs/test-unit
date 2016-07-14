@@ -2,7 +2,9 @@ package br.jus.tst.tstunit;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
@@ -27,7 +29,7 @@ public class TstUnitRunnerTeste {
     }
 
     @Test
-    public void testRunNotifier() throws InitializationError {
+    public void testRunNotifier() throws InitializationError, TstUnitException {
         Configuracao configuracao = mock(Configuracao.class);
         ExtensoesLoader extensoesLoader = mock(ExtensoesLoader.class);
         RunNotifier notifier = mock(RunNotifier.class);
@@ -38,7 +40,7 @@ public class TstUnitRunnerTeste {
 
         TstUnitRunner runner = new TstUnitRunner(configuracao, extensoesLoader);
         runner.run(notifier);
-        
+
         verify(extensao).inicializar(configuracao, notifier);
     }
 

@@ -68,9 +68,11 @@ public interface Extensao<A extends Annotation> {
      * @param configuracao
      * @param notifier
      *            notificador do JUnit
+     * @throws TstUnitException
+     *             caso ocorra algum erro durante a operação
      * @see Runner#run(RunNotifier)
      */
-    void inicializar(Configuracao configuracao, RunNotifier notifier);
+    void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException;
 
     /**
      * Obtém um {@link Statement} configurado para a extensão.

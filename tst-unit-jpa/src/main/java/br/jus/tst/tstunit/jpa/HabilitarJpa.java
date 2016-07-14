@@ -23,4 +23,11 @@ public @interface HabilitarJpa {
      * @return o nome da unidade de persistência
      */
     String persistenceUnitName();
+
+    /**
+     * Classe utilizada para gerar o <em>schema</em> de banco de dados.
+     * 
+     * @return a classe
+     */
+    Class<? extends GeradorSchema> geradorSchema() default GeradorSchemaCdi.class;
 }

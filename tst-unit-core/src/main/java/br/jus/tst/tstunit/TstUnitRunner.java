@@ -75,7 +75,13 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
     @Override
     public void run(RunNotifier notifier) {
         LOGGER.debug("Inicializando {} extensões", extensoes.size());
-        extensoes.forEach(extensao -> extensao.inicializar(configuracao, notifier));
+        extensoes.forEach(extensao -> {
+            try {
+                extensao.inicializar(configuracao, notifier);
+            } catch (TstUnitException exception) {
+                throw new RuntimeException("Erro ao inicializar extensão: " + extensao, exception);
+            }
+        });
         super.run(notifier);
     }
 
