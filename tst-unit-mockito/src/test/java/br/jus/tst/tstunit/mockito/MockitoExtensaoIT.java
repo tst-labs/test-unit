@@ -25,6 +25,6 @@ public class MockitoExtensaoIT {
 
     @Test
     public void deveriaCarregarMocks() {
-        assertThat(mock, is(notNullValue(Object.class)));
+        assertThat("Não carregou os mocks", mock, is(notNullValue(Object.class)));
     }
 }
