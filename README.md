@@ -19,8 +19,6 @@ Para utilizar o TST Unit em seu projeto, adicione o módulo abaixo como dependê
 </dependency>
 ```
 
-Em seguida, é necessário ter um arquivo `tstunit.properties` em seu _classpath_ (normalmente em `src/test/resources`). No momento, esse arquivo pode ser criado vazio.
-
 E então, utilize a classe `TSTUnitRunner` para rodar seus testes:
 
 ```java
@@ -141,6 +139,30 @@ public class MinhaClasseTeste {
 
 ##### Uso
 
+Para utilizar essa extensão, é necessário ter um arquivo `tstunit.properties` em seu _classpath_ (normalmente em `src/test/resources`). O conteúdo desse arquivo deve ter as propriedades abaixo:
+
+```
+# Valores obrigatórios:
+
+# Nome da classe de driver SQL a ser utilizada para abrir conexões JDBC
+jdbc.driverClass=
+# URL do banco de dados
+jdbc.url=
+# Usuário de banco de dados
+jdbc.user=
+# Senha do usuário de banco de dados
+jdbc.password=
+
+# Valores opcionais:
+
+# Diretório no classpath onde serão buscados os arquivos de dataset
+dbunit.datasets.dir=
+# Diretório no classpath onde serão buscados os arquivos de script
+dbunit.scripts.dir=
+# Nome da classe de DataType factory - ver http://dbunit.sourceforge.net/properties.html#DataType_factory
+dbunit.dataTypeFactoryClass=
+```
+
 Além da anotação `@HabilitarDbUnit`, existe um outro conjunto de anotações que podem ser úteis para a execução do teste:
 
 * `@RodarScriptAntes`: define um arquivo de script a ser executado antes de um método de teste ou antes de todos os métodos de teste de uma classe. Por padrão, o arquivo é procurado dentro de um diretório `scripts` no _classpath_.
@@ -165,30 +187,6 @@ public class MinhaClasseTeste {
         // ...
     }
 }
-```
-
-Essa extensão também necessita que algumas configurações sejam definidas no arquivo `tstunit.properties`:
-
-```
-# Parâmetros obrigatórios:
-
-# Nome da classe de driver SQL a ser utilizada para abrir conexões JDBC
-jdbc.driverClass=
-# URL do banco de dados
-jdbc.url=
-# Usuário de banco de dados
-jdbc.user=
-# Senha do usuário de banco de dados
-jdbc.password=
-
-# Parâmetros opcionais:
-
-# Diretório no classpath onde serão buscados os arquivos de dataset
-dbunit.datasets.dir=
-# Diretório no classpath onde serão buscados os arquivos de script
-dbunit.scripts.dir=
-# Nome da classe de DataType factory - ver http://dbunit.sourceforge.net/properties.html#DataType_factory
-dbunit.dataTypeFactoryClass=
 ```
 
 ##### Gerando DTD

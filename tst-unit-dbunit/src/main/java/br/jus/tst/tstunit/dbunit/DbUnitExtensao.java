@@ -23,7 +23,7 @@ public class DbUnitExtensao extends AbstractExtensao<HabilitarDbUnit> {
     }
 
     @Override
-    public void inicializar(Configuracao configuracao, RunNotifier notifier) {
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
         assertExtensaoHabilitada();
         LOGGER.info("DBUnit habilitado");
         HabilitarDbUnit habilitarDbUnit = classeTeste.getAnnotation(HabilitarDbUnit.class);

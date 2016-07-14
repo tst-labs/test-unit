@@ -19,15 +19,22 @@ public class Configuracao implements Serializable {
 
     private static final long serialVersionUID = 3577294568759890149L;
 
-    private transient final Properties properties;
+    private transient Properties properties;
 
     /**
      * Cria uma nova instância das configurações.
+     */
+    public Configuracao() throws TstUnitException {
+        properties = null;
+    }
+
+    /**
+     * Carrega as configurações a partir do arquivo.
      * 
      * @throws TstUnitException
      *             caso ocorra algum erro ao carregar as configurações
      */
-    public Configuracao() throws TstUnitException {
+    public void carregar() throws TstUnitException {
         Optional<InputStream> propertiesStreamOptional = Optional
                 .ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(NOME_ARQUIVO_PROPRIEDADES));
         InputStream propertiesStream = propertiesStreamOptional

@@ -41,12 +41,14 @@ public class DbUnitRunner implements Serializable {
      *            configurações a serem utilizadas
      * @throws NullPointerException
      *             caso {@code classeTeste} ou {@code configuracao} seja {@code null}
+     * @throws TstUnitException
+     *             caso ocorra algum erro ao carregar as configurações
      */
-    public DbUnitRunner(Class<?> classeTeste, String nomeSchema, Configuracao configuracao) {
-        super();
+    public DbUnitRunner(Class<?> classeTeste, String nomeSchema, Configuracao configuracao) throws TstUnitException {
         this.classeTeste = Objects.requireNonNull(classeTeste, "classeTeste");
         this.nomeSchema = StringUtils.stripToNull(nomeSchema);
         this.configuracao = Objects.requireNonNull(configuracao, "configuracao");
+        this.configuracao.carregar();
     }
 
     /**
