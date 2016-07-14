@@ -1,0 +1,6 @@
+CREATE TABLE Entidade (
+    id INTEGER NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO Entidade VALUES (1);

@@ -97,7 +97,7 @@ public class DbUnitRunner implements Serializable {
         UsarDataSet usarDataSet = getAnnotationFromMethodOrClass(method, UsarDataSet.class);
 
         if (usarDataSet != null) {
-            String datasetsDir = StringUtils.defaultIfBlank(getDiretorioDatasetsConfigurado(), DIRETORIO_DATASETS_PADRAO);
+            String datasetsDir = getDiretorioDatasets();
 
             databaseLoader = new DbUnitDatabaseLoader(buildCaminhoArquivo(datasetsDir, usarDataSet.value()), jdbcConnectionSupplier);
             databaseLoader.setSchema(nomeSchema);
@@ -109,6 +109,10 @@ public class DbUnitRunner implements Serializable {
         }
 
         return databaseLoader;
+    }
+
+    private String getDiretorioDatasets() {
+        return StringUtils.defaultIfBlank(getDiretorioDatasetsConfigurado(), DIRETORIO_DATASETS_PADRAO);
     }
 
     private ScriptRunner criarScriptRunner(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) {

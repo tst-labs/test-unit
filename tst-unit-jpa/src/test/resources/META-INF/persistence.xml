@@ -5,7 +5,7 @@
 
         <properties>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:h2:mem:testes;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS IT\;" />
+            <property name="hibernate.connection.url" value="jdbc:h2:mem:testes-jpa;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS IT\;" />
             <property name="hibernate.connection.username" value="sa" />
             <property name="hibernate.connection.password" value="sa" />
 

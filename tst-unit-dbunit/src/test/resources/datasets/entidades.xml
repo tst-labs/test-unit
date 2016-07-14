@@ -1,0 +1,5 @@
+<!DOCTYPE dataset SYSTEM "./testes.dtd">
+<dataset>
+    <ENTIDADE ID="1" />
+    <ENTIDADE ID="2" />
+</dataset>

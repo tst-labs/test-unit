@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 public @interface GerarDtd {
 
     /**
-     * Nome do arquivo DTD. Por padrão, o arquivo será gerado no mesmo diretório que os <em>datasets</em>.
+     * Caminho do arquivo DTD.
      * 
      * @return o caminho do arquivo
      */

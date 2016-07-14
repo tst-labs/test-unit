@@ -31,10 +31,11 @@ public class Configuracao implements Serializable {
     /**
      * Carrega as configurações a partir do arquivo.
      * 
+     * @return {@code this} para chamadas encadeadas de método
      * @throws TstUnitException
      *             caso ocorra algum erro ao carregar as configurações
      */
-    public void carregar() throws TstUnitException {
+    public Configuracao carregar() throws TstUnitException {
         Optional<InputStream> propertiesStreamOptional = Optional
                 .ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(NOME_ARQUIVO_PROPRIEDADES));
         InputStream propertiesStream = propertiesStreamOptional
@@ -48,6 +49,8 @@ public class Configuracao implements Serializable {
         } finally {
             IOUtils.closeQuietly(propertiesStream);
         }
+
+        return this;
     }
 
     /**
