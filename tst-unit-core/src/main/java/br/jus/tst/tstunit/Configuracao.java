@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.*;
 
 /**
  * Classe que fornece acesso a todas as configurações da biblioteca, conforme presentes em um arquivo {@value #NOME_ARQUIVO_PROPRIEDADES} que esteja no
@@ -51,6 +51,18 @@ public class Configuracao implements Serializable {
         }
 
         return this;
+    }
+
+    /**
+     * Obtém o valor de uma propriedade booleana.
+     * 
+     * @param key
+     *            chave da propriedade desejada
+     * @return o valor da propriedade
+     */
+    public Optional<Boolean> getPropriedadeBoolean(String key) {
+        String value = properties.getProperty(key);
+        return StringUtils.isEmpty(value) ? Optional.empty() : Optional.of(BooleanUtils.toBoolean(value));
     }
 
     /**

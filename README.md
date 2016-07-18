@@ -42,6 +42,13 @@ Fazendo apenas isso, seu teste passa a contar com alguns recursos básicos, como
 
 Esse recurso pode ser desativado ou customizado através da anotação `@ImprimirNomeTeste`.
 
+O valor padrão, que é utilizado quando nenhuma anotação `@ImprimirNomeTeste` está presente na classe de testes, pode ser customizado através de um arquivo `tstunit.properties` em seu _classpath_:
+
+```
+# Desabilita a impressão dos nomes dos testes por padrão
+core.printtestname.default=false
+```
+
 Para utilizar outros recursos, você pode adicionar extensões, que adicionam novas funcionalidades ao TST Unit.
 
 ### Extensões

@@ -61,6 +61,7 @@ public interface Extensao<A extends Annotation> {
      * Inicializa a extensão. Este método é invocado assim que a execução dos testes é acionada.
      * 
      * @param configuracao
+     *            as configurações do TST Unit
      * @param notifier
      *            notificador do JUnit
      * @throws TstUnitException

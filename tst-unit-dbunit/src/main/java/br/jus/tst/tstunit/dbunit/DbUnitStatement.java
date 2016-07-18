@@ -79,22 +79,22 @@ public class DbUnitStatement extends Statement {
 
         @Override
         public DbUnitStatement build() {
-            return new DbUnitStatement(Optional.ofNullable(databaseLoader), Optional.ofNullable(scriptRunner), Optional.ofNullable(geradorDtd),
-                    defaultStatement);
+            return new DbUnitStatement(defaultStatement, Optional.ofNullable(databaseLoader), Optional.ofNullable(scriptRunner),
+                    Optional.ofNullable(geradorDtd));
         }
     }
 
-    private final Optional<DbUnitDatabaseLoader> databaseLoader;
     private final Statement defaultStatement;
+    private final Optional<DbUnitDatabaseLoader> databaseLoader;
     private final Optional<ScriptRunner> scriptRunner;
     private final Optional<GeradorDtd> geradorDtd;
 
-    private DbUnitStatement(Optional<DbUnitDatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner, Optional<GeradorDtd> geradorDtd,
-            Statement defaultStatement) {
+    private DbUnitStatement(Statement defaultStatement, Optional<DbUnitDatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner,
+            Optional<GeradorDtd> geradorDtd) {
+        this.defaultStatement = Objects.requireNonNull(defaultStatement, "defaultStatement");
         this.databaseLoader = databaseLoader;
         this.geradorDtd = geradorDtd;
         this.scriptRunner = scriptRunner;
-        this.defaultStatement = Objects.requireNonNull(defaultStatement, "defaultStatement");
     }
 
     /**

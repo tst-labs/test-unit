@@ -133,9 +133,11 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
         List<TestRule> rules = super.getTestRules(target);
 
         ImprimirNomeTeste imprimirNomeTeste = classeTeste.getAnnotation(ImprimirNomeTeste.class);
-        if (imprimirNomeTeste == null) {
+        if (imprimirNomeTeste == null && configuracao.getPropriedadeBoolean("core.printtestname.default").orElse(Boolean.TRUE)) {
+            LOGGER.debug("Anotação @ImprimirNomeTeste ausente - utilizando o valor da configuração padrão, que é 'true'");
             rules.add(new PrintTestNameWatcher());
         } else if (imprimirNomeTeste.value()) {
+            LOGGER.debug("Anotação @ImprimirNomeTeste presente e habilitada");
             rules.add(new PrintTestNameWatcher(imprimirNomeTeste.formatoMensagem()));
         }
 
