@@ -1,7 +1,6 @@
 package br.jus.tst.tstunit;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.util.Optional;
 
 import org.junit.runner.Runner;
@@ -30,11 +29,7 @@ public interface Extensao<A extends Annotation> {
      *            a classe de teste
      * @return {@code true}/{@code false}
      */
-    @SuppressWarnings("unchecked")
-    default boolean isHabilitada() {
-        // verifica se a classe de teste possui a anotação definida como parâmetro genérico - A
-        return getClasseTeste().getAnnotation((Class<A>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]) != null;
-    }
+    boolean isHabilitada();
 
     /**
      * Obtém uma instância da classe de testes com algum comportamento customizado para que funcione com essa extensão habilitada.

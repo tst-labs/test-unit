@@ -23,6 +23,7 @@ public class MockitoExtensao extends AbstractExtensao<HabilitarMockito> {
 
     @Override
     public void beforeTestes(Object instancia) {
+        LOGGER.info("Inicializando os mocks");
         MockitoAnnotations.initMocks(instancia);
     }
 

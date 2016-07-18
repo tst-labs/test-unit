@@ -1,6 +1,7 @@
 package br.jus.tst.tstunit;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 
 import org.apache.commons.lang3.Validate;
 
@@ -27,6 +28,12 @@ public abstract class AbstractExtensao<A extends Annotation> implements Extensao
     @Override
     public Class<?> getClasseTeste() {
         return classeTeste;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean isHabilitada() {
+        return getClasseTeste().getAnnotation((Class<A>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]) != null;
     }
 
     /**

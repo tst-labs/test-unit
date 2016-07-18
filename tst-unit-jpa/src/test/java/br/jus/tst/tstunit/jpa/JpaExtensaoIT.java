@@ -74,7 +74,7 @@ public class JpaExtensaoIT {
 
     @Test
     @SuppressWarnings("rawtypes")
-    public void test() {
+    public void deveriaCarregarEntityManager() {
         List resultado = entityManager.createQuery("SELECT e FROM " + Entidade.class.getName() + " e").getResultList();
         assertThat(resultado.size(), is(equalTo(0)));
     }

@@ -71,11 +71,9 @@ public class DbUnitRunner implements Serializable {
         Properties propriedadesJdbc = getConnfiguracoesJdbc();
         JdbcConnectionSupplier jdbcConnectionSupplier = new JdbcConnectionSupplier(propriedadesJdbc);
 
-        GeradorDtd geradorDtd = criarGeradorDtd(method, jdbcConnectionSupplier);
-        ScriptRunner scriptRunner = criarScriptRunner(method, jdbcConnectionSupplier);
-        DbUnitDatabaseLoader databaseLoader = criarDatabaseLoader(method, jdbcConnectionSupplier);
-
-        return new DbUnitStatement(databaseLoader, scriptRunner, geradorDtd, statement);
+        return DbUnitStatement.aPartirDo(statement).usandoDatabaseLoader(criarDatabaseLoader(method, jdbcConnectionSupplier))
+                .usandoScriptRunner(criarScriptRunner(method, jdbcConnectionSupplier)).usandoGeradorDtd(criarGeradorDtd(method, jdbcConnectionSupplier))
+                .build();
     }
 
     private GeradorDtd criarGeradorDtd(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
@@ -125,6 +123,7 @@ public class DbUnitRunner implements Serializable {
         } else {
             scriptBefore = null;
         }
+        LOGGER.debug("Script a ser executado antes dos testes: {}", scriptBefore);
 
         String scriptAfter;
         RodarScriptDepois rodarScriptDepois = getAnnotationFromMethodOrClass(method, RodarScriptDepois.class);
@@ -133,6 +132,7 @@ public class DbUnitRunner implements Serializable {
         } else {
             scriptAfter = null;
         }
+        LOGGER.debug("Script a ser executado após os testes: {}", scriptAfter);
 
         return new ScriptRunner(scriptBefore, scriptAfter, jdbcConnectionSupplier);
     }

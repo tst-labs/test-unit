@@ -13,8 +13,6 @@ import org.dbunit.dataset.xml.*;
 import org.dbunit.operation.DatabaseOperation;
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.TstUnitException;
-
 /**
  * Classe responsável por efetuar operações sobre o banco de dados para os testes.
  * 
@@ -50,7 +48,13 @@ public class DbUnitDatabaseLoader implements Serializable {
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
     }
 
-    public void carregarBancoDados() throws TstUnitException {
+    /**
+     * Carrega os dados no banco de dados.
+     * 
+     * @throws DBUnitException
+     *             caso ocorra algum erro ao executar a operação
+     */
+    public void carregarBancoDados() {
         LOGGER.debug("Carga do banco de dados");
 
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
@@ -63,18 +67,24 @@ public class DbUnitDatabaseLoader implements Serializable {
             dataSet = carregarDataSet();
             DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
         } catch (DatabaseUnitException | SQLException exception) {
-            throw new TstUnitException("Erro ao efetuar carga do banco de dados", exception);
+            throw new DBUnitException("Erro ao efetuar carga do banco de dados", exception);
         }
     }
 
-    public void limparBancoDados() throws TstUnitException {
+    /**
+     * Efetua a limpeza dos dados do banco.
+     * 
+     * @throws DBUnitException
+     *             caso ocorra algum erro ao executar a operação
+     */
+    public void limparBancoDados() {
         LOGGER.debug("Limpeza do banco de dados");
 
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
             IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
             DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
         } catch (DatabaseUnitException | SQLException exception) {
-            throw new TstUnitException("Erro ao efetuar limpeza do banco de dados", exception);
+            throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
         }
     }
 
@@ -85,21 +95,21 @@ public class DbUnitDatabaseLoader implements Serializable {
     public void setSchema(String schema) {
         this.schema = schema;
     }
-    
+
     public IDataTypeFactory getDataTypeFactory() {
         return dataTypeFactory;
     }
-    
+
     public void setDataTypeFactory(IDataTypeFactory dataTypeFactory) {
         this.dataTypeFactory = dataTypeFactory;
     }
 
-    private FlatXmlDataSet carregarDataSet() throws DataSetException, TstUnitException {
+    private FlatXmlDataSet carregarDataSet() throws DataSetException {
         LOGGER.debug("Carregando arquivo de DataSet: {}", nomeArquivoDataSet);
         Optional<InputStream> dataSetStreamOptional = Optional
                 .ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivoDataSet));
         return new FlatXmlDataSetBuilder().setDtdMetadata(false).build(
-                dataSetStreamOptional.orElseThrow(() -> new TstUnitException("O arquivo de DataSet não foi encontrado no classpath: " + nomeArquivoDataSet)));
+                dataSetStreamOptional.orElseThrow(() -> new DBUnitException("O arquivo de DataSet não foi encontrado no classpath: " + nomeArquivoDataSet)));
     }
 
     private DatabaseConnection openDbUnitConnection(Connection jdbcConnection) throws DatabaseUnitException {

@@ -325,3 +325,67 @@ public class MinhaClasseTeste {
     }
 }
 ```
+
+#### Criando novas extensões
+
+Caso seja necessário adicionar uma nova extensão ao TST Unit, basta seguir os passos abaixo:
+
+1. Crie uma anotação para habilitar a extensão nas classes de teste:
+
+```java
+package br.jus.tst.minhaextensao;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Target({ TYPE })
+@Retention(RUNTIME)
+@Inherited
+@Documented
+public @interface HabilitarMinhaExtensao {
+
+}
+```
+
+2. Crie a classe que define a lógica da extensão:
+
+```java
+package br.jus.tst.minhaextensao;
+
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.model.*;
+
+import br.jus.tst.tstunit.*;
+
+public class MinhaExtensao extends AbstractExtensao<HabilitarMinhaExtensao> {
+
+    @Override
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
+        // TODO Gerado automaticamente
+    }
+
+    @Override
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+        // TODO Gerado automaticamente
+        return null;
+    }
+}
+```
+
+Dê uma olhada na API da classe `AbstractExtensao` e da interface `Extensao` para verificar se existe algum método que você possa ter interesse em sobrescrever. Também pode ser útil verificar o código das classes das extensões já existentes, como `CdiExtensao` e `DbUnitExtensao`.
+
+3. Agora a nova extensão já pode ser habilitada nos testes:
+
+```
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarMinhaExtensao
+public class MinhaClasseTeste {
+
+    @Test
+    public void teste() {
+        // ...
+    }
+}
+```
