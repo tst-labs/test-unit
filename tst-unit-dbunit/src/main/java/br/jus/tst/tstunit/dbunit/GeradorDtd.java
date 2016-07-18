@@ -47,6 +47,9 @@ public class GeradorDtd implements Serializable {
 
     /**
      * Gera o arquivo DTD.
+     * 
+     * @throws DBUnitException
+     *             caso ocorra algum erro ao executar a operação
      */
     public void gerar() {
         LOGGER.info("Gerando arquivo DTD a partir do schema do banco");
@@ -65,7 +68,7 @@ public class GeradorDtd implements Serializable {
             datasetWriter.write(dataSet);
             LOGGER.info("Arquivo DTD gerado: {}", arquivoDtd);
         } catch (DatabaseUnitException | FileNotFoundException | SQLException exception) {
-            throw new RuntimeException("Erro ao gerar arquivo DTD do schema do banco", exception);
+            throw new DBUnitException("Erro ao gerar arquivo DTD do schema do banco", exception);
         }
     }
 

@@ -71,11 +71,9 @@ public class DbUnitRunner implements Serializable {
         Properties propriedadesJdbc = getConnfiguracoesJdbc();
         JdbcConnectionSupplier jdbcConnectionSupplier = new JdbcConnectionSupplier(propriedadesJdbc);
 
-        GeradorDtd geradorDtd = criarGeradorDtd(method, jdbcConnectionSupplier);
-        ScriptRunner scriptRunner = criarScriptRunner(method, jdbcConnectionSupplier);
-        DbUnitDatabaseLoader databaseLoader = criarDatabaseLoader(method, jdbcConnectionSupplier);
-
-        return new DbUnitStatement(databaseLoader, scriptRunner, geradorDtd, statement);
+        return DbUnitStatement.aPartirDo(statement).usandoDatabaseLoader(criarDatabaseLoader(method, jdbcConnectionSupplier))
+                .usandoScriptRunner(criarScriptRunner(method, jdbcConnectionSupplier)).usandoGeradorDtd(criarGeradorDtd(method, jdbcConnectionSupplier))
+                .build();
     }
 
     private GeradorDtd criarGeradorDtd(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
