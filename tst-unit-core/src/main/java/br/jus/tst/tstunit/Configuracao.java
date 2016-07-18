@@ -61,7 +61,7 @@ public class Configuracao implements Serializable {
      * @return o valor da propriedade
      */
     public Optional<Boolean> getPropriedadeBoolean(String key) {
-        String value = properties.getProperty(key);
+        String value = properties != null ? properties.getProperty(key) : null;
         return StringUtils.isEmpty(value) ? Optional.empty() : Optional.of(BooleanUtils.toBoolean(value));
     }
 

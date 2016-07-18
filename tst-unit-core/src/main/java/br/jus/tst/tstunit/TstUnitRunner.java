@@ -132,6 +132,12 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
     protected List<TestRule> getTestRules(Object target) {
         List<TestRule> rules = super.getTestRules(target);
 
+        try {
+            configuracao.carregar();
+        } catch (TstUnitException exception) {
+            LOGGER.debug("Erro ao carregar propriedades", exception);
+        }
+
         ImprimirNomeTeste imprimirNomeTeste = classeTeste.getAnnotation(ImprimirNomeTeste.class);
         if (imprimirNomeTeste == null && configuracao.getPropriedadeBoolean("core.printtestname.default").orElse(Boolean.TRUE)) {
             LOGGER.debug("Anotação @ImprimirNomeTeste ausente - utilizando o valor da configuração padrão, que é 'true'");
