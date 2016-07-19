@@ -23,8 +23,8 @@ public class ExtensoesLoader implements Serializable {
 
     private static final long serialVersionUID = -6036814877869370373L;
 
-    private transient final String basePackage;
-    private transient final Class<?> classeTeste;
+    private final String basePackage;
+    private final Class<?> classeTeste;
 
     /**
      * Cria uma nova instância que utilizará como base o pacote informado para escanear extensões.
@@ -33,12 +33,21 @@ public class ExtensoesLoader implements Serializable {
      *            pacote-base para a varredura por extensões
      * @param classeTeste
      *            classe com os testes a serem executados
+     * @throws NullPointerException
+     *             caso qualquer parâmetro seja {@code null}
      */
     public ExtensoesLoader(String basePackage, Class<?> classeTeste) {
-        this.basePackage = basePackage;
-        this.classeTeste = classeTeste;
+        this.basePackage = Objects.requireNonNull(basePackage, "basePackage");
+        this.classeTeste = Objects.requireNonNull(classeTeste, "classeTeste");
     }
 
+    /**
+     * Carrega todas as extensões disponíveis no <em>classpath</em>.
+     * 
+     * @return as extensões carregadas
+     * @throws TstUnitRuntimeException
+     *             caso ocorra algum erro ao carregar as extensões
+     */
     @SuppressWarnings("rawtypes")
     public List<Extensao<?>> carregarExtensoes() {
         LOGGER.debug("Carregando extensões a partir do pacote: {}", basePackage);
@@ -54,14 +63,14 @@ public class ExtensoesLoader implements Serializable {
             return (Extensao<?>) classeExtensao.getConstructor(classeTeste.getClass()).newInstance(classeTeste);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException exception) {
-            throw new RuntimeException("Erro ao instanciar classe da extensão: " + classeExtensao, exception);
+            throw new TstUnitRuntimeException("Erro ao instanciar classe da extensão: " + classeExtensao, exception);
         }
     }
-    
+
     public String getBasePackage() {
         return basePackage;
     }
-    
+
     @SuppressWarnings("rawtypes")
     public Class getClasseTeste() {
         return classeTeste;

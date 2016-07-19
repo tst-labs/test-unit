@@ -72,6 +72,10 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
         LOGGER.info("Extensões habilitadas: {}", extensoes);
     }
 
+    /**
+     * @throws TstUnitRuntimeException
+     *             caso ocorra algum erro ao inicializar os testes
+     */
     @Override
     public void run(RunNotifier notifier) {
         LOGGER.debug("Inicializando {} extensões", extensoes.size());
@@ -79,9 +83,10 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
             try {
                 extensao.inicializar(configuracao, notifier);
             } catch (TstUnitException exception) {
-                throw new RuntimeException("Erro ao inicializar extensão: " + extensao, exception);
+                throw new TstUnitRuntimeException("Erro ao inicializar extensão: " + extensao, exception);
             }
         });
+
         super.run(notifier);
     }
 
@@ -101,7 +106,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
 
     @Override
     protected Statement classBlock(RunNotifier notifier) {
-        Statement statement = super.classBlock(notifier);
+        final Statement statement = super.classBlock(notifier);
 
         return new Statement() {
 
@@ -142,7 +147,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
         if (imprimirNomeTeste == null && configuracao.getPropriedadeBoolean("core.printtestname.default").orElse(Boolean.TRUE)) {
             LOGGER.debug("Anotação @ImprimirNomeTeste ausente - utilizando o valor da configuração padrão, que é 'true'");
             rules.add(new PrintTestNameWatcher());
-        } else if (imprimirNomeTeste.value()) {
+        } else if (imprimirNomeTeste != null && imprimirNomeTeste.value()) {
             LOGGER.debug("Anotação @ImprimirNomeTeste presente e habilitada");
             rules.add(new PrintTestNameWatcher(imprimirNomeTeste.formatoMensagem()));
         }

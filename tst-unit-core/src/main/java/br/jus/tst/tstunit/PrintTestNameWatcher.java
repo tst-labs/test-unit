@@ -26,6 +26,7 @@ public final class PrintTestNameWatcher implements TestRule {
     private final String formatoMensagem;
 
     /**
+     * Cria uma nova regra de impressão de nome de testes utilizando o formato informado e direcionando as mensagens para o <em>stream</em> de saída.
      * 
      * @param formatoMensagem
      * @param stream
@@ -52,5 +53,13 @@ public final class PrintTestNameWatcher implements TestRule {
         stream.println(MessageFormat.format(formatoMensagem, description.getClassName(), description.getMethodName()));
         stream.println();
         return statement;
+    }
+
+    public PrintStream getStream() {
+        return stream;
+    }
+
+    public String getFormatoMensagem() {
+        return formatoMensagem;
     }
 }
