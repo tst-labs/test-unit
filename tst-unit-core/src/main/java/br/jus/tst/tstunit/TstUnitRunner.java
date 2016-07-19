@@ -16,6 +16,7 @@ import org.slf4j.*;
  * 
  * <p>
  * O uso mais comum, sem habilitar nenhum recurso adicionais, é conforme o exemplo abaixo:
+ * </p>
  * 
  * <pre>
  * <code>
@@ -24,7 +25,6 @@ import org.slf4j.*;
  *   ... // Código do teste
  * }</code>
  * </pre>
- * </p>
  * 
  * @author Thiago Miranda
  * @since 1 de jul de 2016

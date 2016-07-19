@@ -22,13 +22,6 @@ public class Configuracao implements Serializable {
     private transient Properties properties;
 
     /**
-     * Cria uma nova instância das configurações.
-     */
-    public Configuracao() throws TstUnitException {
-        properties = null;
-    }
-
-    /**
      * Carrega as configurações a partir do arquivo.
      * 
      * @return {@code this} para chamadas encadeadas de método

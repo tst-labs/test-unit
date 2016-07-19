@@ -26,10 +26,14 @@ public class ScriptRunner implements Serializable {
     private transient final String scriptAfter;
 
     /**
+     * Cria uma nova instância definindo os scripts a serem executados antes e após os testes.
      * 
      * @param scriptBefore
+     *            script a ser executado antes dos testes
      * @param scriptAfter
+     *            script a ser executado após os testes
      * @param jdbcConnectionSupplier
+     *            utilizado para obter as conexões JDBC
      * @throws NullPointerException
      *             caso {@code jdbcConnectionSupplier} seja {@code null}
      */

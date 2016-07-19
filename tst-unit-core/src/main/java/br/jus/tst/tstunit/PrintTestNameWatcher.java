@@ -29,7 +29,9 @@ public final class PrintTestNameWatcher implements TestRule {
      * Cria uma nova regra de impressão de nome de testes utilizando o formato informado e direcionando as mensagens para o <em>stream</em> de saída.
      * 
      * @param formatoMensagem
+     *            o formato das mensagens contendo o nome dos testes
      * @param stream
+     *            <em>stream</em> de saída de dados
      * @throws NullPointerException
      *             caso {@code stream} seja {@code null}
      */

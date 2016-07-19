@@ -25,8 +25,6 @@ public interface Extensao<A extends Annotation> {
     /**
      * Verifica se a extensão está habilitada para a classe de teste informada.
      * 
-     * @param classeTeste
-     *            a classe de teste
      * @return {@code true}/{@code false}
      */
     boolean isHabilitada();
@@ -34,8 +32,8 @@ public interface Extensao<A extends Annotation> {
     /**
      * Obtém uma instância da classe de testes com algum comportamento customizado para que funcione com essa extensão habilitada.
      * 
-     * @param classeTeste
-     *            a classe de teste
+     * @param <T>
+     *            o tipo da classe de testes
      * @return a instância persoanlizada - vazio indica que será utilizada a instância padrão
      */
     default <T> Optional<T> getInstanciaPersonalizadaParaTestes() {
@@ -74,6 +72,7 @@ public interface Extensao<A extends Annotation> {
      * Obtém um {@link Statement} configurado para a extensão.
      * 
      * @param defaultStatement
+     *            o Statement-pai
      * @param method
      *            o método de teste sendo executado
      * @return o Statement criado

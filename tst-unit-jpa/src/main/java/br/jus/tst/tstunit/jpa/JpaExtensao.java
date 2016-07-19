@@ -10,14 +10,23 @@ import br.jus.tst.tstunit.*;
  * {@link Extensao} que habilita o JPA nos testes.
  * 
  * @author Thiago Miranda
- * @sin ce 5 de jul de 2016
+ * @since 5 de jul de 2016
  */
 public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
+    private static final long serialVersionUID = -3496955917548402L;
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaExtensao.class);
 
     private GeradorSchema geradorSchema;
 
+    /**
+     * Cria uma nova instância da extensão para a classe de testes informada.
+     * 
+     * @param classeTestes
+     *            a classe de testes
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
+     */
     public JpaExtensao(Class<?> classeTestes) {
         super(classeTestes);
     }
@@ -30,6 +39,8 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
     @Override
     public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
+        assertExtensaoHabilitada();
+
         HabilitarJpa habilitarJpa = classeTeste.getAnnotation(HabilitarJpa.class);
         LOGGER.info("JPA habilitado");
 
@@ -56,6 +67,7 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
     @Override
     public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) {
+        assertExtensaoHabilitada();
         return defaultStatement;
     }
 }

@@ -31,6 +31,10 @@ public class JdbcConnectionSupplier implements Supplier<Connection> {
         this.propriedadesJdbc = Objects.requireNonNull(propriedadesJdbc, "propriedadesJdbc");
     }
 
+    /**
+     * @throws JdbcException
+     *             caso ocorra algum erro ao abrir a conexão JDBC
+     */
     @Override
     public Connection get() {
         try {

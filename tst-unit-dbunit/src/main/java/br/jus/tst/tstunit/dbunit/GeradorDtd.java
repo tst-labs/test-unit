@@ -11,7 +11,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.xml.FlatDtdWriter;
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
+import br.jus.tst.tstunit.dbunit.jdbc.*;
 
 /**
  * Classe responsável por gerar o arquivo DTD referente a um <em>schema</em> de banco de dados.

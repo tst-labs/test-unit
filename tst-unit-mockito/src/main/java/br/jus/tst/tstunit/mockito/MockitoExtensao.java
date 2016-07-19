@@ -15,8 +15,17 @@ import br.jus.tst.tstunit.*;
  */
 public class MockitoExtensao extends AbstractExtensao<HabilitarMockito> {
 
+    private static final long serialVersionUID = 8537368004439287501L;
     private static final Logger LOGGER = LoggerFactory.getLogger(MockitoExtensao.class);
 
+    /**
+     * Cria uma nova instância da extensão para a classe de testes informada.
+     * 
+     * @param classeTeste
+     *            a classe de testes
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
+     */
     public MockitoExtensao(Class<?> classeTeste) {
         super(classeTeste);
     }

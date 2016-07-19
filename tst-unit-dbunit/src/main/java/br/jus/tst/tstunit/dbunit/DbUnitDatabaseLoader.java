@@ -13,6 +13,8 @@ import org.dbunit.dataset.xml.*;
 import org.dbunit.operation.DatabaseOperation;
 import org.slf4j.*;
 
+import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
+
 /**
  * Classe responsável por efetuar operações sobre o banco de dados para os testes.
  * 

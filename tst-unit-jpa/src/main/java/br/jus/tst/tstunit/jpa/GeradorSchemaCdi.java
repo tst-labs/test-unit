@@ -19,7 +19,8 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
     private static final long serialVersionUID = -7371478997025466447L;
 
     /**
-     * Cria o <em>schema</em> de banco de dados.
+     * @throws JpaException
+     *             caso ocorra algum erro ao executar a operação
      */
     @Override
     public void criar() {
@@ -28,7 +29,7 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
             Instance<EntityManager> entityManagerInstance = CDI.current().select(EntityManager.class);
             entityManagerOptional = entityManagerInstance.isUnsatisfied() ? Optional.empty() : Optional.of(entityManagerInstance.get());
         } finally {
-            entityManagerOptional.orElseThrow(() -> new RuntimeException("Nenhum produtor de EntityManager encontrado no classpath")).close();
+            entityManagerOptional.orElseThrow(() -> new JpaException("Nenhum produtor de EntityManager encontrado no classpath")).close();
         }
     }
 }
