@@ -84,4 +84,11 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <scm>
+        <url>${git.base.url}/${git.group.name}/${git.project.name}/tree/master</url>
+        <connection>scm:git:git@${git.base.domain}:${git.group.name}/${git.project.name}.git</connection>
+        <developerConnection>${project.scm.connection}</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 </project>
