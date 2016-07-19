@@ -14,9 +14,9 @@
     <description>Projeto que oferece funcionalidades de auxílio no desenvolvimento de testes.</description>
 
     <properties>
-        <ciManagement.project.id>${project.artifactId}</ciManagement.project.id>
+        <ciManagement.project.id>tst-unit</ciManagement.project.id>
         <git.group.name>tst</git.group.name>
-        <git.project.name>${project.artifactId}</git.project.name>
+        <git.project.name>tst-unit</git.project.name>
 
         <junit.version>4.12</junit.version>
 
