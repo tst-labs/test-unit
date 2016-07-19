@@ -51,7 +51,7 @@ public class DbUnitDatabaseLoader implements Serializable {
     /**
      * Carrega os dados no banco de dados.
      * 
-     * @throws DBUnitException
+     * @throws JdbcException
      *             caso ocorra algum erro ao executar a operação
      */
     public void carregarBancoDados() {
@@ -74,7 +74,7 @@ public class DbUnitDatabaseLoader implements Serializable {
     /**
      * Efetua a limpeza dos dados do banco.
      * 
-     * @throws DBUnitException
+     * @throws JdbcException
      *             caso ocorra algum erro ao executar a operação
      */
     public void limparBancoDados() {

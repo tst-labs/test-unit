@@ -37,7 +37,7 @@ public class JdbcConnectionSupplier implements Supplier<Connection> {
             Class.forName(validarPropriedadeExistente(NOME_PROPRIEDADE_DRIVER_CLASS));
             return DriverManager.getConnection(validarPropriedadeExistente(NOME_PROPRIEDADE_DB_URL), propriedadesJdbc);
         } catch (SQLException | ClassNotFoundException exception) {
-            throw new RuntimeException("Erro ao abrir conexão JDBC", exception);
+            throw new JdbcException("Erro ao abrir conexão JDBC", exception);
         }
     }
 

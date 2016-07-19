@@ -127,7 +127,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
             try {
                 statement = extensao.criarStatement(statement, method);
             } catch (TstUnitException exception) {
-                throw new RuntimeException("Erro ao executar método: " + method, exception);
+                throw new TstUnitRuntimeException("Erro ao executar método: " + method, exception);
             }
         }
         return statement;

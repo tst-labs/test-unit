@@ -48,7 +48,7 @@ public class GeradorDtd implements Serializable {
     /**
      * Gera o arquivo DTD.
      * 
-     * @throws DBUnitException
+     * @throws JdbcException
      *             caso ocorra algum erro ao executar a operação
      */
     public void gerar() {
