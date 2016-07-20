@@ -172,8 +172,8 @@ dbunit.dataTypeFactoryClass=
 
 Além da anotação `@HabilitarDbUnit`, existe um outro conjunto de anotações que podem ser úteis para a execução do teste:
 
-* `@RodarScriptAntes`: define um arquivo de script a ser executado antes de um método de teste ou antes de todos os métodos de teste de uma classe. Por padrão, o arquivo é procurado dentro de um diretório `scripts` no _classpath_.
-* `@RodarScriptDepois`: define um arquivo de script a ser executado após um método de teste ou após todos os métodos de teste de uma classe. Por padrão, o arquivo é procurado dentro de um diretório `scripts` no _classpath_.
+* `@RodarScriptAntes`: define um ou mais arquivos de script a serem executados antes de um método de teste ou antes de todos os métodos de teste de uma classe. Por padrão, os arquivos são procurados dentro de um diretório `scripts` no _classpath_. Para maiores detalhes, ver Javadoc da anotação.
+* `@RodarScriptDepois`: define um ou mais arquivos de script a serem executados após um método de teste ou após todos os métodos de teste de uma classe. Por padrão, os arquivos são procurados dentro de um diretório `scripts` no _classpath_. Para maiores detalhes, ver Javadoc da anotação.
 * `@UsarDataSet`: define um arquivo de _dataset_ do DBUnit a ser utilizado pelo teste. O banco é carregado com os dados definidos no arquivo antes da execução do teste (operação _CLEAN-INSERT_). Por padrão, o arquivo é procurado dentro de um diretório `datasets` no _classpath_.
 
 ```java

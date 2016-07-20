@@ -2,9 +2,11 @@ package br.jus.tst.tstunit.dbunit;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.*;
+import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.junit.runners.model.*;
 import org.slf4j.*;
@@ -92,12 +94,13 @@ public class DbUnitRunner implements Serializable {
 
     private DbUnitDatabaseLoader criarDatabaseLoader(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
         DbUnitDatabaseLoader databaseLoader;
-        UsarDataSet usarDataSet = getAnnotationFromMethodOrClass(method, UsarDataSet.class);
 
-        if (usarDataSet != null) {
+        Optional<UsarDataSet> usarDataSet = Arrays.stream(getAnnotationsFromMethodOrClass(method, UsarDataSet.class)).filter(Objects::nonNull).findFirst();
+
+        if (usarDataSet.isPresent()) {
             String datasetsDir = getDiretorioDatasets();
 
-            databaseLoader = new DbUnitDatabaseLoader(buildCaminhoArquivo(datasetsDir, usarDataSet.value()), jdbcConnectionSupplier);
+            databaseLoader = new DbUnitDatabaseLoader(buildCaminhoArquivo(datasetsDir, usarDataSet.get().value()), jdbcConnectionSupplier);
             databaseLoader.setSchema(nomeSchema);
             databaseLoader.setDataTypeFactory(getDataTypeFactory());
 
@@ -116,29 +119,36 @@ public class DbUnitRunner implements Serializable {
     private ScriptRunner criarScriptRunner(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) {
         String scriptsDir = StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO);
 
-        String scriptBefore;
-        RodarScriptAntes rodarScriptAntes = getAnnotationFromMethodOrClass(method, RodarScriptAntes.class);
+        List<String> scriptsBefore;
+        RodarScriptAntes[] rodarScriptAntes = getAnnotationsFromMethodOrClass(method, RodarScriptAntes.class);
         if (rodarScriptAntes != null) {
-            scriptBefore = buildCaminhoArquivo(scriptsDir, rodarScriptAntes.value());
+            scriptsBefore = Arrays.stream(rodarScriptAntes).filter(Objects::nonNull).flatMap(anotacao -> Arrays.stream(anotacao.value()))
+                    .map(caminhoArquivo -> buildCaminhoArquivo(scriptsDir, caminhoArquivo)).collect(Collectors.toList());
         } else {
-            scriptBefore = null;
+            scriptsBefore = Collections.emptyList();
         }
-        LOGGER.debug("Script a ser executado antes dos testes: {}", scriptBefore);
+        LOGGER.debug("Scripts a serem executados antes dos testes: {}", scriptsBefore);
 
-        String scriptAfter;
-        RodarScriptDepois rodarScriptDepois = getAnnotationFromMethodOrClass(method, RodarScriptDepois.class);
+        List<String> scriptsAfter;
+        RodarScriptDepois[] rodarScriptDepois = getAnnotationsFromMethodOrClass(method, RodarScriptDepois.class);
         if (rodarScriptDepois != null) {
-            scriptAfter = buildCaminhoArquivo(scriptsDir, rodarScriptDepois.value());
+            scriptsAfter = Arrays.stream(rodarScriptDepois).filter(Objects::nonNull).flatMap(anotacao -> Arrays.stream(anotacao.value()))
+                    .map(caminhoArquivo -> buildCaminhoArquivo(scriptsDir, caminhoArquivo)).collect(Collectors.toList());
         } else {
-            scriptAfter = null;
+            scriptsAfter = Collections.emptyList();
         }
-        LOGGER.debug("Script a ser executado após os testes: {}", scriptAfter);
+        LOGGER.debug("Scripts a serem executados após os testes: {}", scriptsAfter);
 
-        return new ScriptRunner(scriptBefore, scriptAfter, jdbcConnectionSupplier);
+        return new ScriptRunner(scriptsBefore, scriptsAfter, jdbcConnectionSupplier);
     }
 
-    private <T extends Annotation> T getAnnotationFromMethodOrClass(FrameworkMethod method, Class<T> annotationType) {
-        return ObjectUtils.defaultIfNull(method.getAnnotation(annotationType), classeTeste.getAnnotation(annotationType));
+    @SuppressWarnings("unchecked")
+    private <T extends Annotation> T[] getAnnotationsFromMethodOrClass(FrameworkMethod method, Class<T> annotationType) {
+        final int tamanho = 2;
+        T[] annotations = (T[]) Array.newInstance(annotationType, tamanho);
+        annotations[0] = classeTeste.getAnnotation(annotationType);
+        annotations[1] = method.getAnnotation(annotationType);
+        return annotations;
     }
 
     private String buildCaminhoArquivo(String directory, String nomeArquivo) {

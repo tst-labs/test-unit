@@ -42,6 +42,21 @@ public class DbUnitExtensaoIT {
     }
 
     @Test
+    @RodarScriptAntes({ "script-antes.sql", "script-antes2.sql" })
+    public void deveriaRodarMultiplosScriptsAntesEmOrdem() throws TstUnitException, SQLException {
+        JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
+
+        try (Connection connection = connectionSupplier.get()) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM Entidade")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    assertThat(resultSet.next(), is(true));
+                    assertThat(resultSet.getInt(1), is(equalTo(2)));
+                }
+            }
+        }
+    }
+
+    @Test
     @GerarDtd("src/test/resources/datasets/testes.dtd")
     @RodarScriptAntes("script-antes.sql")
     @RodarScriptDepois("script-depois.sql")

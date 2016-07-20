@@ -127,7 +127,7 @@ public class DbUnitStatement extends Statement {
     private Consumer<? super ScriptRunner> executarScriptAntes() {
         return runner -> {
             try {
-                runner.executarScriptAntes();
+                runner.executarScriptsAntes();
             } catch (SQLException | IOException exception) {
                 throw new DBUnitException("Erro ao executar script antes do teste", exception);
             }
@@ -137,7 +137,7 @@ public class DbUnitStatement extends Statement {
     private Consumer<? super ScriptRunner> executarScriptDepois() {
         return runner -> {
             try {
-                runner.executarScriptDepois();
+                runner.executarScriptsDepois();
             } catch (SQLException | IOException exception) {
                 throw new DBUnitException("Erro ao executar script após o teste", exception);
             }

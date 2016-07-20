@@ -7,8 +7,16 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.*;
 
 /**
- * Indica que um método de teste necessita que um arquivo de script seja executado antes da execução do teste. Caso a anotação seja aplicada à classe de testes,
- * o script será rodado antes de cada um dos seus métodos de teste.
+ * <p>
+ * Indica que um método de teste necessita que um arquivo de script seja executado antes da execução do teste.
+ * </p>
+ * <p>
+ * Caso a anotação seja aplicada à classe de testes, o script será rodado antes de cada um dos seus métodos de teste.
+ * </p>
+ * <p>
+ * Em cenários onde a anotação é definida tanto na classe quanto no método de testes, ambos serão executados, porém a anotação definida a nível de classe terá
+ * precedência sobre as de método.
+ * </p>
  * 
  * @author Thiago Miranda
  * @since 7 de jul de 2016
@@ -20,9 +28,9 @@ import java.lang.annotation.*;
 public @interface RodarScriptAntes {
 
     /**
-     * O nome ou caminho do arquivo de script.
+     * O nome ou caminho do arquivo de script. Podem ser definidos múltiplos arquivos, de modo que eles serão executados na ordem em que forem declarados.
      * 
      * @return o nome ou caminho do arquivo
      */
-    String value();
+    String[] value();
 }
