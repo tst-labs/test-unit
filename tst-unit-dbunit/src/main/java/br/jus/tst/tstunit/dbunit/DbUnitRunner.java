@@ -1,10 +1,7 @@
 package br.jus.tst.tstunit.dbunit;
 
-import java.io.*;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
+import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
@@ -12,7 +9,7 @@ import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
-import br.jus.tst.tstunit.dbunit.jdbc.*;
+import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 
 /**
  * Classe responsável por rodar o DBUnit em métodos de teste.
@@ -30,7 +27,13 @@ public class DbUnitRunner implements Serializable {
 
     private transient final Class<?> classeTeste;
     private transient final Configuracao configuracao;
-    private transient final String nomeSchema;
+
+    private transient final JdbcConnectionSupplier jdbcConnectionSupplier;
+    private transient final AnnotationExtractor annotationExtractor;
+
+    private transient final GerarDtdHandler gerarDtdHandler;
+    private transient final RodarScriptHandler rodarScriptHandler;
+    private transient final UsarDataSetHandler usarDataSetHandler;
 
     /**
      * Cria uma nova instância definindo todos os parâmetros.
@@ -38,7 +41,7 @@ public class DbUnitRunner implements Serializable {
      * @param classeTeste
      *            a classe dos testes
      * @param nomeSchema
-     *            nome do schema de banco de dados
+     *            nome do schema de banco de dados (opcional)
      * @param configuracao
      *            configurações a serem utilizadas
      * @throws NullPointerException
@@ -48,9 +51,22 @@ public class DbUnitRunner implements Serializable {
      */
     public DbUnitRunner(Class<?> classeTeste, String nomeSchema, Configuracao configuracao) throws TstUnitException {
         this.classeTeste = Objects.requireNonNull(classeTeste, "classeTeste");
-        this.nomeSchema = StringUtils.stripToNull(nomeSchema);
         this.configuracao = Objects.requireNonNull(configuracao, "configuracao");
         this.configuracao.carregar();
+
+        jdbcConnectionSupplier = new JdbcConnectionSupplier(getConfiguracoesJdbc());
+
+        gerarDtdHandler = new GerarDtdHandler(jdbcConnectionSupplier);
+        gerarDtdHandler.setDataTypeFactory(getDataTypeFactory());
+
+        annotationExtractor = new AnnotationExtractor(classeTeste);
+
+        rodarScriptHandler = new RodarScriptHandler(StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO),
+                jdbcConnectionSupplier, annotationExtractor);
+
+        usarDataSetHandler = new UsarDataSetHandler(getDiretorioDatasets(), jdbcConnectionSupplier, annotationExtractor);
+        usarDataSetHandler.setDataTypeFactory(getDataTypeFactory());
+        usarDataSetHandler.setNomeSchema(nomeSchema);
     }
 
     /**
@@ -70,89 +86,13 @@ public class DbUnitRunner implements Serializable {
         Objects.requireNonNull(statement, "statement");
         Objects.requireNonNull(method, "method");
 
-        Properties propriedadesJdbc = getConnfiguracoesJdbc();
-        JdbcConnectionSupplier jdbcConnectionSupplier = new JdbcConnectionSupplier(propriedadesJdbc);
-
-        return DbUnitStatement.aPartirDo(statement).usandoDatabaseLoader(criarDatabaseLoader(method, jdbcConnectionSupplier))
-                .usandoScriptRunner(criarScriptRunner(method, jdbcConnectionSupplier)).usandoGeradorDtd(criarGeradorDtd(method, jdbcConnectionSupplier))
-                .build();
-    }
-
-    private GeradorDtd criarGeradorDtd(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
-        GeradorDtd geradorDtd;
-
-        GerarDtd gerarDtd = method.getAnnotation(GerarDtd.class);
-        if (gerarDtd != null) {
-            geradorDtd = new GeradorDtd(jdbcConnectionSupplier, new File(gerarDtd.value()));
-            geradorDtd.setDataTypeFactory(getDataTypeFactory());
-        } else {
-            geradorDtd = null;
-        }
-
-        return geradorDtd;
-    }
-
-    private DbUnitDatabaseLoader criarDatabaseLoader(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) throws TstUnitException {
-        DbUnitDatabaseLoader databaseLoader;
-
-        Optional<UsarDataSet> usarDataSet = Arrays.stream(getAnnotationsFromMethodOrClass(method, UsarDataSet.class)).filter(Objects::nonNull).findFirst();
-
-        if (usarDataSet.isPresent()) {
-            String datasetsDir = getDiretorioDatasets();
-
-            databaseLoader = new DbUnitDatabaseLoader(buildCaminhoArquivo(datasetsDir, usarDataSet.get().value()), jdbcConnectionSupplier);
-            databaseLoader.setSchema(nomeSchema);
-            databaseLoader.setDataTypeFactory(getDataTypeFactory());
-
-        } else {
-            LOGGER.warn("Nenhuma anotação @UsarDataSet definida no teste nem na classe: {}", method.getName());
-            databaseLoader = null;
-        }
-
-        return databaseLoader;
+        LOGGER.debug("Criando Statement para o método {}", method);
+        return DbUnitStatement.aPartirDo(statement).usandoDatabaseLoader(usarDataSetHandler.processar(method))
+                .usandoScriptRunner(rodarScriptHandler.processar(method)).usandoGeradorDtd(gerarDtdHandler.processar(method)).build();
     }
 
     private String getDiretorioDatasets() {
         return StringUtils.defaultIfBlank(getDiretorioDatasetsConfigurado(), DIRETORIO_DATASETS_PADRAO);
-    }
-
-    private ScriptRunner criarScriptRunner(FrameworkMethod method, JdbcConnectionSupplier jdbcConnectionSupplier) {
-        String scriptsDir = StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO);
-
-        List<String> scriptsBefore;
-        RodarScriptAntes[] rodarScriptAntes = getAnnotationsFromMethodOrClass(method, RodarScriptAntes.class);
-        if (rodarScriptAntes != null) {
-            scriptsBefore = Arrays.stream(rodarScriptAntes).filter(Objects::nonNull).flatMap(anotacao -> Arrays.stream(anotacao.value()))
-                    .map(caminhoArquivo -> buildCaminhoArquivo(scriptsDir, caminhoArquivo)).collect(Collectors.toList());
-        } else {
-            scriptsBefore = Collections.emptyList();
-        }
-        LOGGER.debug("Scripts a serem executados antes dos testes: {}", scriptsBefore);
-
-        List<String> scriptsAfter;
-        RodarScriptDepois[] rodarScriptDepois = getAnnotationsFromMethodOrClass(method, RodarScriptDepois.class);
-        if (rodarScriptDepois != null) {
-            scriptsAfter = Arrays.stream(rodarScriptDepois).filter(Objects::nonNull).flatMap(anotacao -> Arrays.stream(anotacao.value()))
-                    .map(caminhoArquivo -> buildCaminhoArquivo(scriptsDir, caminhoArquivo)).collect(Collectors.toList());
-        } else {
-            scriptsAfter = Collections.emptyList();
-        }
-        LOGGER.debug("Scripts a serem executados após os testes: {}", scriptsAfter);
-
-        return new ScriptRunner(scriptsBefore, scriptsAfter, jdbcConnectionSupplier);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends Annotation> T[] getAnnotationsFromMethodOrClass(FrameworkMethod method, Class<T> annotationType) {
-        final int tamanho = 2;
-        T[] annotations = (T[]) Array.newInstance(annotationType, tamanho);
-        annotations[0] = classeTeste.getAnnotation(annotationType);
-        annotations[1] = method.getAnnotation(annotationType);
-        return annotations;
-    }
-
-    private String buildCaminhoArquivo(String directory, String nomeArquivo) {
-        return directory + File.separatorChar + nomeArquivo;
     }
 
     private String getDiretorioDatasetsConfigurado() {
@@ -163,16 +103,16 @@ public class DbUnitRunner implements Serializable {
         return (String) getConfiguracoesDbUnit().get("scripts.dir");
     }
 
-    private IDataTypeFactory getDataTypeFactory() throws TstUnitException {
+    private IDataTypeFactory getDataTypeFactory() {
         String dataTypeFactoryClass = (String) getConfiguracoesDbUnit().get("dataTypeFactoryClass");
         try {
             return (IDataTypeFactory) Class.forName(dataTypeFactoryClass).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException exception) {
-            throw new TstUnitException("Erro ao instanciar classe de DataTypeFactory configurada: " + dataTypeFactoryClass, exception);
+            throw new DBUnitException("Erro ao instanciar classe de DataTypeFactory configurada: " + dataTypeFactoryClass, exception);
         }
     }
 
-    private Properties getConnfiguracoesJdbc() {
+    private Properties getConfiguracoesJdbc() {
         return configuracao.getSubPropriedades("jdbc");
     }
 

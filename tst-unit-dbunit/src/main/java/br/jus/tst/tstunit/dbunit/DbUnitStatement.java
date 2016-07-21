@@ -26,9 +26,9 @@ public class DbUnitStatement extends Statement {
      */
     public static class DbUnitStatementBuilder implements Builder<DbUnitStatement> {
 
-        private DbUnitDatabaseLoader databaseLoader;
-        private GeradorDtd geradorDtd;
-        private ScriptRunner scriptRunner;
+        private Optional<DbUnitDatabaseLoader> databaseLoader;
+        private Optional<GeradorDtd> geradorDtd;
+        private Optional<ScriptRunner> scriptRunner;
         private Statement defaultStatement;
 
         /**
@@ -48,7 +48,7 @@ public class DbUnitStatement extends Statement {
          *            a ser utilizado
          * @return {@code this}, para chamadas encadeadas de método
          */
-        public DbUnitStatementBuilder usandoDatabaseLoader(DbUnitDatabaseLoader databaseLoader) {
+        public DbUnitStatementBuilder usandoDatabaseLoader(Optional<DbUnitDatabaseLoader> databaseLoader) {
             this.databaseLoader = databaseLoader;
             return this;
         }
@@ -60,7 +60,7 @@ public class DbUnitStatement extends Statement {
          *            a ser utilizado
          * @return {@code this}, para chamadas encadeadas de método
          */
-        public DbUnitStatementBuilder usandoGeradorDtd(GeradorDtd geradorDtd) {
+        public DbUnitStatementBuilder usandoGeradorDtd(Optional<GeradorDtd> geradorDtd) {
             this.geradorDtd = geradorDtd;
             return this;
         }
@@ -72,15 +72,14 @@ public class DbUnitStatement extends Statement {
          *            a ser utilizado
          * @return {@code this}, para chamadas encadeadas de método
          */
-        public DbUnitStatementBuilder usandoScriptRunner(ScriptRunner scriptRunner) {
+        public DbUnitStatementBuilder usandoScriptRunner(Optional<ScriptRunner> scriptRunner) {
             this.scriptRunner = scriptRunner;
             return this;
         }
 
         @Override
         public DbUnitStatement build() {
-            return new DbUnitStatement(defaultStatement, Optional.ofNullable(databaseLoader), Optional.ofNullable(scriptRunner),
-                    Optional.ofNullable(geradorDtd));
+            return new DbUnitStatement(defaultStatement, databaseLoader, scriptRunner, geradorDtd);
         }
     }
 

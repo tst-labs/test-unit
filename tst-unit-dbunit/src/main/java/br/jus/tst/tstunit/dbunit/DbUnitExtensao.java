@@ -1,5 +1,6 @@
 package br.jus.tst.tstunit.dbunit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.*;
 import org.slf4j.*;
@@ -14,10 +15,19 @@ import br.jus.tst.tstunit.*;
  */
 public class DbUnitExtensao extends AbstractExtensao<HabilitarDbUnit> {
 
+    private static final long serialVersionUID = 4420119979355499371L;
     private static final Logger LOGGER = LoggerFactory.getLogger(DbUnitExtensao.class);
 
-    private DbUnitRunner dbUnitRunner;
+    private transient DbUnitRunner dbUnitRunner;
 
+    /**
+     * Cria uma nova instância da extensão para a classe de testes informada.
+     * 
+     * @param classeTeste
+     *            a classe de testes
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
+     */
     public DbUnitExtensao(Class<?> classeTeste) {
         super(classeTeste);
     }
@@ -27,7 +37,7 @@ public class DbUnitExtensao extends AbstractExtensao<HabilitarDbUnit> {
         assertExtensaoHabilitada();
         LOGGER.info("DBUnit habilitado");
         HabilitarDbUnit habilitarDbUnit = classeTeste.getAnnotation(HabilitarDbUnit.class);
-        dbUnitRunner = new DbUnitRunner(classeTeste, habilitarDbUnit.nomeSchema(), configuracao);
+        dbUnitRunner = new DbUnitRunner(classeTeste, StringUtils.stripToNull(habilitarDbUnit.nomeSchema()), configuracao);
     }
 
     @Override

@@ -3,6 +3,7 @@ package br.jus.tst.tstunit.dbunit;
 import java.io.*;
 import java.sql.*;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.*;
@@ -11,7 +12,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.xml.FlatDtdWriter;
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.dbunit.jdbc.*;
+import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
 
 /**
  * Classe responsável por gerar o arquivo DTD referente a um <em>schema</em> de banco de dados.
@@ -25,7 +26,7 @@ public class GeradorDtd implements Serializable {
 
     private static final long serialVersionUID = -4939611691160487785L;
 
-    private transient final JdbcConnectionSupplier jdbcConnectionSupplier;
+    private transient final Supplier<Connection> jdbcConnectionSupplier;
     private transient final File arquivoDtd;
 
     private IDataTypeFactory dataTypeFactory;
@@ -40,7 +41,7 @@ public class GeradorDtd implements Serializable {
      * @throws NullPointerException
      *             caso qualquer parâmetro seja {@code null}
      */
-    public GeradorDtd(JdbcConnectionSupplier jdbcConnectionSupplier, File arquivoDtd) {
+    public GeradorDtd(Supplier<Connection> jdbcConnectionSupplier, File arquivoDtd) {
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
         this.arquivoDtd = Objects.requireNonNull(arquivoDtd, "arquivoDtd");
     }

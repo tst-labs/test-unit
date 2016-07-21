@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.*;
+import org.apache.commons.lang3.builder.*;
 
 /**
  * Classe que fornece acesso a conexões JDBC.
@@ -28,7 +29,7 @@ public class JdbcConnectionSupplier implements Supplier<Connection> {
      *             caso seja informado {@code null}
      */
     public JdbcConnectionSupplier(Properties propriedadesJdbc) {
-        this.propriedadesJdbc = Objects.requireNonNull(propriedadesJdbc, "propriedadesJdbc");
+        this.propriedadesJdbc = new Properties(Objects.requireNonNull(propriedadesJdbc, "propriedadesJdbc"));
     }
 
     /**
@@ -49,5 +50,14 @@ public class JdbcConnectionSupplier implements Supplier<Connection> {
         String valorPropriedade = (String) propriedadesJdbc.getProperty(nomePropriedade);
         Validate.validState(StringUtils.isNotBlank(valorPropriedade), "Propriedade '%s' não definida", nomePropriedade);
         return valorPropriedade;
+    }
+
+    public Properties getPropriedadesJdbc() {
+        return (Properties) propriedadesJdbc.clone();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("propriedadesJdbc", propriedadesJdbc).toString();
     }
 }
