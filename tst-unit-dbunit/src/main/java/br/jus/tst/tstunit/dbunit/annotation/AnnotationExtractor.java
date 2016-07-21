@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.annotation;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;

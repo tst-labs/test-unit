@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.dtd;
 
 import java.io.*;
 import java.sql.Connection;
@@ -7,6 +7,8 @@ import java.util.function.Supplier;
 
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.junit.runners.model.FrameworkMethod;
+
+import br.jus.tst.tstunit.dbunit.annotation.AnnotationHandler;
 
 /**
  * Classe que auxilia a criação de instâncias de {@link GeradorDtd} a partir de uma anotação {@link GerarDtd}.

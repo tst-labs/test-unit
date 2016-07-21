@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.dtd;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

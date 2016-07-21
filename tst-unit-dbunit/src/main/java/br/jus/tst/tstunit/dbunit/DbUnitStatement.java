@@ -8,7 +8,9 @@ import java.util.function.Consumer;
 import org.apache.commons.lang3.builder.Builder;
 import org.junit.runners.model.Statement;
 
-import br.jus.tst.tstunit.dbunit.jdbc.ScriptRunner;
+import br.jus.tst.tstunit.dbunit.dataset.DatabaseLoader;
+import br.jus.tst.tstunit.dbunit.dtd.GeradorDtd;
+import br.jus.tst.tstunit.dbunit.script.ScriptRunner;
 
 /**
  * {@link Statement} que define o comportamento de um caso de teste que utilize o DBUnit.
@@ -26,7 +28,7 @@ public class DbUnitStatement extends Statement {
      */
     public static class DbUnitStatementBuilder implements Builder<DbUnitStatement> {
 
-        private Optional<DbUnitDatabaseLoader> databaseLoader;
+        private Optional<DatabaseLoader> databaseLoader;
         private Optional<GeradorDtd> geradorDtd;
         private Optional<ScriptRunner> scriptRunner;
         private Statement defaultStatement;
@@ -42,13 +44,13 @@ public class DbUnitStatement extends Statement {
         }
 
         /**
-         * Define a instância de {@link DbUnitDatabaseLoader} utilizada para efetuar operações sobre os dados do banco (opcional).
+         * Define a instância de {@link DatabaseLoader} utilizada para efetuar operações sobre os dados do banco (opcional).
          * 
          * @param databaseLoader
          *            a ser utilizado
          * @return {@code this}, para chamadas encadeadas de método
          */
-        public DbUnitStatementBuilder usandoDatabaseLoader(Optional<DbUnitDatabaseLoader> databaseLoader) {
+        public DbUnitStatementBuilder usandoDatabaseLoader(Optional<DatabaseLoader> databaseLoader) {
             this.databaseLoader = databaseLoader;
             return this;
         }
@@ -84,11 +86,11 @@ public class DbUnitStatement extends Statement {
     }
 
     private final Statement defaultStatement;
-    private final Optional<DbUnitDatabaseLoader> databaseLoader;
+    private final Optional<DatabaseLoader> databaseLoader;
     private final Optional<ScriptRunner> scriptRunner;
     private final Optional<GeradorDtd> geradorDtd;
 
-    private DbUnitStatement(Statement defaultStatement, Optional<DbUnitDatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner,
+    private DbUnitStatement(Statement defaultStatement, Optional<DatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner,
             Optional<GeradorDtd> geradorDtd) {
         this.defaultStatement = Objects.requireNonNull(defaultStatement, "defaultStatement");
         this.databaseLoader = databaseLoader;
@@ -113,12 +115,12 @@ public class DbUnitStatement extends Statement {
     public void evaluate() throws Throwable {
         scriptRunner.ifPresent(executarScriptAntes());
         geradorDtd.ifPresent(GeradorDtd::gerar);
-        databaseLoader.ifPresent(DbUnitDatabaseLoader::carregarBancoDados);
+        databaseLoader.ifPresent(DatabaseLoader::carregarBancoDados);
 
         try {
             defaultStatement.evaluate();
         } finally {
-            databaseLoader.ifPresent(DbUnitDatabaseLoader::limparBancoDados);
+            databaseLoader.ifPresent(DatabaseLoader::limparBancoDados);
             scriptRunner.ifPresent(executarScriptDepois());
         }
     }

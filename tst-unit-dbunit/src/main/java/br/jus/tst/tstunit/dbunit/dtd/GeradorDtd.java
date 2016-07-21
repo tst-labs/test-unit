@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.dtd;
 
 import java.io.*;
 import java.sql.*;
@@ -12,6 +12,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.xml.FlatDtdWriter;
 import org.slf4j.*;
 
+import br.jus.tst.tstunit.dbunit.DBUnitException;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
 
 /**

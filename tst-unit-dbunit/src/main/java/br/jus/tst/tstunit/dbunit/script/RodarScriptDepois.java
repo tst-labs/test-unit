@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.script;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -8,10 +8,10 @@ import java.lang.annotation.*;
 
 /**
  * <p>
- * Indica que um método de teste necessita que um arquivo de script seja executado antes da execução do teste.
+ * Indica que um método de teste necessita que um arquivo de script seja executado DEPOIS da execução do teste.
  * </p>
  * <p>
- * Caso a anotação seja aplicada à classe de testes, o script será rodado antes de cada um dos seus métodos de teste.
+ * Caso a anotação seja aplicada à classe de testes, o script será rodado após de cada um dos seus métodos de teste.
  * </p>
  * <p>
  * Em cenários onde a anotação é definida tanto na classe quanto no método de testes, ambos serão executados, porém a anotação definida a nível de classe terá
@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-public @interface RodarScriptAntes {
+public @interface RodarScriptDepois {
 
     /**
      * O nome ou caminho do arquivo de script. Podem ser definidos múltiplos arquivos, de modo que eles serão executados na ordem em que forem declarados.

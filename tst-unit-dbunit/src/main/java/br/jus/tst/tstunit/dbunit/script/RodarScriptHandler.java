@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.script;
 
 import java.io.*;
 import java.sql.Connection;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.dbunit.jdbc.ScriptRunner;
+import br.jus.tst.tstunit.dbunit.annotation.*;
 
 /**
  * Classe que auxilia a criação de instâncias de {@link ScriptRunner} a partir de anotações {@link RodarScriptAntes} e {@link RodarScriptDepois}.

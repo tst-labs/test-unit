@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.dataset;
 
 import java.io.*;
 import java.sql.*;
@@ -13,6 +13,7 @@ import org.dbunit.dataset.xml.*;
 import org.dbunit.operation.DatabaseOperation;
 import org.slf4j.*;
 
+import br.jus.tst.tstunit.dbunit.DBUnitException;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
 
 /**
@@ -21,9 +22,9 @@ import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
  * @author Thiago Miranda
  * @since 4 de jul de 2016
  */
-public class DbUnitDatabaseLoader implements Serializable {
+public class DatabaseLoader implements Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DbUnitDatabaseLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseLoader.class);
 
     private static final long serialVersionUID = 4244174398976628116L;
 
@@ -45,7 +46,7 @@ public class DbUnitDatabaseLoader implements Serializable {
      * @throws NullPointerException
      *             caso qualquer parâmetro seja {@code null}
      */
-    public DbUnitDatabaseLoader(String nomeArquivoDataSet, Supplier<Connection> jdbcConnectionSupplier) {
+    public DatabaseLoader(String nomeArquivoDataSet, Supplier<Connection> jdbcConnectionSupplier) {
         this.nomeArquivoDataSet = Objects.requireNonNull(nomeArquivoDataSet, "nomeArquivoDataSet");
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
     }

@@ -9,7 +9,11 @@ import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
+import br.jus.tst.tstunit.dbunit.annotation.*;
+import br.jus.tst.tstunit.dbunit.dataset.UsarDataSetHandler;
+import br.jus.tst.tstunit.dbunit.dtd.GerarDtdHandler;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
+import br.jus.tst.tstunit.dbunit.script.RodarScriptHandler;
 
 /**
  * Classe responsável por rodar o DBUnit em métodos de teste.

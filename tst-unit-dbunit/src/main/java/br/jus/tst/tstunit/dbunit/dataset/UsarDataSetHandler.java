@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit;
+package br.jus.tst.tstunit.dbunit.dataset;
 
 import java.io.*;
 import java.sql.Connection;
@@ -8,13 +8,15 @@ import java.util.function.Supplier;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.junit.runners.model.FrameworkMethod;
 
+import br.jus.tst.tstunit.dbunit.annotation.*;
+
 /**
- * Classe que auxilia a criação de instâncias de {@link DbUnitDatabaseLoader} a partir de uma anotação {@link UsarDataSet}.
+ * Classe que auxilia a criação de instâncias de {@link DatabaseLoader} a partir de uma anotação {@link UsarDataSet}.
  * 
  * @author Thiago Miranda
  * @since 21 de jul de 2016
  */
-public class UsarDataSetHandler implements AnnotationHandler<DbUnitDatabaseLoader>, Serializable {
+public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Serializable {
 
     private static final long serialVersionUID = -476332749779353903L;
 
@@ -48,14 +50,13 @@ public class UsarDataSetHandler implements AnnotationHandler<DbUnitDatabaseLoade
      *             caso seja informado {@code null}
      */
     @Override
-    public Optional<DbUnitDatabaseLoader> processar(FrameworkMethod method) {
+    public Optional<DatabaseLoader> processar(FrameworkMethod method) {
         Optional<UsarDataSet> usarDataSet = annotationExtractor.getAnnotationsFromMethodOrClass(Objects.requireNonNull(method, "method"), UsarDataSet.class)
                 .stream().findFirst();
 
-        Optional<DbUnitDatabaseLoader> databaseLoaderOptional;
+        Optional<DatabaseLoader> databaseLoaderOptional;
         if (usarDataSet.isPresent()) {
-            DbUnitDatabaseLoader databaseLoader = new DbUnitDatabaseLoader(buildCaminhoArquivo(datasetsDirectory, usarDataSet.get().value()),
-                    jdbcConnectionSupplier);
+            DatabaseLoader databaseLoader = new DatabaseLoader(buildCaminhoArquivo(datasetsDirectory, usarDataSet.get().value()), jdbcConnectionSupplier);
             databaseLoader.setSchema(nomeSchema);
             databaseLoader.setDataTypeFactory(dataTypeFactory);
             databaseLoaderOptional = Optional.of(databaseLoader);
