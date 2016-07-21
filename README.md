@@ -5,6 +5,16 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 
 ---
 
+Histórico de mudanças
+----------
+
+*xx/xx/2016 - 1.0.1*
+- As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
+- Refatoração geral do módulo _TST Unit DBUnit_, que ocasionou mudanças de pacotes das anotações.
+
+**19/07/2016 - 1.0.0**
+- Primeiro release do projeto.
+
 Uso
 ----------
 
