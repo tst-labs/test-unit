@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.operation.DatabaseOperation;
 import org.junit.runners.model.FrameworkMethod;
 
 import br.jus.tst.tstunit.dbunit.annotation.*;
@@ -24,6 +25,8 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
     private final Supplier<Connection> jdbcConnectionSupplier;
     private final AnnotationExtractor annotationExtractor;
 
+    private DatabaseOperation operacaoAntesTestes;
+    private DatabaseOperation operacaoAposTestes;
     private String nomeSchema;
     private IDataTypeFactory dataTypeFactory;
 
@@ -32,6 +35,10 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
      * 
      * @param datasetsDirectory
      *            o diretório onde se encontram os <em>datasets</em>
+     * @param operacaoAntesTestes
+     *            operação a ser executada antes de cada teste
+     * @param operacaoAposTestes
+     *            operação a ser executada após cada teste
      * @param jdbcConnectionSupplier
      *            utilizado para obter conexões JDBC
      * @param annotationExtractor
@@ -39,8 +46,11 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
      * @throws NullPointerException
      *             caso qualquer parâmetro seja {@code null}
      */
-    public UsarDataSetHandler(String datasetsDirectory, Supplier<Connection> jdbcConnectionSupplier, AnnotationExtractor annotationExtractor) {
+    public UsarDataSetHandler(String datasetsDirectory, DatabaseOperation operacaoAntesTestes, DatabaseOperation operacaoAposTestes,
+            Supplier<Connection> jdbcConnectionSupplier, AnnotationExtractor annotationExtractor) {
         this.datasetsDirectory = Objects.requireNonNull(datasetsDirectory, "datasetsDirectory");
+        this.operacaoAntesTestes = Objects.requireNonNull(operacaoAntesTestes, "operacaoAntesTestes");
+        this.operacaoAposTestes = Objects.requireNonNull(operacaoAposTestes, "operacaoAposTestes");
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
         this.annotationExtractor = Objects.requireNonNull(annotationExtractor, "annotationExtractor");
     }
@@ -56,7 +66,8 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
 
         Optional<DatabaseLoader> databaseLoaderOptional;
         if (usarDataSet.isPresent()) {
-            DatabaseLoader databaseLoader = new DatabaseLoader(buildCaminhoArquivo(datasetsDirectory, usarDataSet.get().value()), jdbcConnectionSupplier);
+            DatabaseLoader databaseLoader = new DatabaseLoader(buildCaminhoArquivo(datasetsDirectory, usarDataSet.get().value()), operacaoAntesTestes,
+                    operacaoAposTestes, jdbcConnectionSupplier);
             databaseLoader.setSchema(nomeSchema);
             databaseLoader.setDataTypeFactory(dataTypeFactory);
             databaseLoaderOptional = Optional.of(databaseLoader);
@@ -81,6 +92,14 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
 
     public AnnotationExtractor getAnnotationExtractor() {
         return annotationExtractor;
+    }
+
+    public DatabaseOperation getOperacaoAntesTestes() {
+        return operacaoAntesTestes;
+    }
+
+    public DatabaseOperation getOperacaoAposTestes() {
+        return operacaoAposTestes;
     }
 
     public String getNomeSchema() {

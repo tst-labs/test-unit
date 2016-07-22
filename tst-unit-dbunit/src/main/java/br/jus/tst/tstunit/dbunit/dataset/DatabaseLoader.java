@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.Validate;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.*;
 import org.dbunit.dataset.DataSetException;
@@ -25,7 +26,6 @@ import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
 public class DatabaseLoader implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseLoader.class);
-
     private static final long serialVersionUID = 4244174398976628116L;
 
     private transient final Supplier<Connection> jdbcConnectionSupplier;
@@ -33,6 +33,8 @@ public class DatabaseLoader implements Serializable {
 
     private transient FlatXmlDataSet dataSet;
 
+    private DatabaseOperation operacaoAntesTestes;
+    private DatabaseOperation operacaoAposTestes;
     private IDataTypeFactory dataTypeFactory;
     private String schema;
 
@@ -41,20 +43,27 @@ public class DatabaseLoader implements Serializable {
      * 
      * @param nomeArquivoDataSet
      *            nome do arquivo de DataSet do DBUnit sendo utilizado
+     * @param operacaoAntesTestes
+     *            operação a ser executada antes de cada teste
+     * @param operacaoAposTestes
+     *            operação a ser executada após cada teste
      * @param jdbcConnectionSupplier
      *            utilizado para obter conexões JDBC
      * @throws NullPointerException
      *             caso qualquer parâmetro seja {@code null}
      */
-    public DatabaseLoader(String nomeArquivoDataSet, Supplier<Connection> jdbcConnectionSupplier) {
+    public DatabaseLoader(String nomeArquivoDataSet, DatabaseOperation operacaoAntesTestes, DatabaseOperation operacaoAposTestes,
+            Supplier<Connection> jdbcConnectionSupplier) {
         this.nomeArquivoDataSet = Objects.requireNonNull(nomeArquivoDataSet, "nomeArquivoDataSet");
+        this.operacaoAntesTestes = Objects.requireNonNull(operacaoAntesTestes, "operacaoAntesTestes");
+        this.operacaoAposTestes = Objects.requireNonNull(operacaoAposTestes, "operacaoAposTestes");
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
     }
 
     /**
      * Carrega os dados no banco de dados.
      * 
-     * @throws JdbcException
+     * @throws DBUnitException
      *             caso ocorra algum erro ao executar a operação
      */
     public void carregarBancoDados() {
@@ -68,8 +77,11 @@ public class DatabaseLoader implements Serializable {
             }
 
             dataSet = carregarDataSet();
-            DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-        } catch (DatabaseUnitException | SQLException exception) {
+            LOGGER.debug("DataSet carregado: {}", dataSet);
+
+            LOGGER.debug("Executando operação: {}", operacaoAntesTestes);
+            operacaoAntesTestes.execute(connection, dataSet);
+        } catch (DatabaseUnitException | SQLException | JdbcException exception) {
             throw new DBUnitException("Erro ao efetuar carga do banco de dados", exception);
         }
     }
@@ -77,18 +89,29 @@ public class DatabaseLoader implements Serializable {
     /**
      * Efetua a limpeza dos dados do banco.
      * 
-     * @throws JdbcException
+     * @throws DBUnitException
      *             caso ocorra algum erro ao executar a operação
      */
     public void limparBancoDados() {
         LOGGER.debug("Limpeza do banco de dados");
+        Validate.validState(dataSet != null, "DataSet não carregado");
 
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
             IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
-            DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
-        } catch (DatabaseUnitException | SQLException exception) {
+
+            LOGGER.debug("Executando operação: {}", operacaoAposTestes);
+            operacaoAposTestes.execute(connection, dataSet);
+        } catch (DatabaseUnitException | SQLException | JdbcException exception) {
             throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
         }
+    }
+
+    public DatabaseOperation getOperacaoAntesTestes() {
+        return operacaoAntesTestes;
+    }
+
+    public DatabaseOperation getOperacaoAposTestes() {
+        return operacaoAposTestes;
     }
 
     public String getSchema() {

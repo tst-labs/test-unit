@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.jus.tst.tstunit.*;
-import br.jus.tst.tstunit.dbunit.annotation.*;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet;
 import br.jus.tst.tstunit.dbunit.dtd.GerarDtd;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;

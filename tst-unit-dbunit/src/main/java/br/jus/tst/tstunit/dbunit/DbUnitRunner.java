@@ -5,11 +5,12 @@ import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.operation.DatabaseOperation;
 import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
-import br.jus.tst.tstunit.dbunit.annotation.*;
+import br.jus.tst.tstunit.dbunit.annotation.AnnotationExtractor;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSetHandler;
 import br.jus.tst.tstunit.dbunit.dtd.GerarDtdHandler;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
@@ -28,6 +29,9 @@ public class DbUnitRunner implements Serializable {
 
     private static final String DIRETORIO_DATASETS_PADRAO = "datasets";
     private static final String DIRETORIO_SCRIPTS_PADRAO = "scripts";
+
+    private static final String OPERACAO_BEFORE_TESTS_PADRAO = "CLEAN_INSERT";
+    private static final String OPERACAO_AFTER_TESTS_PADRAO = "DELETE_ALL";
 
     private transient final Class<?> classeTeste;
     private transient final Configuracao configuracao;
@@ -50,6 +54,8 @@ public class DbUnitRunner implements Serializable {
      *            configurações a serem utilizadas
      * @throws NullPointerException
      *             caso {@code classeTeste} ou {@code configuracao} seja {@code null}
+     * @throws DBUnitException
+     *             caso alguma configuração seja inválida
      * @throws TstUnitException
      *             caso ocorra algum erro ao carregar as configurações
      */
@@ -68,9 +74,22 @@ public class DbUnitRunner implements Serializable {
         rodarScriptHandler = new RodarScriptHandler(StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO),
                 jdbcConnectionSupplier, annotationExtractor);
 
-        usarDataSetHandler = new UsarDataSetHandler(getDiretorioDatasets(), jdbcConnectionSupplier, annotationExtractor);
+        usarDataSetHandler = new UsarDataSetHandler(getDiretorioDatasets(), carregarOperacao("beforeTests.operation", OPERACAO_BEFORE_TESTS_PADRAO),
+                carregarOperacao("afterTests.operation", OPERACAO_AFTER_TESTS_PADRAO), jdbcConnectionSupplier, annotationExtractor);
         usarDataSetHandler.setDataTypeFactory(getDataTypeFactory());
         usarDataSetHandler.setNomeSchema(nomeSchema);
+    }
+
+    private DatabaseOperation carregarOperacao(String nomePropriedade, String valorPadrao) {
+        String operacaoString = Optional.ofNullable(getConfiguracoesDbUnit().getProperty(nomePropriedade)).orElse(valorPadrao);
+
+        DatabaseOperation operacao;
+        try {
+            operacao = (DatabaseOperation) DatabaseOperation.class.getField(operacaoString).get(null);
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException exception) {
+            throw new DBUnitException("Operação inválida: " + operacaoString, exception);
+        }
+        return operacao;
     }
 
     /**

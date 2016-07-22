@@ -57,8 +57,8 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
 
         private static final String BEAN_MANAGER_JNDI_NAME = "java:comp/BeanManager";
 
-        private final Statement defaultStatement;
-        private final FrameworkMethod method;
+        private transient final Statement defaultStatement;
+        private transient final FrameworkMethod method;
 
         CdiStatement(Statement defaultStatement, FrameworkMethod method) {
             this.defaultStatement = defaultStatement;
@@ -93,7 +93,7 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
             try {
                 Class.forName(cdiUnitContextFactory);
             } catch (ClassNotFoundException exception) {
-                LOGGER.debug(exception.getLocalizedMessage(), exception);
+                LOGGER.trace(exception.getLocalizedMessage(), exception);
                 cdiUnitContextFactory = "org.jglue.cdiunit.internal.CdiUnitContextFactory";
             }
 

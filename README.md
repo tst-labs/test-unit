@@ -9,8 +9,9 @@ Histórico de mudanças
 ----------
 
 *xx/xx/2016 - 1.1.0*
-- As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
-- Refatoração geral do módulo _TST Unit DBUnit_, que ocasionou mudanças de pacotes das anotações.
+- _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
+- _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
+- _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
 
 **19/07/2016 - 1.0.0**
 - Primeiro release do projeto.
@@ -183,7 +184,13 @@ dbunit.datasets.dir=
 dbunit.scripts.dir=
 # Nome da classe de DataType factory - ver http://dbunit.sourceforge.net/properties.html#DataType_factory
 dbunit.dataTypeFactoryClass=
+# Operação a ser executada antes de cada teste que utilize DataSets
+dbunit.beforeTests.operation=
+# Operação a ser executada após cada teste que utilize DataSets
+dbunit.afterTests.operation=
 ```
+
+Notar que as propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation` devem ter como valor o nome de uma das constantes disponíveis em [DatabaseOperation](http://dbunit.sourceforge.net/apidocs/org/dbunit/operation/DatabaseOperation.html). Por padrão, elas possuem os valores `CLEAN_INSERT` e `DELETE_ALL`, respectivamente.
 
 Além da anotação `@HabilitarDbUnit`, existe um outro conjunto de anotações que podem ser úteis para a execução do teste:
 
