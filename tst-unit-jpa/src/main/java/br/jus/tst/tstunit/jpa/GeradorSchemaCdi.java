@@ -1,7 +1,6 @@
 package br.jus.tst.tstunit.jpa;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
@@ -24,12 +23,10 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
      */
     @Override
     public void criar() {
-        Optional<EntityManager> entityManagerOptional = Optional.empty();
         try {
-            Instance<EntityManager> entityManagerInstance = CDI.current().select(EntityManager.class);
-            entityManagerOptional = entityManagerInstance.isUnsatisfied() ? Optional.empty() : Optional.of(entityManagerInstance.get());
-        } finally {
-            entityManagerOptional.orElseThrow(() -> new JpaException("Nenhum produtor de EntityManager encontrado no classpath")).close();
+            CDI.current().select(EntityManager.class).get();
+        } catch (PersistenceException exception) {
+            throw new JpaException("Erro ao obter instância de EntityManager do contexto CDI", exception);
         }
     }
 }
