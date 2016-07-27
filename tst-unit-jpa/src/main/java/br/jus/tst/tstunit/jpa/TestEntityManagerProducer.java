@@ -2,6 +2,7 @@ package br.jus.tst.tstunit.jpa;
 
 import java.io.Serializable;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.*;
 import javax.inject.Inject;
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class TestEntityManagerProducer implements Serializable {
      * @return a instância criada
      */
     @Produces
+    @ApplicationScoped
     public EntityManager criarEntityManager() {
         logger.debug("Criando novo EntityManager");
         return entityManagerFactory.createEntityManager();

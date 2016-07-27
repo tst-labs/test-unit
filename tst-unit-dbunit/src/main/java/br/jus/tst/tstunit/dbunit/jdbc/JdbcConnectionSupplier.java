@@ -29,7 +29,8 @@ public class JdbcConnectionSupplier implements Supplier<Connection> {
      *             caso seja informado {@code null}
      */
     public JdbcConnectionSupplier(Properties propriedadesJdbc) {
-        this.propriedadesJdbc = new Properties(Objects.requireNonNull(propriedadesJdbc, "propriedadesJdbc"));
+        this.propriedadesJdbc = new Properties();
+        this.propriedadesJdbc.putAll(Objects.requireNonNull(propriedadesJdbc, "propriedadesJdbc"));
     }
 
     /**

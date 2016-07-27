@@ -2,7 +2,6 @@ package br.jus.tst.tstunit.jpa;
 
 import java.io.Serializable;
 
-import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
 import javax.persistence.*;
 
@@ -24,7 +23,7 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
     @Override
     public void criar() {
         try {
-            CDI.current().select(EntityManager.class).get();
+            CDI.current().select(EntityManager.class).get().clear();
         } catch (PersistenceException exception) {
             throw new JpaException("Erro ao obter instância de EntityManager do contexto CDI", exception);
         }
