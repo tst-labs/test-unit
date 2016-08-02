@@ -20,6 +20,7 @@
 
         <junit.version>4.12</junit.version>
 
+        <jacoco-maven-plugin.version>0.7.5.201505241946</jacoco-maven-plugin.version>
         <maven-release-plugin.preparation-goals>clean package integration-test</maven-release-plugin.preparation-goals>
         <java.version>1.8</java.version>
     </properties>
