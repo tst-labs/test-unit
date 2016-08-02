@@ -134,10 +134,18 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
                 }
             }
         } catch (Throwable exception) {
-            startupException = new Exception("Unable to start Weld", exception);
+            startupException = new Exception("Erro ao inicializar Weld", exception);
         }
 
-        return (Optional<T>) createTest(classeTeste);
+        return (Optional<T>) logExceptionIfExists().createTest(classeTeste);
+    }
+
+    private CdiExtensao logExceptionIfExists() {
+        if (startupException != null) {
+            LOGGER.warn("Erro ao inicializar Weld. Pode ser que essa exceção seja esperada em seu teste, portanto a execução não será interrompida.",
+                    startupException);
+        }
+        return this;
     }
 
     private Optional<?> createTest(Class<?> testClass) {
