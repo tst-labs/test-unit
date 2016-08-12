@@ -244,6 +244,26 @@ public class GeradorDbUnitDtd {
 
 Lembre-se que o _schema_ de banco de dados precisa estar criado para que possa ser exportado pela ferramenta. Como opções, você pode usar a anotação `@RodarScriptAntes` para executar um arquivo de script que crie o _schema_ ou também tirar proveito da extensão _TST Unit JPA_ - em conjunto com configurações do próprio JPA, é possível delegar para sua implementação de JPA (ex.: Hibernate) a criação do _schema_. Para maiores informações sobre uso do _TST Unit JPA_, veja abaixo.
 
+##### Nota sobre transações
+
+Ao realizar operações de inserção, deleção e atualização em seus testes com JPA/Hibernate, pode ser que você observe-as não sendo efetivadas no banco de dados caso seu código de produção dependa de um gerenciador de transações ativo (o que não existe durante a execução dos testes). Assim, você deverá iniciar e finalizar suas transações manualmente, como no exemplo abaixo, que utiliza CDI (ver _TST Unit JPA_):
+
+```java
+    @Inject
+    private EntityManager entityManager;
+
+    @Test
+    public void meuTeste() {
+    	// ...
+    	
+		entityManager.getTransaction().begin();
+		meuServico.inserir(objeto); // o serviço utiliza o mesmo entityManager internamente
+		entityManager.getTransaction().commit();
+		
+		// ...
+	}
+```
+
 #### TST Unit JPA
 
 ##### Dependência
