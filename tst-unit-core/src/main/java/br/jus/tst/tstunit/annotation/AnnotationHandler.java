@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.dbunit.annotation;
+package br.jus.tst.tstunit.annotation;
 
 import java.util.Optional;
 

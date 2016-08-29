@@ -10,7 +10,7 @@ import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
-import br.jus.tst.tstunit.dbunit.annotation.AnnotationExtractor;
+import br.jus.tst.tstunit.annotation.AnnotationExtractor;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSetHandler;
 import br.jus.tst.tstunit.dbunit.dtd.GerarDtdHandler;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;

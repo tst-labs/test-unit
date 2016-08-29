@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.junit.runners.model.FrameworkMethod;
 
-import br.jus.tst.tstunit.dbunit.annotation.AnnotationHandler;
+import br.jus.tst.tstunit.annotation.AnnotationHandler;
 
 /**
  * Classe que auxilia a criação de instâncias de {@link GeradorDtd} a partir de uma anotação {@link GerarDtd}.

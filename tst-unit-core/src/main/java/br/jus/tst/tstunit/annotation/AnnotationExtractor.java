@@ -1,10 +1,10 @@
-package br.jus.tst.tstunit.dbunit.annotation;
+package br.jus.tst.tstunit.annotation;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.*;
 

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.dbunit.annotation.*;
+import br.jus.tst.tstunit.annotation.*;
 
 /**
  * Classe que auxilia a criação de instâncias de {@link ScriptRunner} a partir de anotações {@link RodarScriptAntes} e {@link RodarScriptDepois}.

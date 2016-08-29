@@ -9,7 +9,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.runners.model.FrameworkMethod;
 
-import br.jus.tst.tstunit.dbunit.annotation.*;
+import br.jus.tst.tstunit.annotation.*;
 
 /**
  * Classe que auxilia a criação de instâncias de {@link DatabaseLoader} a partir de uma anotação {@link UsarDataSet}.
