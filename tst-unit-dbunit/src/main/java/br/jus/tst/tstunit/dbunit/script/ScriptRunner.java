@@ -28,9 +28,9 @@ public class ScriptRunner implements Serializable {
     /**
      * Cria uma nova instância definindo os scripts a serem executados antes e após os testes.
      * 
-     * @param scriptBefore
+     * @param scriptsBefore
      *            scripts a serem executados antes dos testes
-     * @param scriptAfter
+     * @param scriptsAfter
      *            scripts a serem executados após os testes
      * @param jdbcConnectionSupplier
      *            utilizado para obter as conexões JDBC

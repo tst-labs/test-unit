@@ -51,7 +51,9 @@ public class AnnotationExtractor implements Serializable {
      * @param method
      *            o método e teste
      * @param annotationType
-     *            o tipo de anotação desejado
+     *            a classe de anotação desejada
+     * @param <T>
+     *            o tipo da anotação
      * @return a lista contendo as anotações (pode estar vazia, mas nunca será {@code null}
      */
     public <T extends Annotation> List<T> getAnnotationsFromMethodOrClass(FrameworkMethod method, Class<T> annotationType) {

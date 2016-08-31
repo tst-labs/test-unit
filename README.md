@@ -8,7 +8,10 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-*xx/xx/2016 - 1.1.0*
+**xx/xx/2016 - 1.2.0**
+- _[todos]_ Adicionando suporte a testes parametrizados
+
+**31/08/2016 - 1.1.0**
 - _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
 - _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
 - _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
