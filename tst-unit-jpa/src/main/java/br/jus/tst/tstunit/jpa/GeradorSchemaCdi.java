@@ -28,4 +28,8 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
             throw new JpaException("Erro ao obter instância de EntityManager do contexto CDI", exception);
         }
     }
+
+    @Override
+    public void destruir() {
+    }
 }

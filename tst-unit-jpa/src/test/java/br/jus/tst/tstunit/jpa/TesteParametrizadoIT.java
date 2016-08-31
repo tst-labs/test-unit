@@ -5,38 +5,38 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.util.List;
+import java.util.*;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.*;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.jpa.JpaExtensaoIT.Entidade;
+import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
 
 /**
- * Testes de integração da {@link JpaExtensao}.
+ * Testes de integração para a funcionalidade de testes parametrizados.
  * 
  * @author Thiago Miranda
- * @since 14 de jul de 2016
+ * @since 31 de ago de 2016
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(Parameterized.class)
+@UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
 @HabilitarJpa(persistenceUnitName = "testePU", geradorSchema = GeradorSchemaPu.class)
-public class JpaExtensaoIT {
+public class TesteParametrizadoIT {
 
-    /**
-     * Entidade de testes.
-     * 
-     * @author Thiago Miranda
-     * @since 14 de jul de 2016
-     */
-    @Entity
-    @Table
-    public static class Entidade {
-
-        @Id
-        private int id;
+    @Parameters
+    public static Collection<Object[]> parametros() {
+        return Arrays.asList(new Object[] { 1, "1" }, new Object[] { 2, "2" });
     }
+
+    @Parameter(0)
+    public int numero;
+    @Parameter(1)
+    public String numeroString;
 
     private EntityManager entityManager;
 
@@ -52,7 +52,8 @@ public class JpaExtensaoIT {
 
     @Test
     @SuppressWarnings("rawtypes")
-    public void deveriaCarregarEntityManager() {
+    public void teste() {
+        assertThat(String.valueOf(numero), is(equalTo(numeroString)));
         List resultado = entityManager.createQuery("SELECT e FROM " + Entidade.class.getName() + " e").getResultList();
         assertThat(resultado.size(), is(equalTo(0)));
     }

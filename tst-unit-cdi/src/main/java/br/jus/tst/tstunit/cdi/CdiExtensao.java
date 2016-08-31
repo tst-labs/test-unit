@@ -142,8 +142,7 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
 
     private CdiExtensao logExceptionIfExists() {
         if (startupException != null) {
-            LOGGER.warn("Erro ao inicializar Weld. Pode ser que essa exceção seja esperada em seu teste, portanto a execução não será interrompida.",
-                    startupException);
+            LOGGER.warn("Erro ao inicializar Weld. Pode ser que essa exceção seja esperada em seu teste, portanto a execução não será interrompida.", startupException);
         }
         return this;
     }

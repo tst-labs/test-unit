@@ -45,10 +45,8 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
      *            classe de teste
      * @throws InitializationError
      *             caso ocorra algum erro ao inicializar o <em>runner</em>
-     * @throws TstUnitException
-     *             caso ocorra algum erro ao carregar as configurações
      */
-    public TstUnitRunner(Class<?> classeTeste) throws InitializationError, TstUnitException {
+    public TstUnitRunner(Class<?> classeTeste) throws InitializationError {
         super(classeTeste);
         this.classeTeste = classeTeste;
         configuracao = new Configuracao();
@@ -94,8 +92,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected Object createTest() throws Exception {
         // FIXME Supõe que exista apenas uma extensão que defina esse método
-        Optional instanciaPersonalizada = extensoes.stream().map(extensao -> extensao.getInstanciaPersonalizadaParaTestes()).filter(Optional::isPresent)
-                .findFirst();
+        Optional instanciaPersonalizada = extensoes.stream().map(extensao -> extensao.getInstanciaPersonalizadaParaTestes()).filter(Optional::isPresent).findFirst();
         Object instanciaTeste = ((Optional<Object>) instanciaPersonalizada.orElse(Optional.of(super.createTest()))).get();
         LOGGER.debug("Instância da classe de testes utilizada: {}", instanciaTeste);
 

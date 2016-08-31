@@ -12,4 +12,9 @@ public interface GeradorSchema {
      * Cria o <em>schema</em> de banco de dados.
      */
     void criar();
+
+    /**
+     * Derruba o <em>schema</em> de banco de dados.
+     */
+    void destruir();
 }

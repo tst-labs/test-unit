@@ -38,6 +38,12 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
     }
 
     @Override
+    public void afterTestes() {
+        LOGGER.info("Derrubando schema através do {}", geradorSchema);
+        geradorSchema.destruir();
+    }
+
+    @Override
     public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
         assertExtensaoHabilitada();
 
