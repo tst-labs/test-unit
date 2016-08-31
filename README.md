@@ -9,9 +9,9 @@ Histórico de mudanças
 ----------
 
 **xx/xx/2016 - 1.2.0**
-- _[todos]_ Adicionando suporte a testes parametrizados
 
 **31/08/2016 - 1.1.0**
+- _[todos]_ Adicionando suporte a testes parametrizados
 - _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
 - _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
 - _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
@@ -375,6 +375,53 @@ public class MinhaClasseTeste {
     @Test
     public void teste() {
         // ...
+    }
+}
+```
+
+#### Testes parametrizados
+
+O TST Unit também oferece suporte a testes parametrizados. Para isso, sua classe de teste deve utilizar algumas anotações diferentes:
+
+```java
+@RunWith(Parameterized.class)
+@UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
+public class MeuTesteParametrizado {
+
+    @Parameters
+    public static Collection<Object[]> parametros() {
+        return Arrays.asList(new Object[] { 1, "1" }, new Object[] { 2, "2" });
+    }
+
+    @Parameter(0)
+    public int numero;
+    @Parameter(1)
+    public String numeroString;
+
+    @Test
+    public void teste() {
+        assertThat(String.valueOf(numero), is(equalTo(numeroString)));
+    }
+}
+```
+
+Notar que o _runner_ definido em `@RunWith` deve ser o `Parameterized.class`, ao invés de `TstUnitRunner.class`. A outra anotação, `@UseParametersRunnerFactory`, é fornecida pelo próprio JUnit e é utilizada aqui para conectar o _runner_ de testes parametrizados com o _runner_ do TST Unit.
+
+Outras anotações das extensões podem ser utilizadas normalmente:
+
+```java
+@RunWith(Parameterized.class)
+@UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
+@HabilitarCdiAndMockito
+@AdditionalPackages({ TestEntityManagerProducer.class })
+@HabilitarJpa(persistenceUnitName = "meuPU")
+public class MeuTesteParametrizado {
+
+    ...
+
+    @Test
+    public void teste() {
+        ...
     }
 }
 ```
