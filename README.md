@@ -34,7 +34,7 @@ Para utilizar o TST Unit em seu projeto, adicione o módulo abaixo como dependê
 <dependency>
     <groupId>br.jus.tst</groupId>
     <artifactId>tst-unit-core</artifactId>
-    <version>1.0.0</version>
+    <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -86,7 +86,7 @@ Para usar uma extensão, basta adicionar a respectiva dependência ao seu projet
 <dependency>
     <groupId>br.jus.tst</groupId>
     <artifactId>tst-unit-dbunit</artifactId>
-    <version>1.0.0</version>
+    <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -119,7 +119,7 @@ A maior parte do funcionamento é delegado para o [CDI Unit](http://jglue.org/cd
 <dependency>
     <groupId>br.jus.tst</groupId>
     <artifactId>tst-unit-cdi</artifactId>
-    <version>1.0.0</version>
+    <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -159,7 +159,7 @@ public class MinhaClasseTeste {
 <dependency>
     <groupId>br.jus.tst</groupId>
     <artifactId>tst-unit-dbunit</artifactId>
-    <version>1.0.0</version>
+    <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -275,7 +275,7 @@ Ao realizar operações de inserção, deleção e atualização em seus testes 
 <dependency>
     <groupId>br.jus.tst</groupId>
     <artifactId>tst-unit-jpa</artifactId>
-    <version>1.0.0</version>
+    <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -355,7 +355,7 @@ OBS.: O valor `create-drop` não é suportado dessa forma pois o JPA irá derrub
 <dependency>
     <groupId>br.jus.tst</groupId>
     <artifactId>tst-unit-mockito</artifactId>
-    <version>1.0.0</version>
+    <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
 ```
