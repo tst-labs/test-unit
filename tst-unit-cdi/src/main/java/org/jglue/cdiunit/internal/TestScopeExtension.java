@@ -51,7 +51,7 @@ public class TestScopeExtension implements Extension {
     public TestScopeExtension(Class<?> testClass) {
         this.testClass = testClass;
 
-        if (testClass.getAnnotation(RunWith.class).value() == Parameterized.class) {
+        if (testClass != null && testClass.getAnnotation(RunWith.class).value() == Parameterized.class) {
             this.annotationScope = new SingletonLiteral();
         } else {
             this.annotationScope = new ApplicationScopedLiteral();
