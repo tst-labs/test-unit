@@ -15,13 +15,18 @@
  */
 package org.jglue.cdiunit.internal;
 
+import java.lang.annotation.Annotation;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
 import javax.inject.Singleton;
 
-import org.apache.deltaspike.core.api.literal.SingletonLiteral;
+import org.apache.deltaspike.core.api.literal.*;
 import org.apache.deltaspike.core.util.metadata.builder.AnnotatedTypeBuilder;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.slf4j.*;
 
 /**
  * Sobrescrita da definição da classe {@link TestScopeExtension} original para que as classes de teste utilizem scopo {@link Singleton} ao invés de
@@ -34,21 +39,31 @@ import org.apache.deltaspike.core.util.metadata.builder.AnnotatedTypeBuilder;
  */
 public class TestScopeExtension implements Extension {
 
-    private static final SingletonLiteral SINGLETON_SCOPE = new SingletonLiteral();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestScopeExtension.class);
 
-    private Class<?> testClass;
+    private final Class<?> testClass;
+    private final Annotation annotationScope;
 
     public TestScopeExtension() {
+        this(null);
     }
 
     public TestScopeExtension(Class<?> testClass) {
         this.testClass = testClass;
+
+        if (testClass.getAnnotation(RunWith.class).value() == Parameterized.class) {
+            this.annotationScope = new SingletonLiteral();
+        } else {
+            this.annotationScope = new ApplicationScopedLiteral();
+        }
+
+        LOGGER.debug("A classe de teste {} terá o escopo {}", testClass, annotationScope);
     }
 
     <T> void processAnnotatedType(@Observes ProcessAnnotatedType<T> pat) {
         final AnnotatedType<T> annotatedType = pat.getAnnotatedType();
         if (annotatedType.getJavaClass().equals(testClass)) {
-            AnnotatedTypeBuilder<T> builder = new AnnotatedTypeBuilder<T>().readFromType(annotatedType).addToClass(SINGLETON_SCOPE);
+            AnnotatedTypeBuilder<T> builder = new AnnotatedTypeBuilder<T>().readFromType(annotatedType).addToClass(annotationScope);
             pat.setAnnotatedType(builder.create());
         }
     }
