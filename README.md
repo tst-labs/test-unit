@@ -10,8 +10,11 @@ Histórico de mudanças
 
 **xx/xx/2016 - 1.2.0**
 
+**02/09/2016 - 1.1.1**
+- _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
+
 **31/08/2016 - 1.1.0**
-- _[todos]_ Adicionando suporte a testes parametrizados
+- _[todos]_ Adicionando suporte a testes parametrizados.
 - _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
 - _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
 - _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
