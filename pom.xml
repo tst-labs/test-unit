@@ -7,7 +7,7 @@
     </parent>
 
     <artifactId>tst-unit-parent</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>pom</packaging>
 
     <name>TST Unit</name>
@@ -110,6 +110,6 @@
         <url>${git.base.url}/${git.group.name}/${git.project.name}/tree/master</url>
         <connection>scm:git:git@${git.base.domain}:${git.group.name}/${git.project.name}.git</connection>
         <developerConnection>${project.scm.connection}</developerConnection>
-        <tag>HEAD</tag>
+        <tag>tst-unit-parent-1.1.1-20160902-1450</tag>
     </scm>
 </project>
