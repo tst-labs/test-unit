@@ -10,6 +10,10 @@ Histórico de mudanças
 
 **xx/xx/2016 - 1.2.0**
 
+**08/09/2016 - 1.1.2**
+- _[TST Unit Core]_ Atualizando versão do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
+- _[TST Unit CDI]_ Removendo dependências transitiva do _Reflections_.
+
 **02/09/2016 - 1.1.1**
 - _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
 
