@@ -17,6 +17,12 @@
         </dependency>
 
         <dependency>
+            <groupId>br.jus.tst</groupId>
+            <artifactId>tst-unit-mockito</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <version>2.5.2</version>

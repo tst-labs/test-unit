@@ -27,6 +27,13 @@ Histórico de mudanças
 **19/07/2016 - 1.0.0**
 - Primeiro release do projeto.
 
+TODO List
+---------
+
+- _[TST Unit Core]_ Permitir utilização de suites de testes
+- _[TST Unit DBUnit]_ Permitir integração com outros bancos que não H2
+- _[novo]_ Integração com JBehave
+
 Requisitos
 ---------
 
