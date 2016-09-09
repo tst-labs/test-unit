@@ -275,9 +275,13 @@ Ao realizar operações de inserção, deleção e atualização em seus testes 
     public void meuTeste() {
     	// ...
     	
-		entityManager.getTransaction().begin();
-		meuServico.inserir(objeto); // o serviço utiliza o mesmo entityManager internamente
-		entityManager.getTransaction().commit();
+		try {
+			entityManager.getTransaction().begin();
+			meuServico.inserir(objeto); // o serviço utiliza o mesmo entityManager internamente
+			entityManager.getTransaction().commit();
+		} catch (PersistenceException exception) {
+			entityManager.getTransaction().rollback();
+		}
 		
 		// ...
 	}
