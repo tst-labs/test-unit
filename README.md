@@ -87,6 +87,8 @@ Para utilizar outros recursos, você pode adicionar extensões, que adicionam no
 
 ### Extensões
 
+![Arquitetura do projeto](docs/Arquitetura.png)
+
 As extensões atualmente existentes são:
 
 * _tst-unit-cdi_: habilita o uso de [CDI](http://weld.cdi-spec.org/) nos testes (obs.: como muitas vezes o uso de CDI é feito em conjunto com mocks, o Mockito também já é habilitado por padrão através dessa extensão, não sendo necessário o uso da _tst-unit-mockito_);
