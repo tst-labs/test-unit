@@ -68,7 +68,7 @@ public class MinhaClasseTeste {
 }
 ```
 
-Fazendo apenas isso, seu teste passa a contar com alguns recursos básicos, como a impressão dos nomes dos testes que estão rodando:
+Sem mais nenhuma configuração adicional, seu teste passa a contar com alguns recursos básicos, como a impressão dos nomes dos testes que estão rodando:
 
 ```
 >>>>>>>>>> Executando: br.jus.tst.teste.MinhaClasseTeste.teste <<<<<<<<<<
@@ -84,6 +84,34 @@ core.printtestname.default=false
 ```
 
 Para utilizar outros recursos, você pode adicionar extensões, que adicionam novas funcionalidades ao TST Unit.
+
+### Utilizando em projetos com versões inferiores ao Java 8
+
+É possível ter um projeto Maven em que o código de produção use uma versão do Java diferente do código dos testes. Para isso, é necessário configurar o `maven-compiler-plugin` conforme abaixo (solução retirada do [StackOverflow](http://stackoverflow.com/a/38743953/3228529)):
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.5.1</version>
+    <configuration>
+        <source>1.7</source>
+        <target>1.7</target>
+        <testSource>1.8</testSource>
+        <testTarget>1.8</testTarget>
+    </configuration>
+</plugin>
+```
+
+Neste exemplo, o código de produção utiliza Java 7, enquanto que os testes serão compilados com Java 8.
+
+Ainda assim, caso tente rodar os testes diretamente de sua IDE, pode ser que ela tente utilizar nos testes a versão do Java definida para o projeto. No caso do Eclipse, isso pode ser alterado conforme abaixo:
+
+1. Clicando com o botão direito do mouse sobre o projeto, ir em _Run As > Run Configurations..._.
+2. Dentro do item _JUnit_, clicar sobre seu testes.
+3. Acessar a aba _JRE_.
+4. Marcar _Execution environment_ e selecionar a opção referente ao _JavaSE 1.8_.
+5. Salvar e rodar o teste.
 
 ### Extensões
 
