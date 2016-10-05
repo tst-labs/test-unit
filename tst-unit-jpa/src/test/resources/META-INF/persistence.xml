@@ -17,4 +17,22 @@
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
         </properties>
     </persistence-unit>
+
+    <persistence-unit name="teste2PU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
+            <property name="hibernate.connection.url" value="jdbc:h2:mem:testes-jpa2;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS IT2\;" />
+            <property name="hibernate.connection.username" value="sa" />
+            <property name="hibernate.connection.password" value="sa" />
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.default_schema" value="IT2" />
+
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+        </properties>
+    </persistence-unit>
 </persistence>

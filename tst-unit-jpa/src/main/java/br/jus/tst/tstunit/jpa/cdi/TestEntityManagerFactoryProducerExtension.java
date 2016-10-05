@@ -1,0 +1,48 @@
+package br.jus.tst.tstunit.jpa.cdi;
+
+import java.util.Arrays;
+
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.*;
+
+import org.slf4j.*;
+
+import br.jus.tst.tstunit.jpa.HabilitarJpa;
+import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
+
+/**
+ * {@link Extension} que carrega as instâncias de {@link TestEntityManagerFactoryProducer}.
+ * 
+ * @author Thiago Miranda
+ * @since 4 de out de 2016
+ */
+public class TestEntityManagerFactoryProducerExtension implements Extension {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestEntityManagerFactoryProducerExtension.class);
+
+    private static UnidadePersistencia[] unidadesPersistencia;
+
+    public static UnidadePersistencia[] getUnidadesPersistencia() {
+        return unidadesPersistencia;
+    }
+
+    public static void setUnidadesPersistencia(UnidadePersistencia[] unidadesPersistencia) {
+        TestEntityManagerFactoryProducerExtension.unidadesPersistencia = unidadesPersistencia;
+    }
+
+    /**
+     * Método executado após a etapa de <em>bean discovery</em> do CDI ser finalizada.
+     * 
+     * @param afterBeanDiscovery
+     *            o evento
+     */
+    public void afterBean(final @Observes AfterBeanDiscovery afterBeanDiscovery) {
+        LOGGER.debug("Processando unidades de persistência: {}", (Object[]) unidadesPersistencia);
+
+        Arrays.stream(unidadesPersistencia).forEach(unidade -> {
+            TestEntityManagerFactoryProducer entityManagerFactoryProducer = new TestEntityManagerFactoryProducer(unidade);
+            afterBeanDiscovery.addBean(entityManagerFactoryProducer);
+            afterBeanDiscovery.addBean(new TestEntityManagerProducer(entityManagerFactoryProducer));
+        });
+    }
+}

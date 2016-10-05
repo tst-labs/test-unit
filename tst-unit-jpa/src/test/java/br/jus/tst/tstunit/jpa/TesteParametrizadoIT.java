@@ -25,7 +25,7 @@ import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
  */
 @RunWith(Parameterized.class)
 @UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
-@HabilitarJpa(persistenceUnitName = "testePU", geradorSchema = GeradorSchemaPu.class)
+@HabilitarJpa(nomeUnidadePersistencia = "testePU", geradorSchema = GeradorSchemaPu.class)
 public class TesteParametrizadoIT {
 
     @Parameters

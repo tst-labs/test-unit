@@ -10,11 +10,17 @@ public interface GeradorSchema {
 
     /**
      * Cria o <em>schema</em> de banco de dados.
+     * 
+     * @throws JpaException
+     *             caso ocorra algum erro ao criar o <em>schema</em>
      */
-    void criar();
+    void criar() throws JpaException;
 
     /**
      * Derruba o <em>schema</em> de banco de dados.
+     * 
+     * @throws JpaException
+     *             caso ocorra algum erro ao derrubar o <em>schema</em>
      */
-    void destruir();
+    void destruir() throws JpaException;
 }

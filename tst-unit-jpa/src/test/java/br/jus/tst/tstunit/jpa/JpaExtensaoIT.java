@@ -21,7 +21,7 @@ import br.jus.tst.tstunit.TstUnitRunner;
  * @since 14 de jul de 2016
  */
 @RunWith(TstUnitRunner.class)
-@HabilitarJpa(persistenceUnitName = "testePU", geradorSchema = GeradorSchemaPu.class)
+@HabilitarJpa(nomeUnidadePersistencia = "testePU", geradorSchema = GeradorSchemaPu.class)
 public class JpaExtensaoIT {
 
     /**

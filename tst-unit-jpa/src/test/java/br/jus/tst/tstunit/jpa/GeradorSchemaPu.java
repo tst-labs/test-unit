@@ -2,6 +2,8 @@ package br.jus.tst.tstunit.jpa;
 
 import javax.persistence.EntityManagerFactory;
 
+import br.jus.tst.tstunit.jpa.cdi.*;
+
 /**
  * Gerador de <em>schema</em> utilizado nos testes.
  * 
@@ -18,8 +20,7 @@ public class GeradorSchemaPu implements GeradorSchema {
 
     @Override
     public void criar() {
-        TestEntityManagerFactoryProducer entityManagerFactoryProducer = new TestEntityManagerFactoryProducer();
-        entityManagerFactory = entityManagerFactoryProducer.criarEntityManagerFactory();
+        entityManagerFactory = new TestEntityManagerFactoryProducer(TestEntityManagerFactoryProducerExtension.getUnidadesPersistencia()[0]).create(null);
     }
 
     @Override

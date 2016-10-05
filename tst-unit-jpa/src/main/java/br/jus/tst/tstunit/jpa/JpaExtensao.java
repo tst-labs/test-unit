@@ -1,10 +1,16 @@
 package br.jus.tst.tstunit.jpa;
 
+import java.lang.annotation.Annotation;
+
+import javax.enterprise.inject.Default;
+
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
+import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
+import br.jus.tst.tstunit.jpa.cdi.TestEntityManagerFactoryProducerExtension;
 
 /**
  * {@link Extensao} que habilita o JPA nos testes.
@@ -34,13 +40,23 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
     @Override
     public void beforeTestes(Object instancia) {
         LOGGER.info("Criando schema através do {}", geradorSchema);
-        geradorSchema.criar();
+        try {
+            geradorSchema.criar();
+        } catch (JpaException exception) {
+            LOGGER.error("Erro ao criar schema", exception);
+            throw exception;
+        }
     }
 
     @Override
     public void afterTestes() {
         LOGGER.info("Derrubando schema através do {}", geradorSchema);
-        geradorSchema.destruir();
+        try {
+            geradorSchema.destruir();
+        } catch (JpaException exception) {
+            LOGGER.error("Erro ao derrubar schema", exception);
+            throw exception;
+        }
     }
 
     @Override
@@ -50,11 +66,35 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
         HabilitarJpa habilitarJpa = classeTeste.getAnnotation(HabilitarJpa.class);
         LOGGER.info("JPA habilitado");
 
-        String unidadePersistencia = habilitarJpa.persistenceUnitName();
-        LOGGER.info("Unidade de persistência: {}", unidadePersistencia);
-        TestEntityManagerFactoryProducer.setNomeUnidadePersistencia(unidadePersistencia);
+        UnidadePersistencia[] unidadesPersistencia = habilitarJpa.unidadesPersistencia();
+        if (unidadesPersistencia.length == 0) {
+            unidadesPersistencia = criarAnotacaoUnidadePersistencia(habilitarJpa.nomeUnidadePersistencia());
+        }
+        
+        LOGGER.info("Unidades de persistência: {}", (Object[]) unidadesPersistencia);
+        TestEntityManagerFactoryProducerExtension.setUnidadesPersistencia(unidadesPersistencia);
 
         geradorSchema = criarGeradorSchema(habilitarJpa);
+    }
+
+    private UnidadePersistencia[] criarAnotacaoUnidadePersistencia(String nomeUnidadePersistencia) {
+        return new UnidadePersistencia[] { new UnidadePersistencia() {
+
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return UnidadePersistencia.class;
+            }
+
+            @Override
+            public Class<? extends Annotation> qualifierClass() {
+                return Default.class;
+            }
+
+            @Override
+            public String nome() {
+                return nomeUnidadePersistencia;
+            }
+        } };
     }
 
     private GeradorSchema criarGeradorSchema(HabilitarJpa habilitarJpa) throws TstUnitException {
