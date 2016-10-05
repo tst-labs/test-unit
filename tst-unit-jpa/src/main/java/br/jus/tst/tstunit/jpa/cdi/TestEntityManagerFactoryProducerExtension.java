@@ -12,6 +12,8 @@ import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
  * 
  * @author Thiago Miranda
  * @since 4 de out de 2016
+ * 
+ * @see <a href="http://jdevelopment.nl/dynamic-cdi-producers/">Dynamic CDI producers</a>
  */
 public class TestEntityManagerFactoryProducerExtension implements Extension {
 
