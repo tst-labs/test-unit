@@ -146,22 +146,25 @@ public class AnnotationProxy implements Annotation, InvocationHandler, Serializa
             Object value = member.getValue();
 
             int nameHashCode = member.getKey().hashCode();
-
-            int valueHashCode = !value.getClass().isArray() ? value.hashCode()
-                    : value.getClass() == boolean[].class ? Arrays.hashCode((boolean[]) value)
-                            : value.getClass() == byte[].class ? Arrays.hashCode((byte[]) value)
-                                    : value.getClass() == char[].class ? Arrays.hashCode((char[]) value)
-                                            : value.getClass() == double[].class ? Arrays.hashCode((double[]) value)
-                                                    : value.getClass() == float[].class ? Arrays.hashCode((float[]) value)
-                                                            : value.getClass() == int[].class ? Arrays.hashCode((int[]) value)
-                                                                    : value.getClass() == long[].class ? Arrays.hashCode((long[]) value)
-                                                                            : value.getClass() == short[].class ? Arrays.hashCode((short[]) value)
-                                                                                    : Arrays.hashCode((Object[]) value);
+            int valueHashCode = calculateHashCode(value);
 
             hashCode += 127 * nameHashCode ^ valueHashCode;
         }
 
         return hashCode;
+    }
+
+    private int calculateHashCode(Object value) {
+        return !value.getClass().isArray() ? value.hashCode()
+                : value.getClass() == boolean[].class ? Arrays.hashCode((boolean[]) value)
+                        : value.getClass() == byte[].class ? Arrays.hashCode((byte[]) value)
+                                : value.getClass() == char[].class ? Arrays.hashCode((char[]) value)
+                                        : value.getClass() == double[].class ? Arrays.hashCode((double[]) value)
+                                                : value.getClass() == float[].class ? Arrays.hashCode((float[]) value)
+                                                        : value.getClass() == int[].class ? Arrays.hashCode((int[]) value)
+                                                                : value.getClass() == long[].class ? Arrays.hashCode((long[]) value)
+                                                                        : value.getClass() == short[].class ? Arrays.hashCode((short[]) value)
+                                                                                : Arrays.hashCode((Object[]) value);
     }
 
     private SortedSet<String> getRegisteredMethodsInAlphabeticalOrder() {

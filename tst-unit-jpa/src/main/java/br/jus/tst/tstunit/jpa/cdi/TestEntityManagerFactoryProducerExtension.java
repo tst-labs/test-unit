@@ -3,6 +3,7 @@ package br.jus.tst.tstunit.jpa.cdi;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
@@ -22,11 +23,11 @@ public class TestEntityManagerFactoryProducerExtension implements Extension {
     private static UnidadePersistencia[] unidadesPersistencia;
 
     public static UnidadePersistencia[] getUnidadesPersistencia() {
-        return unidadesPersistencia;
+        return ArrayUtils.clone(unidadesPersistencia);
     }
 
     public static void setUnidadesPersistencia(UnidadePersistencia[] unidadesPersistencia) {
-        TestEntityManagerFactoryProducerExtension.unidadesPersistencia = unidadesPersistencia;
+        TestEntityManagerFactoryProducerExtension.unidadesPersistencia = ArrayUtils.clone(unidadesPersistencia);
     }
 
     /**
