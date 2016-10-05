@@ -9,6 +9,7 @@ Histórico de mudanças
 ----------
 
 **xx/xx/2016 - 1.2.0**
+- _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
 
 **08/09/2016 - 1.1.2**
 - _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
@@ -195,6 +196,12 @@ public class MinhaClasseTeste {
 }
 ```
 
+##### EJBs
+
+A anotação `@EJB` não é automaticamente processada na execução dos testes, uma vez que não há um contêiner de EJBs ativo. Para que a injeção de dependências funcione nesse caso, basta trocar a anotação por `@Inject`, que produz o mesmo efeito.
+
+Outra opção é a solução fornecida pelo _CDI Unit_, através da anotação `@SupportEjb`: [CDI Unit - EJB Support](http://jglue.org/cdi-unit-user-guide/#ejb).
+
 #### TST Unit DBUnit
 
 ##### Dependência
@@ -312,6 +319,20 @@ Ao realizar operações de inserção, deleção e atualização em seus testes 
 		}
 		
 		// ...
+	}
+```
+
+##### Acessando as conexões diretamente
+
+Caso seja necessário ter acesso direto às conexões utilizadas pelo _TST Unit DBUnit_, você pode fazer conforme o exemplo abaixo:
+
+```java
+	try {
+	    Configuracao configuracao = new Configuracao().carregar();
+	    JdbcConnectionSupplier connectionSupplier = new JdbcConnectionSupplier(configuracao.getSubPropriedades("jdbc"));
+	    Connection connection = connectionSupplier.get(); // uma conexão com o banco utilizado pelo TST Unit DBUnit
+	} catch (TstUnitException exception) {
+	    // TODO Tratar exception
 	}
 ```
 
