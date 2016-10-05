@@ -8,7 +8,7 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-**xx/xx/2016 - 1.2.0**
+**xx/10/2016 - 1.2.0**
 - _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
 
 **08/09/2016 - 1.1.2**
@@ -361,7 +361,7 @@ package br.jus.tst.teste;
 @RunWith(TstUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalPackages({ TestEntityManagerProducer.class }) // adiciona o produtor de EntityManager ao classpath do CDI Unit
-@HabilitarJpa(persistenceUnitName = "meuPU")
+@HabilitarJpa(nomeUnidadePersistencia = "meuPU")
 public class MinhaClasseTeste {
 
     // @Inject
@@ -385,7 +385,7 @@ package br.jus.tst.teste;
 @HabilitarCdiAndMockito
 @AdditionalPackages({ TestEntityManagerProducer.class })
 @HabilitarDbUnit
-@HabilitarJpa(persistenceUnitName = "meuPU")
+@HabilitarJpa(nomeUnidadePersistencia = "meuPU")
 public class MinhaClasseTeste {
 
     @Inject
@@ -415,6 +415,39 @@ Basta definir a propriedade `hibernate.hbm2ddl.auto` no seu arquivo `persistence
 ```
 
 OBS.: O valor `create-drop` não é suportado dessa forma pois o JPA irá derrubar o _schema_ assim que o último `EntityManager` for fechado, ocasionando erros na execução do _TST Unit DBUnit_, que irá tentar limpar o banco de dados em seguida.
+
+##### Múltiplas unidades de persistência no mesmo teste
+
+Caso seu teste utilize mais de uma unidade de persistência, o corpo da anotação `@HabilitarJpa` ficará um pouco diferente, conforme o exemplo abaixo:
+
+```java
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarJpa(unidadesPersistencia = {
+		@UnidadePersistencia(nome = "testePU", qualifierClass = TestePU.class),
+        @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) })
+@HabilitarCdiAndMockito // esse recurso só está disponível junto com o CDI
+@AdditionalClasses({ TestEntityManagerFactoryProducerExtension.class })
+public class MinhaClasseTeste {
+
+    @Inject
+    @TestePU
+    private EntityManager entityManager1;
+
+    @Inject
+    @Teste2PU
+    private EntityManager entityManager2;
+    
+    @Inject
+    private MinhaClasseQueUsaEntityManager instancia;
+
+    @Test
+    public void teste() {
+        // ...
+    }
+}
+```
 
 #### TST Unit Mockito
 
@@ -483,7 +516,7 @@ Outras anotações das extensões podem ser utilizadas normalmente:
 @UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
 @HabilitarCdiAndMockito
 @AdditionalPackages({ TestEntityManagerProducer.class })
-@HabilitarJpa(persistenceUnitName = "meuPU")
+@HabilitarJpa(nomeUnidadePersistencia = "meuPU")
 public class MeuTesteParametrizado {
 
     ...
