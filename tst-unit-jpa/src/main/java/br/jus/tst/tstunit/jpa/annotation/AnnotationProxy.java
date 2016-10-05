@@ -20,7 +20,7 @@ import java.util.Map.Entry;
  * @author Gunnar Morling
  * @see java.lang.annotation.Annotation
  */
-class AnnotationProxy implements Annotation, InvocationHandler, Serializable {
+public class AnnotationProxy implements Annotation, InvocationHandler, Serializable {
 
     private static final long serialVersionUID = 6907601010599429454L;
 
@@ -28,7 +28,7 @@ class AnnotationProxy implements Annotation, InvocationHandler, Serializable {
     private final Map<String, Object> values;
     private final int hashCode;
 
-    AnnotationProxy(AnnotationDescriptor<?> descriptor) {
+    public AnnotationProxy(AnnotationDescriptor<?> descriptor) {
         this.annotationType = descriptor.type();
         values = Collections.unmodifiableMap(getAnnotationValues(descriptor));
         this.hashCode = calculateHashCode();

@@ -7,11 +7,11 @@ import java.util.Arrays;
 import javax.enterprise.inject.spi.CDI;
 import javax.persistence.*;
 
-import org.hibernate.annotations.common.annotationfactory.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.jpa.*;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
+import br.jus.tst.tstunit.jpa.annotation.*;
 
 /**
  * Implementação de {@link GeradorSchema} que delega a geração para o {@link EntityManagerFactory} obtido através do contêiner CDI. Assume-se que o JPA esteja
@@ -35,7 +35,7 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
         try {
             UnidadePersistencia[] unidadesPersistencia = TestEntityManagerFactoryProducerExtension.getUnidadesPersistencia();
             LOGGER.debug("Unidades de persistência: {}", (Object[]) unidadesPersistencia);
-            
+
             Arrays.stream(unidadesPersistencia).forEach(unidade -> {
                 LOGGER.debug("Obtendo EntityManager da unidade de persistência: {}", unidade);
                 CDI.current().select(EntityManager.class, getQualifierAnnotation(unidade)).get().clear();
@@ -46,6 +46,7 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
         }
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private Annotation getQualifierAnnotation(UnidadePersistencia unidade) {
         return new AnnotationProxy(new AnnotationDescriptor(unidade.qualifierClass()));
     }

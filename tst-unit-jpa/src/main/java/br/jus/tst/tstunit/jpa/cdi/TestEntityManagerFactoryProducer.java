@@ -10,10 +10,10 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.*;
 import javax.persistence.*;
 
-import org.hibernate.annotations.common.annotationfactory.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
+import br.jus.tst.tstunit.jpa.annotation.*;
 
 /**
  * Classe que provê acesso a instâncias de {@link EntityManagerFactory} utilizadas nos testes.
@@ -61,6 +61,7 @@ public class TestEntityManagerFactoryProducer implements Bean<EntityManagerFacto
     }
 
     @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Set<Annotation> getQualifiers() {
         Annotation annotation = new AnnotationProxy(new AnnotationDescriptor(unidadePersistencia.qualifierClass()));
         LOGGER.debug("Qualifier da unidade de persistência: {}", annotation);
