@@ -366,7 +366,7 @@ public class MinhaClasseTeste {
     @Before
     public void setUp() {
     	// a instância de entityManager criada é singleton
-        entityManager = EntityManagerCacheProducer.getUniqueEntityManager();
+        em = EntityManagerCacheProducer.getUniqueEntityManager();
     }
 
     @Test
@@ -378,14 +378,14 @@ public class MinhaClasseTeste {
 
 OBS.: Não é necessário fechar a instância de `EntityManager` fornecida, pois isso será feito internamente após a execução dos seus testes.
 
-É possível usar essa extensão em conjunto com a _TST Unit CDI_, seus testes ficarão com uma estrutura semelhante à essa:
+É possível usar essa extensão em conjunto com a _TST Unit CDI_, de modo que seus testes ficarão com uma estrutura semelhante à essa:
 
 ```java
 package br.jus.tst.teste;
 
 @RunWith(TstUnitRunner.class)
 @HabilitarCdiAndMockito
-@AdditionalPackages({ TestEntityManagerProducer.class }) // adiciona o produtor de EntityManager ao classpath do CDI Unit
+@AdditionalClasses({ EntityManagerFactoryProducerExtension.class }) // extensão que habilita os produtores do JPA
 @HabilitarJpa(nomeUnidadePersistencia = "meuPU", geradorSchema = GeradorSchemaCdi.class)
 public class MinhaClasseTeste {
 
@@ -408,7 +408,7 @@ package br.jus.tst.teste;
 
 @RunWith(TstUnitRunner.class)
 @HabilitarCdiAndMockito
-@AdditionalPackages({ TestEntityManagerProducer.class })
+@AdditionalClasses({ EntityManagerFactoryProducerExtension.class })
 @HabilitarDbUnit
 @HabilitarJpa(nomeUnidadePersistencia = "meuPU", geradorSchema = GeradorSchemaCdi.class)
 public class MinhaClasseTeste {
@@ -452,8 +452,8 @@ package br.jus.tst.teste;
 @HabilitarJpa(unidadesPersistencia = {
 		@UnidadePersistencia(nome = "testePU", qualifierClass = TestePU.class),
         @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) }, geradorSchema = GeradorSchemaCdi.class)
-@HabilitarCdiAndMockito // esse recurso só está disponível junto com o CDI
-@AdditionalClasses({ TestEntityManagerFactoryProducerExtension.class })
+@HabilitarCdiAndMockito // esse recurso pode ser utilizado com o CDI
+@AdditionalClasses({ EntityManagerFactoryProducerExtension.class })
 public class MinhaClasseTeste {
 
     @Inject
