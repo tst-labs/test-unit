@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.jus.tst.tstunit.jpa.cdi.GeradorSchemaCdi;
+import br.jus.tst.tstunit.jpa.cache.GeradorSchemaCache;
 
 /**
  * Habilita o JPA numa classe de teste.
@@ -77,5 +77,5 @@ public @interface HabilitarJpa {
      * 
      * @return a classe
      */
-    Class<? extends GeradorSchema> geradorSchema() default GeradorSchemaCdi.class;
+    Class<? extends GeradorSchema> geradorSchema() default GeradorSchemaCache.class;
 }

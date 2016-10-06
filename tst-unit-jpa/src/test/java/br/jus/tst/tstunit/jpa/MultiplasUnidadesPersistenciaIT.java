@@ -9,40 +9,33 @@ import static org.junit.Assert.assertThat;
 import java.lang.annotation.*;
 import java.util.List;
 
-import javax.inject.*;
 import javax.persistence.*;
 
-import org.jglue.cdiunit.AdditionalClasses;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 
 import br.jus.tst.tstunit.TstUnitRunner;
-import br.jus.tst.tstunit.cdi.HabilitarCdiAndMockito;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
-import br.jus.tst.tstunit.jpa.MultiplasUnidadesPersistenciaComCdiIT.*;
-import br.jus.tst.tstunit.jpa.cdi.*;
+import br.jus.tst.tstunit.jpa.MultiplasUnidadesPersistenciaIT.*;
+import br.jus.tst.tstunit.jpa.cache.EntityManagerCacheProducer;
 
 /**
- * Testes de integração da {@link JpaExtensao} utilizando múltiplas unidades de persistência do JPA junto com CDI.
+ * Testes de integração da {@link JpaExtensao} utilizando múltiplas unidades de persistência do JPA.
  * 
  * @author Thiago Miranda
- * @since 03 de out de 2016
+ * @since 06 de out de 2016
  */
 @RunWith(TstUnitRunner.class)
 @HabilitarJpa(unidadesPersistencia = { @UnidadePersistencia(nome = "testePU", qualifierClass = TestePU.class),
-        @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) }, geradorSchema = GeradorSchemaCdi.class)
-@HabilitarCdiAndMockito
-@AdditionalClasses({ EntityManagerFactoryProducerExtension.class })
-public class MultiplasUnidadesPersistenciaComCdiIT {
+        @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) })
+public class MultiplasUnidadesPersistenciaIT {
 
-    @Qualifier
     @Retention(RUNTIME)
     @Target(FIELD)
     public static @interface TestePU {
 
     }
 
-    @Qualifier
     @Retention(RUNTIME)
     @Target(FIELD)
     public static @interface Teste2PU {
@@ -63,13 +56,14 @@ public class MultiplasUnidadesPersistenciaComCdiIT {
         private int id;
     }
 
-    @Inject
-    @TestePU
     private EntityManager entityManager1;
-
-    @Inject
-    @Teste2PU
     private EntityManager entityManager2;
+
+    @Before
+    public void setUp() {
+        entityManager1 = EntityManagerCacheProducer.getEntityManager(TestePU.class);
+        entityManager2 = EntityManagerCacheProducer.getEntityManager(Teste2PU.class);
+    }
 
     @Test
     @SuppressWarnings("rawtypes")

@@ -12,42 +12,42 @@ import javax.persistence.*;
 
 import org.slf4j.*;
 
+import br.jus.tst.tstunit.jpa.*;
+
 /**
- * Provê acesso a instâncias de {@link EntityManager}.
+ * Implementação de {@link EntityManagerProducer} que obtém as instâncias através do CDI.
  * 
  * @author ThiagoColbert
  * @since 29 de mai de 2016
  */
-public class TestEntityManagerProducer implements Bean<EntityManager>, Serializable {
+public class EntityManagerCdiProducer implements EntityManagerProducer, Bean<EntityManager>, Serializable {
 
     private static final long serialVersionUID = 3075682395966745202L;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestEntityManagerProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityManagerCdiProducer.class);
 
-    private TestEntityManagerFactoryProducer entityManagerFactoryProducer;
+    private EntityManagerFactoryCdiProducer entityManagerFactoryCdiProducer;
 
     /**
      * Cria uma nova instância com o produtor de {@link EntityManagerFactory} informado.
      * 
-     * @param entityManagerFactoryProducer
+     * @param entityManagerFactoryCdiProducer
      *            utilizado para obter instâncias de {@link EntityManagerFactory}
      */
-    public TestEntityManagerProducer(TestEntityManagerFactoryProducer entityManagerFactoryProducer) {
-        this.entityManagerFactoryProducer = Objects.requireNonNull(entityManagerFactoryProducer, "entityManagerFactoryProducer");
+    public EntityManagerCdiProducer(EntityManagerFactoryCdiProducer entityManagerFactoryCdiProducer) {
+        this.entityManagerFactoryCdiProducer = Objects.requireNonNull(entityManagerFactoryCdiProducer, "entityManagerFactoryCdiProducer");
     }
 
     @Override
     public EntityManager create(CreationalContext<EntityManager> creationalContext) {
         LOGGER.info("Criando novo EntityManager");
-        return entityManagerFactoryProducer.create(null).createEntityManager();
+        return criar();
     }
 
     @Override
     public void destroy(EntityManager instance, CreationalContext<EntityManager> creationalContext) {
-        if (instance.isOpen()) {
-            LOGGER.info("Fechando EntityManager: {}", instance);
-            instance.close();
-        }
+        LOGGER.info("Fechando EntityManager: {}", instance);
+        destruir(instance);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class TestEntityManagerProducer implements Bean<EntityManager>, Serializa
 
     @Override
     public Set<Annotation> getQualifiers() {
-        return entityManagerFactoryProducer.getQualifiers();
+        return entityManagerFactoryCdiProducer.getQualifiers();
     }
 
     @Override
@@ -93,5 +93,10 @@ public class TestEntityManagerProducer implements Bean<EntityManager>, Serializa
     @Override
     public boolean isNullable() {
         return false;
+    }
+
+    @Override
+    public EntityManagerFactoryProducer geEntityManagerFactoryProducer() {
+        return entityManagerFactoryCdiProducer;
     }
 }

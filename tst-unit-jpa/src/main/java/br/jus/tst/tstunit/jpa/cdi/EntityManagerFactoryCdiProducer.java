@@ -8,24 +8,25 @@ import java.util.*;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.*;
-import javax.persistence.*;
+import javax.persistence.EntityManagerFactory;
 
 import org.slf4j.*;
 
+import br.jus.tst.tstunit.jpa.EntityManagerFactoryProducer;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
 import br.jus.tst.tstunit.jpa.annotation.*;
 
 /**
- * Classe que provê acesso a instâncias de {@link EntityManagerFactory} utilizadas nos testes.
+ * Implementação de {@link EntityManagerFactoryProducer} que obtém as instâncias através do CDI.
  * 
  * @author ThiagoColbert
  * @since 29 de mai de 2016
  */
-public class TestEntityManagerFactoryProducer implements Bean<EntityManagerFactory>, Serializable {
+public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactory>, EntityManagerFactoryProducer, Serializable {
 
     private static final long serialVersionUID = 902185891912929393L;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestEntityManagerFactoryProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityManagerFactoryCdiProducer.class);
 
     private final UnidadePersistencia unidadePersistencia;
 
@@ -37,22 +38,20 @@ public class TestEntityManagerFactoryProducer implements Bean<EntityManagerFacto
      * @throws NullPointerException
      *             caso seja informado {@code null}
      */
-    public TestEntityManagerFactoryProducer(UnidadePersistencia unidadePersistencia) {
+    public EntityManagerFactoryCdiProducer(UnidadePersistencia unidadePersistencia) {
         this.unidadePersistencia = Objects.requireNonNull(unidadePersistencia, "unidadePersistencia");
     }
 
     @Override
     public EntityManagerFactory create(CreationalContext<EntityManagerFactory> creationalContext) {
         LOGGER.info("Inicializando contexto de persistência: {}", unidadePersistencia);
-        return Persistence.createEntityManagerFactory(unidadePersistencia.nome());
+        return criar();
     }
 
     @Override
     public void destroy(EntityManagerFactory instance, CreationalContext<EntityManagerFactory> creationalContext) {
-        if (instance.isOpen()) {
-            LOGGER.info("Encerrando contexto de persistência: {}", instance);
-            instance.close();
-        }
+        LOGGER.info("Encerrando contexto de persistência: {}", instance);
+        destruir(instance);
     }
 
     @Override
@@ -101,5 +100,10 @@ public class TestEntityManagerFactoryProducer implements Bean<EntityManagerFacto
     @Override
     public boolean isNullable() {
         return false;
+    }
+
+    @Override
+    public UnidadePersistencia getUnidadePersistencia() {
+        return unidadePersistencia;
     }
 }

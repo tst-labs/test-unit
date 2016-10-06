@@ -2,15 +2,13 @@ package br.jus.tst.tstunit.jpa;
 
 import java.lang.annotation.Annotation;
 
-import javax.enterprise.inject.Default;
-
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
-import br.jus.tst.tstunit.jpa.cdi.TestEntityManagerFactoryProducerExtension;
+import br.jus.tst.tstunit.jpa.cdi.EntityManagerFactoryProducerExtension;
 
 /**
  * {@link Extensao} que habilita o JPA nos testes.
@@ -70,9 +68,9 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
         if (unidadesPersistencia.length == 0) {
             unidadesPersistencia = criarAnotacaoUnidadePersistencia(habilitarJpa.nomeUnidadePersistencia());
         }
-        
+
         LOGGER.info("Unidades de persistência: {}", (Object[]) unidadesPersistencia);
-        TestEntityManagerFactoryProducerExtension.setUnidadesPersistencia(unidadesPersistencia);
+        EntityManagerFactoryProducerExtension.setUnidadesPersistencia(unidadesPersistencia);
 
         geradorSchema = criarGeradorSchema(habilitarJpa);
     }
@@ -87,7 +85,7 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
             @Override
             public Class<? extends Annotation> qualifierClass() {
-                return Default.class;
+                return Unico.class;
             }
 
             @Override

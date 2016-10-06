@@ -10,6 +10,7 @@ Histórico de mudanças
 
 **xx/10/2016 - 1.2.0**
 - _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
+- _[TST Unit JPA]_ Desacoplamento do CDI.
 
 **08/09/2016 - 1.1.2**
 - _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
@@ -351,9 +352,33 @@ Caso seja necessário ter acesso direto às conexões utilizadas pelo _TST Unit 
 
 ##### Uso
 
-Utilize a anotação `@HabilitarJpa` em seus testes.
+Utilize a anotação `@HabilitarJpa` em seus testes:
 
-Atualmente, essa extensão só pode ser usada em conjunto com a _TST Unit CDI_. Sendo assim, normalmente seus testes que a utilizem ficarão com uma estrutura semelhante à essa:
+```java
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarJpa(nomeUnidadePersistencia = "meuPU")
+public class MinhaClasseTeste {
+
+    private EntityManager em;
+    
+    @Before
+    public void setUp() {
+    	// a instância de entityManager criada é singleton
+        entityManager = EntityManagerCacheProducer.getUniqueEntityManager();
+    }
+
+    @Test
+    public void teste() {
+        // ...
+    }
+}
+```
+
+OBS.: Não é necessário fechar a instância de `EntityManager` fornecida, pois isso será feito internamente após a execução dos seus testes.
+
+É possível usar essa extensão em conjunto com a _TST Unit CDI_, seus testes ficarão com uma estrutura semelhante à essa:
 
 ```java
 package br.jus.tst.teste;
@@ -361,7 +386,7 @@ package br.jus.tst.teste;
 @RunWith(TstUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalPackages({ TestEntityManagerProducer.class }) // adiciona o produtor de EntityManager ao classpath do CDI Unit
-@HabilitarJpa(nomeUnidadePersistencia = "meuPU")
+@HabilitarJpa(nomeUnidadePersistencia = "meuPU", geradorSchema = GeradorSchemaCdi.class)
 public class MinhaClasseTeste {
 
     // @Inject
@@ -385,7 +410,7 @@ package br.jus.tst.teste;
 @HabilitarCdiAndMockito
 @AdditionalPackages({ TestEntityManagerProducer.class })
 @HabilitarDbUnit
-@HabilitarJpa(nomeUnidadePersistencia = "meuPU")
+@HabilitarJpa(nomeUnidadePersistencia = "meuPU", geradorSchema = GeradorSchemaCdi.class)
 public class MinhaClasseTeste {
 
     @Inject
@@ -426,7 +451,7 @@ package br.jus.tst.teste;
 @RunWith(TstUnitRunner.class)
 @HabilitarJpa(unidadesPersistencia = {
 		@UnidadePersistencia(nome = "testePU", qualifierClass = TestePU.class),
-        @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) })
+        @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) }, geradorSchema = GeradorSchemaCdi.class)
 @HabilitarCdiAndMockito // esse recurso só está disponível junto com o CDI
 @AdditionalClasses({ TestEntityManagerFactoryProducerExtension.class })
 public class MinhaClasseTeste {

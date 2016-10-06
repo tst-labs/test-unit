@@ -33,17 +33,21 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
     @Override
     public void criar() {
         try {
-            UnidadePersistencia[] unidadesPersistencia = TestEntityManagerFactoryProducerExtension.getUnidadesPersistencia();
+            UnidadePersistencia[] unidadesPersistencia = EntityManagerFactoryProducerExtension.getUnidadesPersistencia();
             LOGGER.debug("Unidades de persistência: {}", (Object[]) unidadesPersistencia);
 
             Arrays.stream(unidadesPersistencia).forEach(unidade -> {
                 LOGGER.debug("Obtendo EntityManager da unidade de persistência: {}", unidade);
-                CDI.current().select(EntityManager.class, getQualifierAnnotation(unidade)).get().clear();
+                recuperarEntityManagerDoCdi(unidade).clear();
             });
 
         } catch (PersistenceException exception) {
             throw new JpaException("Erro ao obter instância de EntityManager do contexto CDI", exception);
         }
+    }
+
+    private EntityManager recuperarEntityManagerDoCdi(UnidadePersistencia unidade) {
+        return CDI.current().select(EntityManager.class, getQualifierAnnotation(unidade)).get();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
