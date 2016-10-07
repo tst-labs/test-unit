@@ -5,9 +5,10 @@ import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.*;
+import org.slf4j.*;
 
 /**
- * Classe que fornece acesso a todas as configurações da biblioteca, conforme presentes em um arquivo {@value #NOME_ARQUIVO_PROPRIEDADES} que esteja no
+ * Classe que fornece acesso a todas as configurações da biblioteca, conforme presentes em um arquivo {@link #getNomeArquivoPropriedades()} que esteja no
  * <em>classpath</em>.
  * 
  * @author Thiago Miranda
@@ -15,11 +16,33 @@ import org.apache.commons.lang3.*;
  */
 public class Configuracao implements Serializable {
 
-    private static final String NOME_ARQUIVO_PROPRIEDADES = "tstunit.properties";
-
     private static final long serialVersionUID = 3577294568759890149L;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Configuracao.class);
 
+    private static final String NOME_PADRAO_ARQUIVO_PROPRIEDADES = "tstunit.properties";
+
+    private transient String nomeArquivoPropriedades;
     private transient Properties properties;
+
+    public Configuracao() {
+        nomeArquivoPropriedades = NOME_PADRAO_ARQUIVO_PROPRIEDADES;
+    }
+
+    public String getNomeArquivoPropriedades() {
+        return nomeArquivoPropriedades;
+    }
+
+    /**
+     * Define o nome do arquivo o qual será utilizado para carregar as propriedades.
+     * 
+     * @param nomeArquivoPropriedades
+     *            o nome do arquivo de propridades
+     * @return {@code this} para chamadas encadeadas de método
+     */
+    public Configuracao setNomeArquivoPropriedades(String nomeArquivoPropriedades) {
+        this.nomeArquivoPropriedades = nomeArquivoPropriedades;
+        return this;
+    }
 
     /**
      * Carrega as configurações a partir do arquivo.
@@ -29,14 +52,16 @@ public class Configuracao implements Serializable {
      *             caso ocorra algum erro ao carregar as configurações
      */
     public Configuracao carregar() throws TstUnitException {
-        Optional<InputStream> propertiesStreamOptional = Optional
-                .ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(NOME_ARQUIVO_PROPRIEDADES));
+        LOGGER.debug("Carregando propriedades a partir do arquivo: {}", nomeArquivoPropriedades);
+
+        Optional<InputStream> propertiesStreamOptional = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivoPropriedades));
         InputStream propertiesStream = propertiesStreamOptional
-                .orElseThrow(() -> new TstUnitException("Nenhum arquivo " + NOME_ARQUIVO_PROPRIEDADES + " encontrado no classpath."));
+                .orElseThrow(() -> new TstUnitException("Nenhum arquivo " + nomeArquivoPropriedades + " encontrado no classpath."));
 
         properties = new Properties();
         try {
             properties.load(propertiesStream);
+            LOGGER.trace("Propriedades: {}", properties);
         } catch (IOException exception) {
             throw new TstUnitException("Erro ao carregar arquivo de propriedades", exception);
         } finally {

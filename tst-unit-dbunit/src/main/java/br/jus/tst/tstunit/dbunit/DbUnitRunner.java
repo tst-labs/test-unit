@@ -62,7 +62,6 @@ public class DbUnitRunner implements Serializable {
     public DbUnitRunner(Class<?> classeTeste, String nomeSchema, Configuracao configuracao) throws TstUnitException {
         this.classeTeste = Objects.requireNonNull(classeTeste, "classeTeste");
         this.configuracao = Objects.requireNonNull(configuracao, "configuracao");
-        this.configuracao.carregar();
 
         jdbcConnectionSupplier = new JdbcConnectionSupplier(getConfiguracoesJdbc());
 
@@ -71,8 +70,8 @@ public class DbUnitRunner implements Serializable {
 
         annotationExtractor = new AnnotationExtractor(classeTeste);
 
-        rodarScriptHandler = new RodarScriptHandler(StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO),
-                jdbcConnectionSupplier, annotationExtractor);
+        rodarScriptHandler = new RodarScriptHandler(StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO), jdbcConnectionSupplier,
+                annotationExtractor);
 
         usarDataSetHandler = new UsarDataSetHandler(getDiretorioDatasets(), carregarOperacao("beforeTests.operation", OPERACAO_BEFORE_TESTS_PADRAO),
                 carregarOperacao("afterTests.operation", OPERACAO_AFTER_TESTS_PADRAO), jdbcConnectionSupplier, annotationExtractor);
@@ -110,8 +109,8 @@ public class DbUnitRunner implements Serializable {
         Objects.requireNonNull(method, "method");
 
         LOGGER.debug("Criando Statement para o método {}", method);
-        return DbUnitStatement.aPartirDo(statement).usandoDatabaseLoader(usarDataSetHandler.processar(method))
-                .usandoScriptRunner(rodarScriptHandler.processar(method)).usandoGeradorDtd(gerarDtdHandler.processar(method)).build();
+        return DbUnitStatement.aPartirDo(statement).usandoDatabaseLoader(usarDataSetHandler.processar(method)).usandoScriptRunner(rodarScriptHandler.processar(method))
+                .usandoGeradorDtd(gerarDtdHandler.processar(method)).build();
     }
 
     private String getDiretorioDatasets() {

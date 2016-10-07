@@ -33,6 +33,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TstUnitRunner.class);
     private static final String PACOTE_EXTENSOES = "br.jus.tst.tstunit";
+    private static final Optional<String> NOME_ARQUIVO_PROPRIEDADES_PARAM = Optional.ofNullable(System.getProperty("nomeArquivoPropriedades"));
 
     private transient final Class<?> classeTeste;
     private transient final Configuracao configuracao;
@@ -50,6 +51,13 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
         super(classeTeste);
         this.classeTeste = classeTeste;
         configuracao = new Configuracao();
+        NOME_ARQUIVO_PROPRIEDADES_PARAM.ifPresent(configuracao::setNomeArquivoPropriedades);
+        
+        try {
+            configuracao.carregar();
+        } catch (TstUnitException exception) {
+            LOGGER.debug("Erro ao carregar propriedades", exception);
+        }
 
         extensoes = new ExtensoesLoader(PACOTE_EXTENSOES, classeTeste).carregarExtensoes();
         LOGGER.info("Extensões habilitadas: {}", extensoes);
@@ -133,12 +141,6 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
     @Override
     protected List<TestRule> getTestRules(Object target) {
         List<TestRule> rules = super.getTestRules(target);
-
-        try {
-            configuracao.carregar();
-        } catch (TstUnitException exception) {
-            LOGGER.debug("Erro ao carregar propriedades", exception);
-        }
 
         ImprimirNomeTeste imprimirNomeTeste = classeTeste.getAnnotation(ImprimirNomeTeste.class);
         if (imprimirNomeTeste == null && configuracao.getPropriedadeBoolean("core.printtestname.default").orElse(Boolean.TRUE)) {

@@ -11,6 +11,7 @@ Histórico de mudanças
 **xx/10/2016 - 1.2.0**
 - _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
 - _[TST Unit JPA]_ Desacoplamento do CDI.
+- _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
 
 **08/09/2016 - 1.1.2**
 - _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
@@ -33,7 +34,6 @@ TODO List
 ---------
 
 - _[TST Unit Core]_ Permitir utilização de suites de testes
-- _[TST Unit DBUnit]_ Permitir integração com outros bancos que não H2
 - _[novo]_ Integração com JBehave
 
 Requisitos
