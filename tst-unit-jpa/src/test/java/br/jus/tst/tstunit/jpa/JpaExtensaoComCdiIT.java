@@ -6,30 +6,31 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import javax.inject.Inject;
+import javax.persistence.*;
 
-import org.junit.*;
+import org.jglue.cdiunit.AdditionalClasses;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.jus.tst.tstunit.TstUnitRunner;
-import br.jus.tst.tstunit.jpa.cache.EntityManagerCacheProducer;
+import br.jus.tst.tstunit.cdi.HabilitarCdiAndMockito;
+import br.jus.tst.tstunit.jpa.cdi.EntityManagerFactoryProducerExtension;
 
 /**
- * Testes de integração da {@link JpaExtensao}.
+ * Testes de integração da {@link JpaExtensao} com CDI habilitado.
  * 
  * @author Thiago Miranda
- * @since 14 de jul de 2016
+ * @since 10 de out de 2016
  */
 @RunWith(TstUnitRunner.class)
 @HabilitarJpa(nomeUnidadePersistencia = "testePU")
-public class JpaExtensaoIT {
+@HabilitarCdiAndMockito
+@AdditionalClasses({ EntityManagerFactoryProducerExtension.class })
+public class JpaExtensaoComCdiIT {
 
+    @Inject
     private EntityManager entityManager;
-
-    @Before
-    public void setUp() {
-        entityManager = EntityManagerCacheProducer.getUniqueEntityManager();
-    }
 
     @Test
     @SuppressWarnings("rawtypes")

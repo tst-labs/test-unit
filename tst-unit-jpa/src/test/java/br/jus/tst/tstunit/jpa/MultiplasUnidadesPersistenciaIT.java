@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 import java.lang.annotation.*;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -40,20 +40,6 @@ public class MultiplasUnidadesPersistenciaIT {
     @Target(FIELD)
     public static @interface Teste2PU {
 
-    }
-
-    /**
-     * Entidade de testes.
-     * 
-     * @author Thiago Miranda
-     * @since 14 de jul de 2016
-     */
-    @Entity
-    @Table
-    public static class Entidade {
-
-        @Id
-        private int id;
     }
 
     private EntityManager entityManager1;

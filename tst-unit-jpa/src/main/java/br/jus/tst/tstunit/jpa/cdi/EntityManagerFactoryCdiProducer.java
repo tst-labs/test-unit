@@ -7,12 +7,13 @@ import java.util.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.*;
 import javax.persistence.EntityManagerFactory;
 
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.jpa.EntityManagerFactoryProducer;
+import br.jus.tst.tstunit.jpa.*;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
 import br.jus.tst.tstunit.jpa.annotation.*;
 
@@ -62,8 +63,15 @@ public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactor
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Set<Annotation> getQualifiers() {
-        Annotation annotation = new AnnotationProxy(new AnnotationDescriptor(unidadePersistencia.qualifierClass()));
+        Class<? extends Annotation> qualifierClass = unidadePersistencia.qualifierClass();
+        if (qualifierClass == Unico.class) {
+            // substitui o qualifier para funcionar dentro do CDI
+            qualifierClass = Default.class;
+        }
+        
+        Annotation annotation = new AnnotationProxy(new AnnotationDescriptor(qualifierClass));
         LOGGER.debug("Qualifier da unidade de persistência: {}", annotation);
+        
         return new HashSet<>(Arrays.asList(annotation));
     }
 

@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 import java.util.List;
 
 import javax.inject.*;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
 
 import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.Test;
@@ -47,20 +47,6 @@ public class MultiplasUnidadesPersistenciaComCdiIT {
     @Target(FIELD)
     public static @interface Teste2PU {
 
-    }
-
-    /**
-     * Entidade de testes.
-     * 
-     * @author Thiago Miranda
-     * @since 14 de jul de 2016
-     */
-    @Entity
-    @Table
-    public static class Entidade {
-
-        @Id
-        private int id;
     }
 
     @Inject

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.CDI;
 import javax.persistence.*;
 
@@ -52,7 +53,14 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private Annotation getQualifierAnnotation(UnidadePersistencia unidade) {
-        return new AnnotationProxy(new AnnotationDescriptor(unidade.qualifierClass()));
+        Class<? extends Annotation> qualifierClass = unidade.qualifierClass();
+
+        if (qualifierClass == Unico.class) {
+            // substitui o qualifier para funcionar dentro do CDI
+            qualifierClass = Default.class;
+        }
+
+        return new AnnotationProxy(new AnnotationDescriptor(qualifierClass));
     }
 
     @Override

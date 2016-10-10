@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.*;
 
-import br.jus.tst.tstunit.jpa.JpaExtensaoIT.Entidade;
 import br.jus.tst.tstunit.jpa.cache.EntityManagerCacheProducer;
 import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
 
