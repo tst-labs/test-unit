@@ -8,7 +8,9 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-**xx/10/2016 - 1.2.0**
+**xxx - 1.2.1**
+
+**13/10/2016 - 1.2.0**
 - _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
 - _[TST Unit JPA]_ Desacoplamento do CDI.
 - _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
