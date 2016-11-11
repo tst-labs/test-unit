@@ -2,7 +2,7 @@ package br.jus.tst.tstunit.jpa.cdi;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
+import java.util.*;
 
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.CDI;
@@ -26,6 +26,20 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
     private static final long serialVersionUID = -7371478997025466447L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GeradorSchemaCdi.class);
+
+    private final Map<String, String> propriedadesAdicionais;
+
+    /**
+     * Cria uma nova instância com as propriedades adicionais a serem repassadas para o framework ORM.
+     * 
+     * @param propriedadesAdicionais
+     *            a serem repassadas ao framework ORM (pode estar vazio)
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
+     */
+    public GeradorSchemaCdi(Map<String, String> propriedadesAdicionais) {
+        this.propriedadesAdicionais = new HashMap<>(Objects.requireNonNull(propriedadesAdicionais, "propriedadesAdicionais"));
+    }
 
     /**
      * @throws JpaException
@@ -65,5 +79,10 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
 
     @Override
     public void destruir() {
+    }
+    
+    @Override
+    public Map<String, String> getPropriedadesAdicionais() {
+        return Collections.unmodifiableMap(propriedadesAdicionais);
     }
 }

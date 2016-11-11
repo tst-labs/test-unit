@@ -21,6 +21,11 @@
             <artifactId>tst-unit-cdi</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>br.jus.tst</groupId>
+            <artifactId>tst-unit-dbunit</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>

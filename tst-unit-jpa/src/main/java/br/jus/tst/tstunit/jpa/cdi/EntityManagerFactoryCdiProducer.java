@@ -30,17 +30,21 @@ public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactor
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityManagerFactoryCdiProducer.class);
 
     private final UnidadePersistencia unidadePersistencia;
+    private final Map<String, String> propriedadesAdicionais;
 
     /**
      * Cria uma nova instância de produtor da unidade de persistência informada.
      * 
      * @param unidadePersistencia
      *            informações da unidade de persistência
+     * @param propriedadesAdicionais
+     *            a serem repassadas ao fraemwork ORM (pode estar vazio)
      * @throws NullPointerException
      *             caso seja informado {@code null}
      */
-    public EntityManagerFactoryCdiProducer(UnidadePersistencia unidadePersistencia) {
+    public EntityManagerFactoryCdiProducer(UnidadePersistencia unidadePersistencia, Map<String, String> propriedadesAdicionais) {
         this.unidadePersistencia = Objects.requireNonNull(unidadePersistencia, "unidadePersistencia");
+        this.propriedadesAdicionais = new HashMap<>(Objects.requireNonNull(propriedadesAdicionais, "propriedadesAdicionais"));
     }
 
     @Override
@@ -68,10 +72,10 @@ public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactor
             // substitui o qualifier para funcionar dentro do CDI
             qualifierClass = Default.class;
         }
-        
+
         Annotation annotation = new AnnotationProxy(new AnnotationDescriptor(qualifierClass));
         LOGGER.debug("Qualifier da unidade de persistência: {}", annotation);
-        
+
         return new HashSet<>(Arrays.asList(annotation));
     }
 
@@ -113,5 +117,10 @@ public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactor
     @Override
     public UnidadePersistencia getUnidadePersistencia() {
         return unidadePersistencia;
+    }
+
+    @Override
+    public Map<String, String> getPropriedadesAdicionais() {
+        return Collections.unmodifiableMap(propriedadesAdicionais);
     }
 }

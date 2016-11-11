@@ -1,6 +1,7 @@
 package br.jus.tst.tstunit.jpa;
 
-import java.lang.annotation.Annotation;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.runner.notification.RunNotifier;
@@ -10,6 +11,7 @@ import org.slf4j.*;
 import br.jus.tst.tstunit.*;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
 import br.jus.tst.tstunit.jpa.cdi.EntityManagerFactoryProducerExtension;
+import br.jus.tst.tstunit.jpa.util.*;
 
 /**
  * {@link Extensao} que habilita o JPA nos testes.
@@ -19,7 +21,11 @@ import br.jus.tst.tstunit.jpa.cdi.EntityManagerFactoryProducerExtension;
  */
 public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
+    private static final String PREFIXO_PROPRIEDADES_ORM = "jpa.orm";
+    private static final String PREFIXO_PROPRIEDADES_JDBC = "jdbc";
+
     private static final long serialVersionUID = -3496955917548402L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaExtensao.class);
 
     private GeradorSchema geradorSchema;
@@ -59,6 +65,7 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
         assertExtensaoHabilitada();
 
@@ -67,47 +74,34 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
         UnidadePersistencia[] unidadesPersistencia = habilitarJpa.unidadesPersistencia();
         if (unidadesPersistencia.length == 0) {
-            unidadesPersistencia = criarAnotacaoUnidadePersistencia(StringUtils.defaultIfEmpty(habilitarJpa.nomeUnidadePersistencia(), habilitarJpa.persistenceUnitName()));
+            unidadesPersistencia = new UnidadePersistenciaCreator()
+                    .criarAnotacaoUnidadePersistencia(StringUtils.defaultIfEmpty(habilitarJpa.nomeUnidadePersistencia(), habilitarJpa.persistenceUnitName()), Unico.class);
         }
 
         LOGGER.info("Unidades de persistência: {}", (Object[]) unidadesPersistencia);
         EntityManagerFactoryProducerExtension.setUnidadesPersistencia(unidadesPersistencia);
 
-        geradorSchema = criarGeradorSchema(habilitarJpa);
+        Map<String, String> propriedadesAdicionais = configuracao.getSubPropriedades(PREFIXO_PROPRIEDADES_ORM).entrySet().stream()
+                .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue()));
+        propriedadesAdicionais.putAll(toOrmProperties(configuracao.getSubPropriedades(PREFIXO_PROPRIEDADES_JDBC)));
+
+        EntityManagerFactoryProducerExtension.setPropriedadesAdicionais(propriedadesAdicionais);
+        geradorSchema = new GeradorSchemaCreator().criarGeradorSchema(habilitarJpa.geradorSchema(), propriedadesAdicionais);
     }
 
-    private UnidadePersistencia[] criarAnotacaoUnidadePersistencia(String nomeUnidadePersistencia) {
-        return new UnidadePersistencia[] { new UnidadePersistencia() {
-
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return UnidadePersistencia.class;
-            }
-
-            @Override
-            public Class<? extends Annotation> qualifierClass() {
-                return Unico.class;
-            }
-
-            @Override
-            public String nome() {
-                return nomeUnidadePersistencia;
-            }
-        } };
+    private Map<String, String> toOrmProperties(Properties propriedadesJdbc) {
+        Map<String, String> ormProperties = new HashMap<>();
+        replaceProperty(propriedadesJdbc, ormProperties, "driverClass", "hibernate.connection.driver_class")
+                .replaceProperty(propriedadesJdbc, ormProperties, "url", "hibernate.connection.url")
+                .replaceProperty(propriedadesJdbc, ormProperties, "user", "hibernate.connection.username")
+                .replaceProperty(propriedadesJdbc, ormProperties, "password", "hibernate.connection.password");
+        return ormProperties;
     }
 
-    private GeradorSchema criarGeradorSchema(HabilitarJpa habilitarJpa) throws TstUnitException {
-        Class<? extends GeradorSchema> classeGeradorSchema = habilitarJpa.geradorSchema();
-        GeradorSchema instanciaGeradorSchema;
-
-        LOGGER.debug("Criando instância do gerador de schema configurado: {}", classeGeradorSchema);
-        try {
-            instanciaGeradorSchema = classeGeradorSchema.newInstance();
-        } catch (InstantiationException | IllegalAccessException exception) {
-            throw new TstUnitException("Erro ao instanciar gerador de schema: " + classeGeradorSchema, exception);
-        }
-
-        return instanciaGeradorSchema;
+    private JpaExtensao replaceProperty(Properties propriedadesJdbc, Map<String, String> ormProperties, String jdbcPropertyKey, String ormPropertyKey) {
+        ormProperties.put(ormPropertyKey, propriedadesJdbc.getProperty(jdbcPropertyKey));
+        ormProperties.remove(jdbcPropertyKey);
+        return this;
     }
 
     @Override

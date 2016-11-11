@@ -25,6 +25,20 @@ public class GeradorSchemaCache implements Serializable, GeradorSchema {
     private static final Logger LOGGER = LoggerFactory.getLogger(GeradorSchemaCdi.class);
     private static final Map<UnidadePersistencia, EntityManagerCacheProducer> PRODUCER_MAP = new HashMap<>();
 
+    private final Map<String, String> propriedadesAdicionais;
+
+    /**
+     * Cria uma nova instância com as propriedades adicionais a serem repassadas para o framework ORM.
+     * 
+     * @param propriedadesAdicionais
+     *            a serem repassadas ao framework ORM (pode estar vazio)
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
+     */
+    public GeradorSchemaCache(Map<String, String> propriedadesAdicionais) {
+        this.propriedadesAdicionais = new HashMap<>(Objects.requireNonNull(propriedadesAdicionais, "propriedadesAdicionais"));
+    }
+
     @Override
     public void criar() throws JpaException {
         UnidadePersistencia[] unidadesPersistencia = EntityManagerFactoryProducerExtension.getUnidadesPersistencia();
@@ -36,7 +50,7 @@ public class GeradorSchemaCache implements Serializable, GeradorSchema {
 
             try {
                 LOGGER.debug("Obtendo EntityManager da unidade de persistência: {}", unidade);
-                entityManagerFactoryProducer = new EntityManagerFactoryCacheProducer(unidade);
+                entityManagerFactoryProducer = new EntityManagerFactoryCacheProducer(unidade, propriedadesAdicionais);
                 entityManagerProducer = new EntityManagerCacheProducer(entityManagerFactoryProducer);
                 entityManagerProducer.criar().clear();
                 PRODUCER_MAP.put(unidade, entityManagerProducer);
@@ -53,5 +67,10 @@ public class GeradorSchemaCache implements Serializable, GeradorSchema {
             LOGGER.debug("Destruindo schema da unidade de persistência: {}", unidadePersistencia);
             producer.fecharTudo();
         });
+    }
+
+    @Override
+    public Map<String, String> getPropriedadesAdicionais() {
+        return Collections.unmodifiableMap(propriedadesAdicionais);
     }
 }

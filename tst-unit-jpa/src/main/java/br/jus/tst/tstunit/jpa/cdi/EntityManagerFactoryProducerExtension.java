@@ -1,5 +1,7 @@
 package br.jus.tst.tstunit.jpa.cdi;
 
+import java.util.*;
+
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
 
@@ -21,13 +23,24 @@ public class EntityManagerFactoryProducerExtension implements Extension {
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityManagerFactoryProducerExtension.class);
 
     private static UnidadePersistencia[] unidadesPersistencia;
+    private static Map<String, String> propriedadesAdicionais;
 
     public static UnidadePersistencia[] getUnidadesPersistencia() {
         return ArrayUtils.clone(unidadesPersistencia);
     }
 
     public static void setUnidadesPersistencia(UnidadePersistencia[] unidadesPersistencia) {
+        LOGGER.debug("Unidades de persistência: {}", unidadesPersistencia);
         EntityManagerFactoryProducerExtension.unidadesPersistencia = ArrayUtils.clone(unidadesPersistencia);
+    }
+
+    public static Map<String, String> getPropriedadesAdicionais() {
+        return Collections.unmodifiableMap(propriedadesAdicionais);
+    }
+
+    public static void setPropriedadesAdicionais(Map<String, String> propriedadesAdicionais) {
+        LOGGER.debug("Propriedades ORM adicionais: {}", propriedadesAdicionais);
+        EntityManagerFactoryProducerExtension.propriedadesAdicionais = new HashMap<>(propriedadesAdicionais);
     }
 
     /**
@@ -40,7 +53,7 @@ public class EntityManagerFactoryProducerExtension implements Extension {
         LOGGER.debug("Processando unidades de persistência: {}", (Object[]) unidadesPersistencia);
 
         for (UnidadePersistencia unidade : unidadesPersistencia) {
-            EntityManagerFactoryCdiProducer entityManagerFactoryCdiProducer = new EntityManagerFactoryCdiProducer(unidade);
+            EntityManagerFactoryCdiProducer entityManagerFactoryCdiProducer = new EntityManagerFactoryCdiProducer(unidade, propriedadesAdicionais);
             afterBeanDiscovery.addBean(entityManagerFactoryCdiProducer);
             afterBeanDiscovery.addBean(new EntityManagerCdiProducer(entityManagerFactoryCdiProducer));
         }

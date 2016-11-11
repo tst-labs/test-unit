@@ -6,36 +6,39 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.jglue.cdiunit.AdditionalClasses;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 
 import br.jus.tst.tstunit.TstUnitRunner;
-import br.jus.tst.tstunit.cdi.HabilitarCdiAndMockito;
-import br.jus.tst.tstunit.jpa.cdi.*;
+import br.jus.tst.tstunit.dbunit.HabilitarDbUnit;
+import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet;
+import br.jus.tst.tstunit.jpa.cache.EntityManagerCacheProducer;
 
 /**
- * Testes de integração da {@link JpaExtensao} com CDI habilitado.
+ * Testes de integração da {@link JpaExtensao} com DB Unit habilitado.
  * 
  * @author Thiago Miranda
- * @since 10 de out de 2016
+ * @since 14 de jul de 2016
  */
 @RunWith(TstUnitRunner.class)
-@HabilitarJpa(nomeUnidadePersistencia = "testePU", geradorSchema = GeradorSchemaCdi.class)
-@HabilitarCdiAndMockito
-@AdditionalClasses({ EntityManagerFactoryProducerExtension.class })
-public class JpaExtensaoComCdiIT {
+@HabilitarJpa(nomeUnidadePersistencia = "testePUIntegradoDbUnit")
+@HabilitarDbUnit(nomeSchema = "IT2")
+@UsarDataSet("entidades.xml")
+public class JpaExtensaoComDbUnitIT {
 
-    @Inject
     private EntityManager entityManager;
+
+    @Before
+    public void setUp() {
+        entityManager = EntityManagerCacheProducer.getUniqueEntityManager();
+    }
 
     @Test
     @SuppressWarnings("rawtypes")
     public void deveriaCarregarEntityManager() {
         List resultado = entityManager.createQuery("SELECT e FROM " + Entidade.class.getName() + " e").getResultList();
-        assertThat(resultado.size(), is(equalTo(0)));
+        assertThat(resultado.size(), is(equalTo(2)));
     }
 }

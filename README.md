@@ -8,7 +8,8 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-**xxx - 1.2.1**
+**xxx - 1.3.0**
+- _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
 
 **13/10/2016 - 1.2.0**
 - _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
@@ -403,6 +404,8 @@ public class MinhaClasseTeste {
 }
 ```
 
+##### Integração com outros módulos
+
 Caso você queira usar essa extensão em conjunto com a _TST Unit DBUnit_, é possível gerar o _schema_ de banco antes de cada teste:
 
 ```java
@@ -442,6 +445,33 @@ Basta definir a propriedade `hibernate.hbm2ddl.auto` no seu arquivo `persistence
 ```
 
 OBS.: O valor `create-drop` não é suportado dessa forma pois o JPA irá derrubar o _schema_ assim que o último `EntityManager` for fechado, ocasionando erros na execução do _TST Unit DBUnit_, que irá tentar limpar o banco de dados em seguida.
+
+Para evitar duplicação de configuração de banco de dados (arquivos `persistence.xml` e `tstunit.properties`), é possível utilizar apenas o último, deixando seu `persistence.xml` de testes com uma configuração mínima, conforme exemplo abaixo:
+
+```xml
+<persistence-unit name="meuPU" transaction-type="RESOURCE_LOCAL">
+	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	
+	<class>br.jus.tst.modelo.MinhaEntidade</class>
+</persistence-unit>
+```
+
+E no `tstunit.properties`, configurações adicionais a serem repassadas para seu framework ORM podem ser definidas através do prefixo `jpa.orm`:
+
+```
+#jdbc.driverClass=
+#jdbc.url=
+#jdbc.user=
+#jdbc.password=
+
+jpa.orm.hibernate.dialect=org.hibernate.dialect.H2Dialect
+jpa.orm.hibernate.default_schema=FOO
+jpa.orm.hibernate.show_sql=true
+jpa.orm.hibernate.format_sql=true
+jpa.orm.hibernate.hbm2ddl.auto=create-drop
+```
+
+Notar quer as propriedades de conexão JDBC definidas pelo _TST Unit DBUnit_ (prefixo `jdbc`), caso definidas nesse arquivo, também serão repassadas para o framework ORM com as devidas alterações de nome/chave.
 
 ##### Múltiplas unidades de persistência no mesmo teste
 

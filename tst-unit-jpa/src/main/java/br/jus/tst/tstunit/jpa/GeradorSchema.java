@@ -1,5 +1,7 @@
 package br.jus.tst.tstunit.jpa;
 
+import java.util.Map;
+
 /**
  * Classe responsável por gerar o <em>schema</em> de banco de dados.
  * 
@@ -23,4 +25,11 @@ public interface GeradorSchema {
      *             caso ocorra algum erro ao derrubar o <em>schema</em>
      */
     void destruir() throws JpaException;
+
+    /**
+     * Obtém propriedades adicionais a serem repassadas diretamente para o framework ORM.
+     * 
+     * @return as propriedades (pode estar vazio)
+     */
+    Map<String, String> getPropriedadesAdicionais();
 }
