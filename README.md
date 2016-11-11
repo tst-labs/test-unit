@@ -381,6 +381,8 @@ public class MinhaClasseTeste {
 
 OBS.: Não é necessário fechar a instância de `EntityManager` fornecida, pois isso será feito internamente após a execução dos seus testes.
 
+##### Integração com outros módulos
+
 É possível usar essa extensão em conjunto com a _TST Unit CDI_, de modo que seus testes ficarão com uma estrutura semelhante à essa:
 
 ```java
@@ -403,8 +405,6 @@ public class MinhaClasseTeste {
     }
 }
 ```
-
-##### Integração com outros módulos
 
 Caso você queira usar essa extensão em conjunto com a _TST Unit DBUnit_, é possível gerar o _schema_ de banco antes de cada teste:
 
@@ -471,7 +471,7 @@ jpa.orm.hibernate.format_sql=true
 jpa.orm.hibernate.hbm2ddl.auto=create-drop
 ```
 
-Notar quer as propriedades de conexão JDBC definidas pelo _TST Unit DBUnit_ (prefixo `jdbc`), caso definidas nesse arquivo, também serão repassadas para o framework ORM com as devidas alterações de nome/chave.
+Notar quer as propriedades de conexão JDBC definidas pelo _TST Unit DBUnit_ (prefixo `jdbc`), caso presentes neste arquivo, também serão repassadas para o framework ORM com as devidas alterações de nome/chave.
 
 ##### Múltiplas unidades de persistência no mesmo teste
 
