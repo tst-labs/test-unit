@@ -91,10 +91,10 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
     private Map<String, String> toOrmProperties(Properties propriedadesJdbc) {
         Map<String, String> ormProperties = new HashMap<>();
-        replaceProperty(propriedadesJdbc, ormProperties, "driverClass", "hibernate.connection.driver_class")
-                .replaceProperty(propriedadesJdbc, ormProperties, "url", "hibernate.connection.url")
-                .replaceProperty(propriedadesJdbc, ormProperties, "user", "hibernate.connection.username")
-                .replaceProperty(propriedadesJdbc, ormProperties, "password", "hibernate.connection.password");
+        replaceProperty(propriedadesJdbc, ormProperties, "driverClass", "javax.persistence.jdbc.driver")
+                .replaceProperty(propriedadesJdbc, ormProperties, "url", "javax.persistence.jdbc.url")
+                .replaceProperty(propriedadesJdbc, ormProperties, "user", "javax.persistence.jdbc.user")
+                .replaceProperty(propriedadesJdbc, ormProperties, "password", "javax.persistence.jdbc.password");
         return ormProperties;
     }
 
