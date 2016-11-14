@@ -52,6 +52,10 @@ public class EntityManagerFactoryProducerExtension implements Extension {
     public void afterBean(final @Observes AfterBeanDiscovery afterBeanDiscovery) {
         LOGGER.debug("Processando unidades de persistência: {}", (Object[]) unidadesPersistencia);
 
+        if (ArrayUtils.isEmpty(unidadesPersistencia)) {
+            throw new IllegalStateException("Nenhuma unidade de persistência configurada para o teste");
+        }
+
         for (UnidadePersistencia unidade : unidadesPersistencia) {
             EntityManagerFactoryCdiProducer entityManagerFactoryCdiProducer = new EntityManagerFactoryCdiProducer(unidade, propriedadesAdicionais);
             afterBeanDiscovery.addBean(entityManagerFactoryCdiProducer);
