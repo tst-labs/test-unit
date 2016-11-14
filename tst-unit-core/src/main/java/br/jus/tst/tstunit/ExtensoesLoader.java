@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.*;
 import org.slf4j.*;
 
 /**
@@ -48,13 +47,10 @@ public class ExtensoesLoader implements Serializable {
      * @throws TstUnitRuntimeException
      *             caso ocorra algum erro ao carregar as extensões
      */
-    @SuppressWarnings("rawtypes")
     public List<Extensao<?>> carregarExtensoes() {
         LOGGER.debug("Carregando extensões a partir do pacote: {}", basePackage);
-        Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(new FilterBuilder().includePackage(basePackage))
-                .setUrls(ClasspathHelper.forPackage(basePackage)).setScanners(new SubTypesScanner()));
-        Set<Class<? extends AbstractExtensao>> classesExtensoes = reflections.getSubTypesOf(AbstractExtensao.class);
-        return classesExtensoes.stream().map(this::newInstance).filter(extensao -> extensao.isHabilitada()).collect(Collectors.toList());
+        return new Reflections(basePackage, new SubTypesScanner()).getSubTypesOf(AbstractExtensao.class).stream().map(this::newInstance).filter(Extensao::isHabilitada)
+                .collect(Collectors.toList());
     }
 
     private Extensao<?> newInstance(Class<?> classeExtensao) {

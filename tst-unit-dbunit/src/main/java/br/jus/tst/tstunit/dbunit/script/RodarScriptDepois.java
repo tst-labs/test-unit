@@ -20,6 +20,7 @@ import java.lang.annotation.*;
  * 
  * @author Thiago Miranda
  * @since 7 de jul de 2016
+ * @see RodarScriptAntes
  */
 @Documented
 @Inherited
