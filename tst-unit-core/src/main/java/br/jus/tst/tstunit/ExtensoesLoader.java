@@ -1,7 +1,7 @@
 package br.jus.tst.tstunit;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,8 +49,8 @@ public class ExtensoesLoader implements Serializable {
      */
     public List<Extensao<?>> carregarExtensoes() {
         LOGGER.debug("Carregando extensões a partir do pacote: {}", basePackage);
-        return new Reflections(basePackage, new SubTypesScanner()).getSubTypesOf(AbstractExtensao.class).stream().map(this::newInstance).filter(Extensao::isHabilitada)
-                .collect(Collectors.toList());
+        return new Reflections(basePackage, new SubTypesScanner()).getSubTypesOf(Extensao.class).stream().filter(type -> !Modifier.isAbstract(type.getModifiers()))
+                .map(this::newInstance).filter(Extensao::isHabilitada).collect(Collectors.toList());
     }
 
     private Extensao<?> newInstance(Class<?> classeExtensao) {
