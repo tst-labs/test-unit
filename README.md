@@ -369,7 +369,7 @@ public class MinhaClasseTeste {
     @Before
     public void setUp() {
     	// a instância de entityManager criada é singleton
-        em = EntityManagerCacheProducer.getUniqueEntityManager();
+        em = EntityManagerCacheProducer.getUniqueEntityManager().get();
     }
 
     @Test

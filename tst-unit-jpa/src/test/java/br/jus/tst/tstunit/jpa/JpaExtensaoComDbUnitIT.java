@@ -32,7 +32,7 @@ public class JpaExtensaoComDbUnitIT {
 
     @Before
     public void setUp() {
-        entityManager = EntityManagerCacheProducer.getUniqueEntityManager();
+        entityManager = EntityManagerCacheProducer.getUniqueEntityManager().get();
     }
 
     @Test

@@ -49,14 +49,14 @@ public class EntityManagerCacheProducer implements EntityManagerProducer {
     /**
      * Obtém a única instância de {@link EntityManager} existente no contexto atual.
      * 
-     * @return a instância associada ao contexto atual (pode ser {@code null}
+     * @return a instância associada ao contexto atual (pode não existir)
      * @throws IllegalStateException
      *             caso exista mais de uma instância associada ao contexto atual
      * @see #getEntityManager(Class)
      */
-    public static EntityManager getUniqueEntityManager() {
+    public static Optional<EntityManager> getUniqueEntityManager() {
         Validate.validState(CACHE.size() == 1, "Há mais de 1 unidade de persistência definida");
-        return CACHE.get(Unico.class);
+        return Optional.ofNullable(CACHE.get(Unico.class));
     }
 
     @Override

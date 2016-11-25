@@ -41,7 +41,7 @@ public class TesteParametrizadoIT {
 
     @Before
     public void setUp() {
-        entityManager = EntityManagerCacheProducer.getUniqueEntityManager();
+        entityManager = EntityManagerCacheProducer.getUniqueEntityManager().get();
     }
 
     @Test

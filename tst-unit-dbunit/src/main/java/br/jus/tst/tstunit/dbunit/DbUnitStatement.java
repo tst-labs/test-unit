@@ -90,7 +90,7 @@ public class DbUnitStatement extends Statement {
     private final Optional<ScriptRunner> scriptRunner;
     private final Optional<GeradorDtd> geradorDtd;
 
-    private DbUnitStatement(Statement defaultStatement, Optional<DatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner,
+    DbUnitStatement(Statement defaultStatement, Optional<DatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner,
             Optional<GeradorDtd> geradorDtd) {
         this.defaultStatement = Objects.requireNonNull(defaultStatement, "defaultStatement");
         this.databaseLoader = databaseLoader;
