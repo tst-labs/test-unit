@@ -20,7 +20,7 @@ import br.jus.tst.tstunit.jpa.*;
  * @author ThiagoColbert
  * @since 29 de mai de 2016
  */
-public class EntityManagerCdiProducer implements EntityManagerProducer, Bean<EntityManager>, Serializable {
+public class EntityManagerCdiProducer implements EntityManagerProducer, Bean<EntityManager>, PassivationCapable, Serializable {
 
     private static final long serialVersionUID = 3075682395966745202L;
 
@@ -98,5 +98,10 @@ public class EntityManagerCdiProducer implements EntityManagerProducer, Bean<Ent
     @Override
     public EntityManagerFactoryProducer geEntityManagerFactoryProducer() {
         return entityManagerFactoryCdiProducer;
+    }
+
+    @Override
+    public String getId() {
+        return this.toString();
     }
 }

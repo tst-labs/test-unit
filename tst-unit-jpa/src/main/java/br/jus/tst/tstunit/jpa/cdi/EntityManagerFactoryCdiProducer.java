@@ -23,7 +23,7 @@ import br.jus.tst.tstunit.jpa.annotation.*;
  * @author ThiagoColbert
  * @since 29 de mai de 2016
  */
-public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactory>, EntityManagerFactoryProducer, Serializable {
+public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactory>, EntityManagerFactoryProducer, PassivationCapable, Serializable {
 
     private static final long serialVersionUID = 902185891912929393L;
 
@@ -122,5 +122,10 @@ public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactor
     @Override
     public Map<String, String> getPropriedadesAdicionais() {
         return Collections.unmodifiableMap(propriedadesAdicionais);
+    }
+
+    @Override
+    public String getId() {
+        return this.toString();
     }
 }
