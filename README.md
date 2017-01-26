@@ -8,6 +8,9 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
+**?? - 1.3.1**
+- _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
+
 **22/11/2016 - 1.3.0**
 - _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
 

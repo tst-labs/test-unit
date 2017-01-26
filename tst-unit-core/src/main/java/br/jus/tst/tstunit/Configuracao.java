@@ -90,8 +90,11 @@ public class Configuracao implements Serializable {
      * @param prefixo
      *            prefixo das propriedades desejadas
      * @return as propriedades com o prefixo informado, mas sem esse prefixo
+     * @throws IllegalStateException
+     *             caso as propriedades não tenham sido carregadas ainda
      */
     public Properties getSubPropriedades(String prefixo) {
+        Validate.validState(properties != null, "Ainda não foram carregadas as propriedades do arquivo %s", nomeArquivoPropriedades);
         if (StringUtils.isNotBlank(prefixo)) {
             Properties jdbcProperties = new Properties();
             properties.keySet().stream().map(keyObject -> keyObject.toString()).filter(key -> key.startsWith(prefixo))
