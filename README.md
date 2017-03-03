@@ -10,13 +10,15 @@ Histórico de mudanças
 
 **?? - 1.3.1**
 - _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
+- _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
+- _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
 
 **22/11/2016 - 1.3.0**
 - _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
 
 **13/10/2016 - 1.2.0**
 - _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
-- _[TST Unit JPA]_ Desacoplamento do CDI.
+- _[TST Unit JPA]_ Desacoplamento do _CDI_.
 - _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
 
 **08/09/2016 - 1.1.2**
