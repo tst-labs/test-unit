@@ -411,6 +411,8 @@ public class MinhaClasseTeste {
 }
 ```
 
+Nota sobre `GeradorSchemaCdi`: esta classe tem a função de utilizar a instância de `EntityManager` fornecida pelo contêiner do CDI para gerar o _schema_ de banco de dados. Notar que, para isso, é necessário habilitar a função _ hbm2ddl_ do seu framework ORM (Hibernate).
+
 Caso você queira usar essa extensão em conjunto com a _TST Unit DBUnit_, é possível gerar o _schema_ de banco antes de cada teste:
 
 ```java
