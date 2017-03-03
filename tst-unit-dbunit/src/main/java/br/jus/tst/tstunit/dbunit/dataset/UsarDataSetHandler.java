@@ -28,7 +28,7 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
     private DatabaseOperation operacaoAntesTestes;
     private DatabaseOperation operacaoAposTestes;
     private String nomeSchema;
-    private IDataTypeFactory dataTypeFactory;
+    private Optional<IDataTypeFactory> dataTypeFactoryOptional;
 
     /**
      * Cria uma nova instância.
@@ -69,7 +69,7 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
             DatabaseLoader databaseLoader = new DatabaseLoader(buildCaminhoArquivo(datasetsDirectory, usarDataSet.get().value()), operacaoAntesTestes,
                     operacaoAposTestes, jdbcConnectionSupplier);
             databaseLoader.setSchema(nomeSchema);
-            databaseLoader.setDataTypeFactory(dataTypeFactory);
+            databaseLoader.setDataTypeFactory(dataTypeFactoryOptional);
             databaseLoaderOptional = Optional.of(databaseLoader);
         } else {
             databaseLoaderOptional = Optional.empty();
@@ -110,11 +110,11 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Se
         this.nomeSchema = nomeSchema;
     }
 
-    public IDataTypeFactory getDataTypeFactory() {
-        return dataTypeFactory;
+    public Optional<IDataTypeFactory> getDataTypeFactory() {
+        return dataTypeFactoryOptional;
     }
 
-    public void setDataTypeFactory(IDataTypeFactory dataTypeFactory) {
-        this.dataTypeFactory = dataTypeFactory;
+    public void setDataTypeFactory(Optional<IDataTypeFactory> dataTypeFactoryOptional) {
+        this.dataTypeFactoryOptional = dataTypeFactoryOptional;
     }
 }

@@ -2,7 +2,7 @@ package br.jus.tst.tstunit.dbunit.dtd;
 
 import java.io.*;
 import java.sql.*;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 import org.dbunit.DatabaseUnitException;
@@ -30,7 +30,7 @@ public class GeradorDtd implements Serializable {
     private transient final Supplier<Connection> jdbcConnectionSupplier;
     private transient final File arquivoDtd;
 
-    private IDataTypeFactory dataTypeFactory;
+    private Optional<IDataTypeFactory> dataTypeFactoryOptional;
 
     /**
      * Cria um novo gerador de DTD.
@@ -59,9 +59,9 @@ public class GeradorDtd implements Serializable {
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
             IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
 
-            if (dataTypeFactory != null) {
+            dataTypeFactoryOptional.ifPresent(dataTypeFactory -> {
                 connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
-            }
+            });
 
             IDataSet dataSet = connection.createDataSet();
             Writer out = new OutputStreamWriter(new FileOutputStream(arquivoDtd));
@@ -74,11 +74,11 @@ public class GeradorDtd implements Serializable {
         }
     }
 
-    public IDataTypeFactory getDataTypeFactory() {
-        return dataTypeFactory;
+    public Optional<IDataTypeFactory> getDataTypeFactory() {
+        return dataTypeFactoryOptional;
     }
 
-    public void setDataTypeFactory(IDataTypeFactory dataTypeFactory) {
-        this.dataTypeFactory = dataTypeFactory;
+    public void setDataTypeFactory(Optional<IDataTypeFactory> dataTypeFactoryOptional) {
+        this.dataTypeFactoryOptional = dataTypeFactoryOptional;
     }
 }

@@ -22,7 +22,7 @@ public class GerarDtdHandler implements AnnotationHandler<GeradorDtd>, Serializa
 
     private final Supplier<Connection> jdbcConnectionSupplier;
 
-    private IDataTypeFactory dataTypeFactory;
+    private Optional<IDataTypeFactory> dataTypeFactoryOptional;
 
     /**
      * Cria uma nova instância.
@@ -34,7 +34,7 @@ public class GerarDtdHandler implements AnnotationHandler<GeradorDtd>, Serializa
      */
     public GerarDtdHandler(Supplier<Connection> jdbcConnectionSupplier) {
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
-        this.dataTypeFactory = null;
+        this.dataTypeFactoryOptional = null;
     }
 
     /**
@@ -48,7 +48,7 @@ public class GerarDtdHandler implements AnnotationHandler<GeradorDtd>, Serializa
         GerarDtd gerarDtd = Objects.requireNonNull(method, "method").getAnnotation(GerarDtd.class);
         if (gerarDtd != null) {
             GeradorDtd geradorDtd = new GeradorDtd(jdbcConnectionSupplier, new File(gerarDtd.value()));
-            geradorDtd.setDataTypeFactory(dataTypeFactory);
+            geradorDtd.setDataTypeFactory(dataTypeFactoryOptional);
             geradorDtdOptional = Optional.of(geradorDtd);
         } else {
             geradorDtdOptional = Optional.empty();
@@ -61,11 +61,11 @@ public class GerarDtdHandler implements AnnotationHandler<GeradorDtd>, Serializa
         return jdbcConnectionSupplier;
     }
 
-    public IDataTypeFactory getDataTypeFactory() {
-        return dataTypeFactory;
+    public Optional<IDataTypeFactory> getDataTypeFactory() {
+        return dataTypeFactoryOptional;
     }
 
-    public void setDataTypeFactory(IDataTypeFactory dataTypeFactory) {
-        this.dataTypeFactory = dataTypeFactory;
+    public void setDataTypeFactory(Optional<IDataTypeFactory> dataTypeFactoryOptional) {
+        this.dataTypeFactoryOptional = dataTypeFactoryOptional;
     }
 }

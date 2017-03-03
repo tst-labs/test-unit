@@ -35,7 +35,7 @@ public class DatabaseLoader implements Serializable {
 
     private DatabaseOperation operacaoAntesTestes;
     private DatabaseOperation operacaoAposTestes;
-    private IDataTypeFactory dataTypeFactory;
+    private Optional<IDataTypeFactory> dataTypeFactoryOptional;
     private String schema;
 
     /**
@@ -72,9 +72,9 @@ public class DatabaseLoader implements Serializable {
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
             IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
 
-            if (dataTypeFactory != null) {
+            dataTypeFactoryOptional.ifPresent(dataTypeFactory -> {
                 connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
-            }
+            });
 
             dataSet = carregarDataSet();
             LOGGER.debug("DataSet carregado: {}", dataSet);
@@ -122,20 +122,19 @@ public class DatabaseLoader implements Serializable {
         this.schema = schema;
     }
 
-    public IDataTypeFactory getDataTypeFactory() {
-        return dataTypeFactory;
+    public Optional<IDataTypeFactory> getDataTypeFactory() {
+        return dataTypeFactoryOptional;
     }
 
-    public void setDataTypeFactory(IDataTypeFactory dataTypeFactory) {
-        this.dataTypeFactory = dataTypeFactory;
+    public void setDataTypeFactory(Optional<IDataTypeFactory> dataTypeFactoryOptional) {
+        this.dataTypeFactoryOptional = dataTypeFactoryOptional;
     }
 
     private FlatXmlDataSet carregarDataSet() throws DataSetException {
         LOGGER.debug("Carregando arquivo de DataSet: {}", nomeArquivoDataSet);
-        Optional<InputStream> dataSetStreamOptional = Optional
-                .ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivoDataSet));
-        return new FlatXmlDataSetBuilder().setDtdMetadata(false).build(
-                dataSetStreamOptional.orElseThrow(() -> new DBUnitException("O arquivo de DataSet não foi encontrado no classpath: " + nomeArquivoDataSet)));
+        Optional<InputStream> dataSetStreamOptional = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivoDataSet));
+        return new FlatXmlDataSetBuilder().setDtdMetadata(false)
+                .build(dataSetStreamOptional.orElseThrow(() -> new DBUnitException("O arquivo de DataSet não foi encontrado no classpath: " + nomeArquivoDataSet)));
     }
 
     private DatabaseConnection openDbUnitConnection(Connection jdbcConnection) throws DatabaseUnitException {

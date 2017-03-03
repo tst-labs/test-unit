@@ -125,13 +125,16 @@ public class DbUnitRunner implements Serializable {
         return (String) getConfiguracoesDbUnit().get("scripts.dir");
     }
 
-    private IDataTypeFactory getDataTypeFactory() {
-        String dataTypeFactoryClass = (String) getConfiguracoesDbUnit().get("dataTypeFactoryClass");
-        try {
-            return (IDataTypeFactory) Class.forName(dataTypeFactoryClass).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException exception) {
-            throw new DBUnitException("Erro ao instanciar classe de DataTypeFactory configurada: " + dataTypeFactoryClass, exception);
-        }
+    private Optional<IDataTypeFactory> getDataTypeFactory() {
+        String dataTypeFactoryClassProperty = (String) getConfiguracoesDbUnit().get("dataTypeFactoryClass");
+
+        return Optional.ofNullable(dataTypeFactoryClassProperty).map(dataTypeFactoryClass -> {
+            try {
+                return Optional.of((IDataTypeFactory) Class.forName(dataTypeFactoryClass).newInstance());
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException exception) {
+                throw new DBUnitException("Erro ao instanciar classe de DataTypeFactory configurada: " + dataTypeFactoryClass, exception);
+            }
+        }).orElse(Optional.empty());
     }
 
     private Properties getConfiguracoesJdbc() {
