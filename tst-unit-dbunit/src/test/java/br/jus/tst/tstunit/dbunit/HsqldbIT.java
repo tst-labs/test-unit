@@ -8,9 +8,8 @@ import static org.junit.Assert.assertThat;
 import java.sql.*;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import br.jus.tst.tstunit.*;
+import br.jus.tst.tstunit.TstUnitException;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 import br.jus.tst.tstunit.dbunit.script.*;
@@ -24,15 +23,13 @@ import br.jus.tst.tstunit.dbunit.script.*;
 /*
  * OBS.: Para rodar este teste individualmente, é necessário passar como parâmetro: -DnomeArquivoPropriedades=tstunit-hsqldb.properties
  */
-@RunWith(TstUnitRunner.class)
-@HabilitarDbUnit
-public class HsqldbIT {
+public class HsqldbIT extends AbstractIT {
 
     private static final String NOME_ARQUIVO_PROPRIEDADES = "tstunit-hsqldb.properties";
 
     @Test
     public void deveriaUtilizarArquivoCorreto() throws TstUnitException, SQLException {
-        JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
+        JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier(NOME_ARQUIVO_PROPRIEDADES);
 
         try (Connection connection = connectionSupplier.get()) {
             assertThat(connection.getMetaData().getDriverName().toUpperCase(), containsString("HSQL"));
@@ -44,7 +41,7 @@ public class HsqldbIT {
     @RodarScriptDepois("script-depois.sql")
     @UsarDataSet("entidades.xml")
     public void deveriaImportarDataset() throws TstUnitException, SQLException {
-        JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
+        JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier(NOME_ARQUIVO_PROPRIEDADES);
 
         try (Connection connection = connectionSupplier.get()) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM Entidade")) {
@@ -54,9 +51,5 @@ public class HsqldbIT {
                 }
             }
         }
-    }
-
-    private JdbcConnectionSupplier criarConnectionSupplier() throws TstUnitException {
-        return new JdbcConnectionSupplier(new Configuracao().setNomeArquivoPropriedades(NOME_ARQUIVO_PROPRIEDADES).carregar().getSubPropriedades("jdbc"));
     }
 }

@@ -26,8 +26,7 @@ import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
  */
 @RunWith(Parameterized.class)
 @UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
-@HabilitarDbUnit
-public class TesteParametrizadoIT {
+public class TesteParametrizadoIT extends AbstractIT {
 
     @Parameters
     public static Collection<Object[]> parametros() {
@@ -56,9 +55,5 @@ public class TesteParametrizadoIT {
                 }
             }
         }
-    }
-
-    private JdbcConnectionSupplier criarConnectionSupplier() throws TstUnitException {
-        return new JdbcConnectionSupplier(new Configuracao().carregar().getSubPropriedades("jdbc"));
     }
 }
