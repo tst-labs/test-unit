@@ -8,7 +8,7 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-**?? - 1.3.1**
+**27/03/2017 - 1.3.1**
 - _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
 - _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
 - _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
