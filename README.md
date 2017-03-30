@@ -8,6 +8,10 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
+**?? - 1.4.0**
+- _[TST Unit JAX-RS]_ Criação do módulo. 
+- _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 2.2.1 para 3.1.3 devido a problemas surgidos no desenvolvimento dos testes.
+
 **27/03/2017 - 1.3.1**
 - _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
 - _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
@@ -542,6 +546,44 @@ public class MinhaClasseTeste {
     @Test
     public void teste() {
         // ...
+    }
+}
+```
+
+#### TST Unit JAX-RS
+
+##### Dependência
+
+```xml
+<dependency>
+    <groupId>br.jus.tst</groupId>
+    <artifactId>tst-unit-jaxrs</artifactId>
+    <version>[1.0.0,)</version>
+    <scope>test</scope>
+</dependency>
+```
+
+##### Uso
+
+Esta extensão funciona em conjunto com a _TST Unit CDI_. Dessa forma, basta incluir alguns itens na anotação `@AdditionalClasses`, além de injetar a instância de `JaxRsEngine`, que fornece acesso a todas as funcionalidades da extensão.
+
+Utilizando RestEasy:
+
+```java
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarCdiAndMockito
+@AdditionalClasses({ ResteasyCdiExtension.class, ResteasyEngine.class })
+public class MinhaClasseTeste {
+
+    @Inject
+    @Resteasy
+    private JaxRsEngine jaxRsEngine;
+
+    @Test
+    public void teste() {
+        // jaxRsEngine. ...
     }
 }
 ```

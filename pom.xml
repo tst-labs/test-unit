@@ -7,7 +7,7 @@
     </parent>
 
     <artifactId>tst-unit-parent</artifactId>
-    <version>1.3.2-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>TST Unit</name>
@@ -31,6 +31,7 @@
         <module>tst-unit-dbunit</module>
         <module>tst-unit-mockito</module>
         <module>tst-unit-jpa</module>
+        <module>tst-unit-jaxrs</module>
     </modules>
 
     <build>

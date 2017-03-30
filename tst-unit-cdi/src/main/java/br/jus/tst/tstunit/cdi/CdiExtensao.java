@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import javax.naming.*;
 
-import org.jboss.weld.bootstrap.api.Bootstrap;
+import org.jboss.weld.bootstrap.api.*;
 import org.jboss.weld.bootstrap.spi.Deployment;
 import org.jboss.weld.environment.se.*;
 import org.jboss.weld.resources.spi.ResourceLoader;
@@ -32,8 +32,19 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
     private final class CdiUnitWeld extends Weld {
 
         // CDI 1.0
-        @Override
+        @SuppressWarnings("unused")
         protected Deployment createDeployment(ResourceLoader resourceLoader, Bootstrap bootstrap) {
+            try {
+                return new WeldTestUrlDeployment(resourceLoader, bootstrap, classeTeste);
+            } catch (IOException exception) {
+                CdiExtensao.this.startupException = exception;
+                throw new CdiException("Erro ao criar Deployment", exception);
+            }
+        }
+
+        // CDI 1.1
+        @Override
+        protected Deployment createDeployment(ResourceLoader resourceLoader, CDI11Bootstrap bootstrap) {
             try {
                 return new WeldTestUrlDeployment(resourceLoader, bootstrap, classeTeste);
             } catch (IOException exception) {
