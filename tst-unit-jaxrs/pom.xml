@@ -29,7 +29,6 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
-            <version>${jboss.resteasy.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -49,6 +48,11 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-logger</artifactId>
         </dependency>
 
         <dependency>

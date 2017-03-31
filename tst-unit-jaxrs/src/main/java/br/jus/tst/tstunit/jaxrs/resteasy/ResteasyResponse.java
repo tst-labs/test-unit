@@ -2,7 +2,7 @@ package br.jus.tst.tstunit.jaxrs.resteasy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import javax.ws.rs.core.*;
@@ -68,8 +68,13 @@ public class ResteasyResponse implements MockResponse {
     }
 
     @Override
-    public Object getImplementacaoSubjacente() {
-        return httpResponse;
+    public InputStream getConteudoResposta() {
+        return new ByteArrayInputStream(httpResponse.getOutput());
+    }
+
+    @Override
+    public String getConteudoRespostaComoString() {
+        return httpResponse.getContentAsString();
     }
 
     @Override
@@ -84,5 +89,10 @@ public class ResteasyResponse implements MockResponse {
         } catch (IOException exception) {
             throw new JaxRsException("Erro ao obter corpo da resposta como " + tipoObjetoResposta, exception);
         }
+    }
+
+    @Override
+    public Object getImplementacaoSubjacente() {
+        return httpResponse;
     }
 }

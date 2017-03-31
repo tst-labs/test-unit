@@ -7,6 +7,7 @@ import java.util.*;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.*;
 import org.jglue.cdiunit.ContextController;
@@ -43,7 +44,7 @@ public class ResteasyRequest implements MockRequest {
 
     @Override
     public MockRequest pathParams(Object... params) {
-        this.pathParams = params;
+        this.pathParams = ArrayUtils.clone(params);
         return this;
     }
 

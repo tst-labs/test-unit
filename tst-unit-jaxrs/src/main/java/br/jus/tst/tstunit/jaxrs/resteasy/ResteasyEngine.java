@@ -57,7 +57,7 @@ public class ResteasyEngine implements JaxRsEngine {
 
     @Override
     public JaxRsEngine registrarRecurso(Object instancia) {
-        logger.debug("Registrando instância de recurso: {}", instancia);
+        logger.debug("Registrando instância de recurso do tipo: {}", instancia.getClass());
         dispatcher.getRegistry().addResourceFactory(new SingletonResource(instancia));
         return this;
     }
@@ -94,7 +94,7 @@ public class ResteasyEngine implements JaxRsEngine {
             injectorFactory = CdiInjectorFactory.class.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException exception) {
-            logger.debug("Erro ao instanciar CdiInjectorFactory", exception);
+            logger.debug("Erro ao instanciar CdiInjectorFactory. Irá tentar de outro modo.", exception);
 
             try {
                 injectorFactory = CdiInjectorFactory.class.getConstructor(ResteasyProviderFactory.class).newInstance(resteasyProviderFactory);

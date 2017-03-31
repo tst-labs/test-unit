@@ -1,5 +1,7 @@
 package br.jus.tst.tstunit.jaxrs;
 
+import java.io.InputStream;
+
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.HttpStatus;
@@ -67,6 +69,22 @@ public interface MockResponse {
      *             caso ocorra algum erro ao converter o conteúdo da resposta
      */
     <T> T getObjetoRespostaUsando(ObjectMapper objectMapper);
+
+    /**
+     * Obtém o conteúdo da resposta como um <em>stream</em>
+     * 
+     * @return <em>stream</em> de leitura do conteúdo da resposta
+     */
+    InputStream getConteudoResposta();
+
+    /**
+     * Obtém o conteúdo da resposta no formato de uma String.
+     * 
+     * @return o conteúdo da resposta como String
+     * @throws JaxRsException
+     *             caso ocorra algum erro ao converter o conteúdo da resposta em String
+     */
+    String getConteudoRespostaComoString();
 
     Object getImplementacaoSubjacente();
 }
