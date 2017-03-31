@@ -1,1 +1,1 @@
-br.jus.tst.tstunit.jpa.EntityManagerFactoryProducerExtension
+org.jboss.resteasy.cdi.ResteasyCdiExtension
