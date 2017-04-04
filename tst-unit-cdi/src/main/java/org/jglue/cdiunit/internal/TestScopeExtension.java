@@ -29,8 +29,8 @@ import org.junit.runners.Parameterized;
 import org.slf4j.*;
 
 /**
- * Sobrescrita da definição da classe {@link TestScopeExtension} original para que as classes de teste utilizem scopo {@link Singleton} ao invés de
- * {@link ApplicationScoped}.
+ * Sobrescrita da definição da classe {@link TestScopeExtension} original para que as classes de teste parametrizadas utilizem scopo {@link Singleton} ao invés
+ * de {@link ApplicationScoped}.
  * 
  * @author Thiago Miranda
  * @since 31 de ago de 2016

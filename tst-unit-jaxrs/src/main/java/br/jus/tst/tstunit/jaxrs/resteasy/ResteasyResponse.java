@@ -10,11 +10,10 @@ import javax.ws.rs.core.*;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.http.HttpStatus;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.jboss.resteasy.mock.MockHttpResponse;
 
 import br.jus.tst.tstunit.jaxrs.*;
+import br.jus.tst.tstunit.jaxrs.jackson.JsonConverterException;
 
 /**
  * Implementação de resposta REST utilizando o RestEasy.
@@ -79,14 +78,14 @@ public class ResteasyResponse implements MockResponse {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getObjetoRespostaUsando(ObjectMapper objectMapper) {
-        Objects.requireNonNull(objectMapper, "objectMapper");
+    public <T> T getObjetoRespostaUsando(JsonToObjectConverter converter) {
+        Objects.requireNonNull(converter, "converter");
         Validate.validState(tipoObjetoResposta != null || typeReferenceResposta != null, "Tipo de objeto de resposta não definido");
 
         try {
-            return (T) (tipoObjetoResposta != null ? objectMapper.readValue(httpResponse.getContentAsString(), tipoObjetoResposta)
-                    : objectMapper.readValue(httpResponse.getContentAsString(), typeReferenceResposta));
-        } catch (IOException exception) {
+            return (T) (tipoObjetoResposta != null ? converter.jsonToObject(httpResponse.getContentAsString(), tipoObjetoResposta)
+                    : converter.jsonToObject(httpResponse.getContentAsString(), typeReferenceResposta));
+        } catch (JsonConverterException exception) {
             throw new JaxRsException("Erro ao obter corpo da resposta como " + tipoObjetoResposta, exception);
         }
     }

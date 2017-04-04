@@ -588,6 +588,34 @@ public class MinhaClasseTeste {
 }
 ```
 
+##### Integração com Jackson
+
+Como atualmente o Jackson pode ser encontrado sob dois _groupId_s e pacotes diferentes - `org.codehaus` e `com.fasterxml` - você precisa definir manualmente qual versão deve ser utilizada, caso use esse recurso. Isso pode ser feito através das implementações da interface `JsonToObjectConverter.java`:
+
+```java
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarCdiAndMockito
+@AdditionalClasses({ ResteasyCdiExtension.class, ResteasyEngine.class })
+public class MinhaClasseTeste {
+
+    @Inject
+    @Resteasy
+    private JaxRsEngine jaxRsEngine;
+    
+    @Inject
+    private com.fasterxml.jackson.databind.ObjectMapper objectMapper;
+
+    @Test
+    public void teste() {
+    	 // Utiliza JsonToObjectConverterFasterxml, uma das implementações de JsonToObjectConverter
+        MeuObjeto meuObjeto = jaxRsEngine.get(...).executar().deveRetornarObjetoDoTipo(MeuObjeto.class).getObjetoRespostaUsando(new JsonToObjectConverterFasterxml(objectMapper));
+        ...
+    }
+}
+```
+
 #### Testes parametrizados
 
 O TST Unit também oferece suporte a testes parametrizados. Para isso, sua classe de teste deve utilizar algumas anotações diferentes:

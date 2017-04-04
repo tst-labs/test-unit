@@ -5,8 +5,6 @@ import java.io.InputStream;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.HttpStatus;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 /**
  * Representa uma simulação de resposta de um serviço JAX-RS.
@@ -63,12 +61,12 @@ public interface MockResponse {
 
     /**
      * 
-     * @param objectMapper
+     * @param converter
      * @return
      * @throws JaxRsException
      *             caso ocorra algum erro ao converter o conteúdo da resposta
      */
-    <T> T getObjetoRespostaUsando(ObjectMapper objectMapper);
+    <T> T getObjetoRespostaUsando(JsonToObjectConverter converter);
 
     /**
      * Obtém o conteúdo da resposta como um <em>stream</em>
