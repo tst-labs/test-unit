@@ -17,7 +17,8 @@ import javax.ws.rs.ext.Provider;
  * Exemplo:
  * 
  * <pre>
- * JaxRsEngine.get("/recursos/%d").pathParams(1); // irá gerar uma URI "/recursos/1"
+ * JaxRsEngine engine = ...;
+ * engine.get("/recursos/%d").pathParams(1); // irá gerar uma URI "/recursos/1"
  * </pre>
  * </p>
  * 

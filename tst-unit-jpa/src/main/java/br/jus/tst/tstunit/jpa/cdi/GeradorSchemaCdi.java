@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import javax.enterprise.inject.Default;
+import javax.enterprise.inject.*;
 import javax.enterprise.inject.spi.CDI;
 import javax.persistence.*;
 
@@ -62,7 +62,16 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
     }
 
     private EntityManager recuperarEntityManagerDoCdi(UnidadePersistencia unidade) {
-        return CDI.current().select(EntityManager.class, getQualifierAnnotation(unidade)).get();
+        Annotation qualifierAnnotation = getQualifierAnnotation(unidade);
+        Instance<EntityManager> instance = CDI.current().select(EntityManager.class, qualifierAnnotation);
+
+        if (instance.isUnsatisfied()) {
+            throw new JpaException("Não foi definida nenhuma unidade de persistência com o qualificador: " + qualifierAnnotation);
+        } else if (instance.isAmbiguous()) {
+            throw new JpaException("Existe mais de uma definição de unidade de persistência com o qualificador: " + qualifierAnnotation);
+        } else {
+            return instance.get();
+        }
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -80,7 +89,7 @@ public class GeradorSchemaCdi implements Serializable, GeradorSchema {
     @Override
     public void destruir() {
     }
-    
+
     @Override
     public Map<String, String> getPropriedadesAdicionais() {
         return Collections.unmodifiableMap(propriedadesAdicionais);
