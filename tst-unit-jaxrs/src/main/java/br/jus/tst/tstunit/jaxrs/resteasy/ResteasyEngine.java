@@ -3,6 +3,7 @@ package br.jus.tst.tstunit.jaxrs.resteasy;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.jboss.resteasy.cdi.CdiInjectorFactory;
@@ -22,6 +23,7 @@ import br.jus.tst.tstunit.jaxrs.*;
  * @since 29 de mar de 2017
  */
 @Resteasy
+@ApplicationScoped
 public class ResteasyEngine implements JaxRsEngine {
 
     protected Dispatcher dispatcher;
