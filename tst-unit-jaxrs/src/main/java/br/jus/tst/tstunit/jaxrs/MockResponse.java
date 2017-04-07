@@ -1,8 +1,10 @@
 package br.jus.tst.tstunit.jaxrs;
 
 import java.io.InputStream;
+import java.net.URI;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.http.HttpStatus;
 
@@ -17,16 +19,25 @@ public interface MockResponse {
     /**
      * Asserção de que o código HTTP da resposta seja {@link HttpStatus#SC_OK}.
      * 
-     * @return {@code this}, para chamadas encadaeadas de método
+     * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
      */
     MockResponse deveRetornarStatusOk();
 
     /**
+     * Asserção de que o código HTTP da resposta seja igual ao informado.
+     * 
+     * @return {@code this}, para chamadas encadeadas de método
+     * @throws AssertionError
+     *             caso a asserção falhe
+     */
+    MockResponse deveRetornarStatus(Status status);
+
+    /**
      * 
      * @param tipo
-     * @return {@code this}, para chamadas encadaeadas de método
+     * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
      */
@@ -35,7 +46,7 @@ public interface MockResponse {
     /**
      * 
      * @param typeReference
-     * @return {@code this}, para chamadas encadaeadas de método
+     * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
      */
@@ -44,7 +55,7 @@ public interface MockResponse {
     /**
      * 
      * @param contentType
-     * @return {@code this}, para chamadas encadaeadas de método
+     * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
      */
@@ -53,11 +64,31 @@ public interface MockResponse {
     /**
      * 
      * @param contentType
-     * @return {@code this}, para chamadas encadaeadas de método
+     * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
      */
     MockResponse deveRetornarRespostaDoTipo(MediaType contentType);
+
+    /**
+     * 
+     * @param location
+     * @return {@code this}, para chamadas encadeadas de método
+     * @throws AssertionError
+     *             caso a asserção falhe
+     */
+    MockResponse deveRetornarHeader(String headerName);
+
+    /**
+     * Asserção de que a resposta deve conter um <em>header</em> com o nome e valor informados. Observar o tipo do valor do <em>header</em>, que também será
+     * checado (por exemplo, uma {@link URI} {@code "/teste/1"} será considerada diferente de uma String {@code "/teste/1"}).
+     * 
+     * @param location
+     * @return {@code this}, para chamadas encadeadas de método
+     * @throws AssertionError
+     *             caso a asserção falhe
+     */
+    MockResponse deveRetornarHeader(String headerName, Object headerValue);
 
     /**
      * 

@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.*;
 
 import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.Validate;
@@ -38,11 +39,16 @@ public class ResteasyResponse implements MockResponse {
     }
 
     @Override
-    public MockResponse deveRetornarRespostaDoTipo(MediaType contentType) {
-        List<Object> headersContentType = ListUtils.emptyIfNull(httpResponse.getOutputHeaders().get(HttpHeaders.CONTENT_TYPE));
-        assertThat(headersContentType).overridingErrorMessage("Header %s ausente da resposta", HttpHeaders.CONTENT_TYPE).isNotEmpty();
+    public MockResponse deveRetornarStatus(Status status) {
+        assertThat(httpResponse.getStatus()).isEqualTo(status.getStatusCode());
+        return this;
+    }
 
-        MediaType contentTypeResposta = MediaType.valueOf(headersContentType.get(0).toString());
+    @Override
+    public MockResponse deveRetornarRespostaDoTipo(MediaType contentType) {
+        deveRetornarHeader(HttpHeaders.CONTENT_TYPE);
+
+        MediaType contentTypeResposta = MediaType.valueOf(getHeaderValues(HttpHeaders.CONTENT_TYPE).get(0).toString());
         assertThat(contentTypeResposta.isCompatible(contentType))
                 .overridingErrorMessage("O tipo retornado %s não é compatível com o tipo informado %s", contentTypeResposta, contentType).isTrue();
 
@@ -64,6 +70,25 @@ public class ResteasyResponse implements MockResponse {
     public MockResponse deveRetornarObjetoDoTipo(TypeReference<?> typeReference) {
         this.typeReferenceResposta = Objects.requireNonNull(typeReference, "typeReferenceResposta");
         return this;
+    }
+
+    @Override
+    public MockResponse deveRetornarHeader(String headerName) {
+        assertThat(getHeaderValues(headerName)).overridingErrorMessage("Header '%s' ausente da resposta", headerName).isNotEmpty();
+        return this;
+    }
+
+    @Override
+    public MockResponse deveRetornarHeader(String headerName, Object headerValueEsperado) {
+        Iterable<Object> headerValues = getHeaderValues(headerName);
+        assertThat(headerValues)
+                .overridingErrorMessage("Header '%s' com valor diferente do esperado. Esperava conter '%s', mas obteve: %s", headerName, headerValueEsperado, headerValues)
+                .contains(headerValueEsperado);
+        return this;
+    }
+
+    private List<Object> getHeaderValues(String headerName) {
+        return ListUtils.emptyIfNull(httpResponse.getOutputHeaders().get(headerName));
     }
 
     @Override
