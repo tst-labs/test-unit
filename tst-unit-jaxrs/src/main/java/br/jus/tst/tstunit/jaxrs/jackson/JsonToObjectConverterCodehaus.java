@@ -1,7 +1,7 @@
 package br.jus.tst.tstunit.jaxrs.jackson;
 
 import java.io.*;
-import java.util.Objects;
+import java.util.*;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -60,6 +60,21 @@ public class JsonToObjectConverterCodehaus implements JsonToObjectConverter {
         } catch (IOException exception) {
             throw new JsonConverterException("Erro ao processar JSON: " + content, exception);
         }
+    }
+
+    @Override
+    public Optional<InputStream> objectToJson(Object conteudo) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        try {
+            objectMapper.writeValue(outputStream, conteudo);
+            outputStream.flush();
+        } catch (IOException exception) {
+            throw new JsonConverterException("Erro ao converter objeto em JSON: " + conteudo, exception);
+        }
+
+        byte[] bytes = outputStream.toByteArray();
+        return Optional.of(new ByteArrayInputStream(bytes));
     }
 
     @Override

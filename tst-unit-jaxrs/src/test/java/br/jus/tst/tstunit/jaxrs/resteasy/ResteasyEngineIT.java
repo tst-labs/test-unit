@@ -4,13 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.nio.charset.Charset;
+
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.cdi.ResteasyCdiExtension;
 import org.jboss.weld.log.LoggerProducer;
 import org.jglue.cdiunit.AdditionalClasses;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
@@ -36,11 +38,16 @@ public class ResteasyEngineIT {
     @Inject
     private StringResource stringResource;
 
+    @Before
+    public void setUp() {
+        jaxRsEngine.registrarRecurso(stringResource);
+    }
+
     @Test
     public void deveriaProcessarRecursoRest() {
         int valor = 1;
 
-        String resposta = jaxRsEngine.registrarRecurso(stringResource).get("strings/%d").pathParams(valor).executar().deveRetornarObjetoDoTipo(Integer.class)
+        String resposta = jaxRsEngine.get("strings/%d").pathParams(valor).executar().deveRetornarObjetoDoTipo(Integer.class)
                 .deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).deveRetornarStatusOk().getConteudoRespostaComoString();
 
         assertThat(resposta).isEqualTo(String.valueOf(valor));
@@ -54,9 +61,22 @@ public class ResteasyEngineIT {
         JsonToObjectConverter converter = mock(JsonToObjectConverter.class);
         when(converter.jsonToObject(Mockito.anyString(), Mockito.eq(String.class))).thenReturn(valorString);
 
-        String resposta = jaxRsEngine.registrarRecurso(stringResource).get("strings/%d").pathParams(valor).executar().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE)
-                .deveRetornarStatusOk().deveRetornarObjetoDoTipo(String.class).getObjetoRespostaUsando(converter);
+        String resposta = jaxRsEngine.get("strings/%d").pathParams(valor).executar().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).deveRetornarStatusOk()
+                .deveRetornarObjetoDoTipo(String.class).getObjetoRespostaUsando(converter);
 
         assertThat(resposta).isEqualTo(valorString);
+    }
+
+    @Test
+    public void deveriaProcessarCorpoRequisicao() {
+        int numero = 1;
+        String novoConteudo = "TESTE2";
+
+        String string = jaxRsEngine.put("strings/%d").pathParams(numero).contentType(MediaType.APPLICATION_JSON_TYPE).content(novoConteudo.getBytes(Charset.defaultCharset()))
+                .executar().deveRetornarStatusOk().deveRetornarObjetoDoTipo(String.class).deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE)
+                .getConteudoRespostaComoString();
+
+        assertThat(string).contains(String.valueOf(numero));
+        assertThat(string).contains(novoConteudo);
     }
 }

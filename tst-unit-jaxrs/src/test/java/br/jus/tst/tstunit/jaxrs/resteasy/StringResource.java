@@ -18,4 +18,11 @@ public class StringResource {
     public String converterParaString(@PathParam("NUMERO") int numero) {
         return String.valueOf(numero);
     }
+
+    @PUT
+    @Path("{NUMERO}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String atualizarString(@PathParam("NUMERO") int numero, String valor) {
+        return String.format("String nº %d atualizada para \"%s\"", numero, valor);
+    }
 }

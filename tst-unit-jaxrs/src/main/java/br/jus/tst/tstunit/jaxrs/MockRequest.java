@@ -23,5 +23,7 @@ public interface MockRequest {
 
     MockRequest contentType(MediaType contentType);
 
+    MockRequest content(Object conteudo, JsonToObjectConverter converter);
+
     MockRequest content(byte[] conteudo);
 }

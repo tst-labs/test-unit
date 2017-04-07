@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.*;
 import org.jglue.cdiunit.ContextController;
+import org.slf4j.*;
 
 import br.jus.tst.tstunit.jaxrs.*;
 
@@ -21,6 +22,8 @@ import br.jus.tst.tstunit.jaxrs.*;
  * @since 29 de mar de 2017
  */
 public class ResteasyRequest implements MockRequest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResteasyRequest.class);
 
     protected Dispatcher dispatcher;
 
@@ -60,6 +63,12 @@ public class ResteasyRequest implements MockRequest {
     }
 
     @Override
+    public MockRequest content(Object conteudo, JsonToObjectConverter converter) {
+        this.conteudoOptional = conteudo != null ? Objects.requireNonNull(converter, "converter").objectToJson(conteudo) : Optional.empty();
+        return this;
+    }
+
+    @Override
     public MockRequest content(byte[] conteudo) {
         this.conteudoOptional = conteudo != null ? Optional.of(new ByteArrayInputStream(conteudo)) : Optional.empty();
         return this;
@@ -86,6 +95,7 @@ public class ResteasyRequest implements MockRequest {
         conteudoOptional.ifPresent(request::content);
 
         contextController.openRequest();
+        LOGGER.info("{} {}", httpMethod, uriFormatada());
         dispatcher.invoke(request, response);
         contextController.closeRequest();
     }
