@@ -73,6 +73,12 @@ public class ResteasyResponse implements MockResponse {
     }
 
     @Override
+    public MockResponse naoDeveRetornarConteudo() {
+        assertThat(httpResponse.getContentAsString()).isEmpty();
+        return this;
+    }
+
+    @Override
     public MockResponse deveRetornarHeader(String headerName) {
         assertThat(getHeaderValues(headerName)).overridingErrorMessage("Header '%s' ausente da resposta", headerName).isNotEmpty();
         return this;

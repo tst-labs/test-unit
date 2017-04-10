@@ -71,6 +71,15 @@ public interface MockResponse {
     MockResponse deveRetornarRespostaDoTipo(MediaType contentType);
 
     /**
+     * Asserção de que a resposta não possua corpo.
+     * 
+     * @return {@code this}, para chamadas encadeadas de método
+     * @throws AssertionError
+     *             caso a asserção falhe
+     */
+    MockResponse naoDeveRetornarConteudo();
+
+    /**
      * 
      * @param location
      * @return {@code this}, para chamadas encadeadas de método
