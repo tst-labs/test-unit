@@ -3,7 +3,7 @@
     <parent>
         <groupId>br.jus.tst</groupId>
         <artifactId>tst-unit-parent</artifactId>
-        <version>1.4.0-SNAPSHOT</version>
+        <version>1.4.0</version>
     </parent>
 
     <artifactId>tst-unit-cdi</artifactId>
