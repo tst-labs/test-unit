@@ -8,7 +8,10 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-**?? - 1.4.0**
+**??? - 1.5.0**
+- _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
+
+**03/05/2017 - 1.4.0**
 - _[TST Unit JAX-RS]_ Criação do módulo. 
 - _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 2.2.1 para 3.1.3 devido a problemas surgidos no desenvolvimento dos testes.
 

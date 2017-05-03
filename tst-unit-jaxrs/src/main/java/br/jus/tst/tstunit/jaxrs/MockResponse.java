@@ -28,6 +28,8 @@ public interface MockResponse {
     /**
      * Asserção de que o código HTTP da resposta seja igual ao informado.
      * 
+     * @param status
+     *            status HTTP esperado
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
@@ -35,8 +37,10 @@ public interface MockResponse {
     MockResponse deveRetornarStatus(Status status);
 
     /**
+     * Asserção de que a resposta retorne uma representação de objeto do tipo informado.
      * 
      * @param tipo
+     *            tipo de objeto esperado
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
@@ -44,8 +48,10 @@ public interface MockResponse {
     MockResponse deveRetornarObjetoDoTipo(Class<?> tipo);
 
     /**
+     * Asserção de que a resposta retorne uma representação de objeto do tipo informado.
      * 
      * @param typeReference
+     *            tipo de objeto esperado
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
@@ -53,8 +59,10 @@ public interface MockResponse {
     MockResponse deveRetornarObjetoDoTipo(TypeReference<?> typeReference);
 
     /**
+     * Asserção de que a resposta retorne conteúdo do tipo informado.
      * 
      * @param contentType
+     *            tipo de conteúdo esperado
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
@@ -62,8 +70,10 @@ public interface MockResponse {
     MockResponse deveRetornarRespostaDoTipo(String contentType);
 
     /**
+     * Asserção de que a resposta retorne conteúdo do tipo informado.
      * 
      * @param contentType
+     *            tipo de conteúdo esperado
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
@@ -80,8 +90,10 @@ public interface MockResponse {
     MockResponse naoDeveRetornarConteudo();
 
     /**
+     * Asserção de que a resposta possua o cabeçalho informado.
      * 
-     * @param location
+     * @param headerName
+     *            nome do cabeçalho HTTP esperado
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
@@ -92,7 +104,10 @@ public interface MockResponse {
      * Asserção de que a resposta deve conter um <em>header</em> com o nome e valor informados. Observar o tipo do valor do <em>header</em>, que também será
      * checado (por exemplo, uma {@link URI} {@code "/teste/1"} será considerada diferente de uma String {@code "/teste/1"}).
      * 
-     * @param location
+     * @param headerName
+     *            nome do cabeçalho HTTP esperado
+     * @param headerValue
+     *            valor esperado para o cabeçalho HTTP
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
@@ -100,9 +115,13 @@ public interface MockResponse {
     MockResponse deveRetornarHeader(String headerName, Object headerValue);
 
     /**
+     * Obtém um POJO representando o JSON retornado como resposta.
      * 
      * @param converter
-     * @return
+     *            instância a ser utilizada para converter a resposta JSON em um POJO.
+     * @param <T>
+     *            o tipo de objeto esperado
+     * @return a instância criada a partir do JSON de resposta
      * @throws JaxRsException
      *             caso ocorra algum erro ao converter o conteúdo da resposta
      */
@@ -124,5 +143,10 @@ public interface MockResponse {
      */
     String getConteudoRespostaComoString();
 
+    /**
+     * Fornece acesso à API sendo utilizada para simular os acessos HTTP.
+     * 
+     * @return a instância de acesso à API
+     */
     Object getImplementacaoSubjacente();
 }

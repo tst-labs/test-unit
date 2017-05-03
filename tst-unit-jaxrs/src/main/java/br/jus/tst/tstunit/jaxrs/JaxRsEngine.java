@@ -15,12 +15,12 @@ import javax.ws.rs.ext.Provider;
  * 
  * <p>
  * Exemplo:
+ * </p>
  * 
  * <pre>
  * JaxRsEngine engine = ...;
  * engine.get("/recursos/%d").pathParams(1); // irá gerar uma URI "/recursos/1"
  * </pre>
- * </p>
  * 
  * @author Thiago Miranda
  * @since 29 de mar de 2017
