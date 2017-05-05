@@ -1,17 +1,13 @@
 package br.jus.tst.tstunit.dbunit.dataset;
 
-import java.io.*;
+import java.io.Serializable;
 import java.sql.*;
 import java.util.*;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.Validate;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.*;
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.dataset.xml.*;
-import org.dbunit.operation.DatabaseOperation;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.dbunit.DBUnitException;
@@ -29,34 +25,23 @@ public class DatabaseLoader implements Serializable {
     private static final long serialVersionUID = 4244174398976628116L;
 
     private transient final Supplier<Connection> jdbcConnectionSupplier;
-    private transient final String nomeArquivoDataSet;
+    private transient final List<OperacaoDataSet> operacoes;
 
-    private transient FlatXmlDataSet dataSet;
-
-    private DatabaseOperation operacaoAntesTestes;
-    private DatabaseOperation operacaoAposTestes;
     private Optional<IDataTypeFactory> dataTypeFactoryOptional;
     private String schema;
 
     /**
      * Cria uma nova instância.
      * 
-     * @param nomeArquivoDataSet
-     *            nome do arquivo de DataSet do DBUnit sendo utilizado
-     * @param operacaoAntesTestes
-     *            operação a ser executada antes de cada teste
-     * @param operacaoAposTestes
-     *            operação a ser executada após cada teste
+     * @param operacoes
+     *            DataSets e operações a serem utilizados
      * @param jdbcConnectionSupplier
      *            utilizado para obter conexões JDBC
      * @throws NullPointerException
      *             caso qualquer parâmetro seja {@code null}
      */
-    public DatabaseLoader(String nomeArquivoDataSet, DatabaseOperation operacaoAntesTestes, DatabaseOperation operacaoAposTestes,
-            Supplier<Connection> jdbcConnectionSupplier) {
-        this.nomeArquivoDataSet = Objects.requireNonNull(nomeArquivoDataSet, "nomeArquivoDataSet");
-        this.operacaoAntesTestes = Objects.requireNonNull(operacaoAntesTestes, "operacaoAntesTestes");
-        this.operacaoAposTestes = Objects.requireNonNull(operacaoAposTestes, "operacaoAposTestes");
+    public DatabaseLoader(List<OperacaoDataSet> operacoes, Supplier<Connection> jdbcConnectionSupplier) {
+        this.operacoes = new ArrayList<>(Objects.requireNonNull(operacoes, "operacoes"));
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
     }
 
@@ -73,14 +58,14 @@ public class DatabaseLoader implements Serializable {
             IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
 
             dataTypeFactoryOptional.ifPresent(dataTypeFactory -> {
+                LOGGER.debug("Definindo propriedade de conexão: {} = {}", DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
                 connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
             });
 
-            dataSet = carregarDataSet();
-            LOGGER.debug("DataSet carregado: {}", dataSet);
-
-            LOGGER.debug("Executando operação: {}", operacaoAntesTestes);
-            operacaoAntesTestes.execute(connection, dataSet);
+            for (OperacaoDataSet operacaoAtual : operacoes) {
+                LOGGER.debug("Executando: {}", operacaoAtual);
+                operacaoAtual.executarOperacaoPreTestes(connection);
+            }
         } catch (DatabaseUnitException | SQLException | JdbcException exception) {
             throw new DBUnitException("Erro ao efetuar carga do banco de dados", exception);
         }
@@ -94,24 +79,16 @@ public class DatabaseLoader implements Serializable {
      */
     public void limparBancoDados() {
         LOGGER.debug("Limpeza do banco de dados");
-        Validate.validState(dataSet != null, "DataSet não carregado");
 
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
             IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
 
-            LOGGER.debug("Executando operação: {}", operacaoAposTestes);
-            operacaoAposTestes.execute(connection, dataSet);
+            for (OperacaoDataSet operacaoAtual : operacoes) {
+                operacaoAtual.executarOperacaoPosTestes(connection);
+            }
         } catch (DatabaseUnitException | SQLException | JdbcException exception) {
             throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
         }
-    }
-
-    public DatabaseOperation getOperacaoAntesTestes() {
-        return operacaoAntesTestes;
-    }
-
-    public DatabaseOperation getOperacaoAposTestes() {
-        return operacaoAposTestes;
     }
 
     public String getSchema() {
@@ -128,13 +105,6 @@ public class DatabaseLoader implements Serializable {
 
     public void setDataTypeFactory(Optional<IDataTypeFactory> dataTypeFactoryOptional) {
         this.dataTypeFactoryOptional = dataTypeFactoryOptional;
-    }
-
-    private FlatXmlDataSet carregarDataSet() throws DataSetException {
-        LOGGER.debug("Carregando arquivo de DataSet: {}", nomeArquivoDataSet);
-        Optional<InputStream> dataSetStreamOptional = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivoDataSet));
-        return new FlatXmlDataSetBuilder().setDtdMetadata(false)
-                .build(dataSetStreamOptional.orElseThrow(() -> new DBUnitException("O arquivo de DataSet não foi encontrado no classpath: " + nomeArquivoDataSet)));
     }
 
     private DatabaseConnection openDbUnitConnection(Connection jdbcConnection) throws DatabaseUnitException {

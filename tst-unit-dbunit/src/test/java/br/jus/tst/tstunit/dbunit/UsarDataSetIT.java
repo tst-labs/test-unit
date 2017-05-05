@@ -9,7 +9,8 @@ import java.sql.*;
 import org.junit.Test;
 
 import br.jus.tst.tstunit.TstUnitException;
-import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet;
+import br.jus.tst.tstunit.dbunit.dataset.*;
+import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet.Operacao;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 import br.jus.tst.tstunit.dbunit.script.*;
 
@@ -39,15 +40,31 @@ public class UsarDataSetIT extends AbstractIT {
     }
 
     @Test
-    @UsarDataSet("entidades2.xml")
-    public void naoDeveriaUtilizarDatasetsDeClasseEMetodo() throws SQLException, TstUnitException {
+    @UsarDataSet(value = "entidades2.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE)
+    public void deveriaUtilizarDatasetsDeClasseEMetodo() throws SQLException, TstUnitException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
 
         try (Connection connection = connectionSupplier.get()) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM Entidade")) {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     assertThat(resultSet.next(), is(true));
-                    assertThat(resultSet.getInt(1), is(equalTo(2)));
+                    assertThat(resultSet.getInt(1), is(equalTo(4)));
+                }
+            }
+        }
+    }
+
+    @Test
+    @UsarDataSets({ @UsarDataSet(value = "entidades2.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE),
+            @UsarDataSet(value = "entidades3.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE) })
+    public void deveriaUtilizarMultiplosDatasets() throws SQLException, TstUnitException {
+        JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
+
+        try (Connection connection = connectionSupplier.get()) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM Entidade")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    assertThat(resultSet.next(), is(true));
+                    assertThat(resultSet.getInt(1), is(equalTo(6)));
                 }
             }
         }

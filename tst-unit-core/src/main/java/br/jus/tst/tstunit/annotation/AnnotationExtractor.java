@@ -18,7 +18,6 @@ public class AnnotationExtractor implements Serializable {
 
     private static final long serialVersionUID = -4382015102432111794L;
     private static final Logger LOGGER = LoggerFactory.getLogger(AnnotationExtractor.class);
-    private static final int TAMANHO_PADRAO_LISTA = 2;
 
     private final Class<?> classeTeste;
 
@@ -36,17 +35,9 @@ public class AnnotationExtractor implements Serializable {
 
     /**
      * <p>
-     * Identifica uma anotação presente em na classe de teste ou no método informado.
+     * Identifica todas as anotações presentes na classe de teste ou no método informado. A ordem das anotações dentro da lista segue o padrão de 1º anotações
+     * da classe -> 2º anotações do método.
      * </p>
-     * <p>
-     * A lista retornada pode ter de 0 (nenhum) a 2 elementos, sendo que:
-     * </p>
-     * <ul>
-     * <li><strong>Vazia</strong>: indica que nenhuma anotação do tipo informado existe na classe nem no método</li>
-     * <li><strong>1 elemento</strong>: indica que a anotação foi encontrada uma única vez - pode ser da classe ou do método</li>
-     * <li><strong>2 elementos</strong>: indica que a anotação foi encontrada tanto na classe quanto no método. Nesse caso, os elementos estarão nessa ordem
-     * (classe, método)</li>
-     * </ul>
      * 
      * @param method
      *            o método e teste
@@ -57,9 +48,9 @@ public class AnnotationExtractor implements Serializable {
      * @return a lista contendo as anotações (pode estar vazia, mas nunca será {@code null}
      */
     public <T extends Annotation> List<T> getAnnotationsFromMethodOrClass(FrameworkMethod method, Class<T> annotationType) {
-        List<T> annotations = new ArrayList<>(TAMANHO_PADRAO_LISTA);
-        CollectionUtils.addIgnoreNull(annotations, classeTeste.getAnnotation(annotationType));
-        CollectionUtils.addIgnoreNull(annotations, method.getAnnotation(annotationType));
+        List<T> annotations = new ArrayList<>();
+        CollectionUtils.addAll(annotations, classeTeste.getDeclaredAnnotationsByType(annotationType));
+        CollectionUtils.addAll(annotations, method.getMethod().getDeclaredAnnotationsByType(annotationType));
         LOGGER.debug("Anotações identificadas: {}", annotations);
         return annotations;
     }

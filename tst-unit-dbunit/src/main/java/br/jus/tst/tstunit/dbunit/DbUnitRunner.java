@@ -5,7 +5,6 @@ import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.runners.model.*;
 import org.slf4j.*;
 
@@ -73,22 +72,12 @@ public class DbUnitRunner implements Serializable {
         rodarScriptHandler = new RodarScriptHandler(StringUtils.defaultIfBlank(getDiretorioScriptsConfigurado(), DIRETORIO_SCRIPTS_PADRAO), jdbcConnectionSupplier,
                 annotationExtractor);
 
-        usarDataSetHandler = new UsarDataSetHandler(getDiretorioDatasets(), carregarOperacao("beforeTests.operation", OPERACAO_BEFORE_TESTS_PADRAO),
-                carregarOperacao("afterTests.operation", OPERACAO_AFTER_TESTS_PADRAO), jdbcConnectionSupplier, annotationExtractor);
+        usarDataSetHandler = new UsarDataSetHandler(getDiretorioDatasets(),
+                Optional.ofNullable(getConfiguracoesDbUnit().getProperty("beforeTests.operation")).orElse(OPERACAO_BEFORE_TESTS_PADRAO),
+                Optional.ofNullable(getConfiguracoesDbUnit().getProperty("afterTests.operation")).orElse(OPERACAO_AFTER_TESTS_PADRAO), jdbcConnectionSupplier,
+                annotationExtractor);
         usarDataSetHandler.setDataTypeFactory(getDataTypeFactory());
         usarDataSetHandler.setNomeSchema(nomeSchema);
-    }
-
-    private DatabaseOperation carregarOperacao(String nomePropriedade, String valorPadrao) {
-        String operacaoString = Optional.ofNullable(getConfiguracoesDbUnit().getProperty(nomePropriedade)).orElse(valorPadrao);
-
-        DatabaseOperation operacao;
-        try {
-            operacao = (DatabaseOperation) DatabaseOperation.class.getField(operacaoString).get(null);
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException exception) {
-            throw new DBUnitException("Operação inválida: " + operacaoString, exception);
-        }
-        return operacao;
     }
 
     /**

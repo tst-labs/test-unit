@@ -289,6 +289,43 @@ public class MinhaClasseTeste {
 }
 ```
 
+##### Múltiplos DataSets
+
+É possível utilizar diversos arquivos de dados do DBUnit nos testes, como no exemplo abaixo:
+
+```java
+package br.jus.tst.teste;
+
+@RunWith(TstUnitRunner.class)
+@HabilitarDbUnit(nomeSchema = "TT")
+@RodarScriptAntes("criar-schema.sql")
+@RodarScriptDepois("drop-schema.sql")
+@UsarDataSet("meu-dataset-geral.xml")
+public class MinhaClasseTeste {
+
+    @Inject
+    private MinhaClasse instancia;
+
+    @Test
+    @UsarDataSets({
+    	@UsarDataSets(value = "meu-dataset-1.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE),
+    	@UsarDataSets(value = "meu-dataset-2.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE)
+    })
+    public void testeMultiplosDatasets() {
+        // ...
+    }
+}
+```
+
+Note que são utilizados no total 3 arquivos no teste `testeMultiplosDatasets`: `meu-dataset-geral.xml`, `meu-dataset-1.xml` e `meu-dataset-2.xml`. O comportamento é que os arquivos sejam processados na ordem: arquivos definidos a nível de classe (sequencialmente) -> arquivos definidos a nível de método (sequencialmente).
+
+**Importante:** A anotação `@UsarDataSets` permite que sejam customizadas as operações a serem executadas antes e após cada teste. Caso isso não seja feito, o comportamento padrão define que sejam usadas as operações configuradas no arquivo `tstunit.properties` (ver acima em _Uso_). Isso pode não ser o desejado, visto que, por exemplo, caso a operação pré-testes configurada seja `CLEAN_INSERT`, isso fará com que todas as tabelas referenciadas em cada arquivo de dados sejam apagadas assim que o arquivo for processado. No exemplo acima, o fluxo de execução foi definido da seguinte forma:
+
+1. `CLEAN_INSERT "meu-dataset-geral.xml"`
+2. `INSERT "meu-dataset-1.xml"`
+3. `INSERT "meu-dataset-2.xml"`
+4. `Execução do teste`
+5. `DELETE_ALL "meu-dataset-geral.xml"`
 
 ##### Gerando DTD
 

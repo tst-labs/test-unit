@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Habilita o DBUnit numa classe de teste.
+ * Habilita o <em>DBUnit</em> numa classe de teste.
  * 
  * @author Thiago Miranda
  * @since 1 de jul de 2016
@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 public @interface HabilitarDbUnit {
 
     /**
-     * Nome do <em>schema</em> de banco de dados a ser utilizado pelo DBUnit.
+     * Nome do <em>schema</em> de banco de dados a ser utilizado pelo <em>DBUnit</em>.
      * 
      * @return nome do <em>schema</em> de banco de dados
      */
