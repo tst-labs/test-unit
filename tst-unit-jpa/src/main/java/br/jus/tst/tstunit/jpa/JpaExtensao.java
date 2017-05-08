@@ -3,7 +3,6 @@ package br.jus.tst.tstunit.jpa;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.*;
 import org.slf4j.*;
@@ -65,7 +64,6 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
         assertExtensaoHabilitada();
 
@@ -74,8 +72,7 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
         UnidadePersistencia[] unidadesPersistencia = habilitarJpa.unidadesPersistencia();
         if (unidadesPersistencia.length == 0) {
-            unidadesPersistencia = new UnidadePersistenciaCreator()
-                    .criarAnotacaoUnidadePersistencia(StringUtils.defaultIfEmpty(habilitarJpa.nomeUnidadePersistencia(), habilitarJpa.persistenceUnitName()), Unico.class);
+            unidadesPersistencia = new UnidadePersistenciaCreator().criarAnotacaoUnidadePersistencia(habilitarJpa.nomeUnidadePersistencia(), Unico.class);
         }
 
         LOGGER.info("Unidades de persistência: {}", (Object[]) unidadesPersistencia);

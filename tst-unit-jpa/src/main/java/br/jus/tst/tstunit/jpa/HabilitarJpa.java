@@ -57,14 +57,6 @@ public @interface HabilitarJpa {
     String nomeUnidadePersistencia() default StringUtils.EMPTY;
 
     /**
-     * @deprecated propriedade substituída por {@link #nomeUnidadePersistencia()}
-     * 
-     * @return o nome da unidade de persistência
-     */
-    @Deprecated
-    String persistenceUnitName() default StringUtils.EMPTY;
-
-    /**
      * As unidades de persistência que são utilizadas no teste. Caso essa propriedade seja definida, o valor de {@link #nomeUnidadePersistencia()} será
      * ignorado.
      * 
