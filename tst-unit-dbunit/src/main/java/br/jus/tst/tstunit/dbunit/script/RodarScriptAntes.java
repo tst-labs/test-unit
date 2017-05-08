@@ -29,9 +29,21 @@ import java.lang.annotation.*;
 public @interface RodarScriptAntes {
 
     /**
+     * <p>
      * O nome ou caminho do arquivo de script. Podem ser definidos múltiplos arquivos, de modo que eles serão executados na ordem em que forem declarados.
+     * </p>
      * 
-     * @return o nome ou caminho do arquivo
+     * <p>
+     * Exemplos:
+     * </p>
+     * 
+     * <pre>
+     * {@literal @}RodarScriptAntes("meu-script.sql")
+     * 
+     * {@literal @}RodarScriptAntes({ "meu-script-1.sql", "meu-script-2.sql" })
+     * </pre>
+     * 
+     * @return o nome ou caminho do arquivo (ou arquivos)
      */
     String[] value();
 }

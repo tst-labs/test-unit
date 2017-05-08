@@ -309,7 +309,7 @@ public class MinhaClasseTeste {
     @Test
     @UsarDataSets({
     	@UsarDataSets(value = "meu-dataset-1.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE),
-    	@UsarDataSets(value = "meu-dataset-2.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE)
+    	@UsarDataSets(value = "meu-dataset-2.xml")
     })
     public void testeMultiplosDatasets() {
         // ...
@@ -321,11 +321,12 @@ Note que são utilizados no total 3 arquivos no teste `testeMultiplosDatasets`: 
 
 **Importante:** A anotação `@UsarDataSets` permite que sejam customizadas as operações a serem executadas antes e após cada teste. Caso isso não seja feito, o comportamento padrão define que sejam usadas as operações configuradas no arquivo `tstunit.properties` (ver acima em _Uso_). Isso pode não ser o desejado, visto que, por exemplo, caso a operação pré-testes configurada seja `CLEAN_INSERT`, isso fará com que todas as tabelas referenciadas em cada arquivo de dados sejam apagadas assim que o arquivo for processado. No exemplo acima, o fluxo de execução foi definido da seguinte forma:
 
-1. `CLEAN_INSERT "meu-dataset-geral.xml"`
-2. `INSERT "meu-dataset-1.xml"`
-3. `INSERT "meu-dataset-2.xml"`
+1. `CLEAN_INSERT "meu-dataset-geral.xml"` (_default_)
+2. `INSERT "meu-dataset-1.xml"` (customizado)
+3. `CLEAN_INSERT "meu-dataset-2.xml"`(_default_)
 4. `Execução do teste`
-5. `DELETE_ALL "meu-dataset-geral.xml"`
+4. `DELETE_ALL "meu-dataset-2.xml"` (_default_)
+5. `DELETE_ALL "meu-dataset-geral.xml"` (_default_)
 
 ##### Gerando DTD
 

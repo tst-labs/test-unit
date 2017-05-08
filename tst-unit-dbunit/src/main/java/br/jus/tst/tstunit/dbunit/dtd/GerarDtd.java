@@ -17,7 +17,16 @@ import java.lang.annotation.*;
 public @interface GerarDtd {
 
     /**
+     * <p>
      * Caminho do arquivo DTD.
+     * </p>
+     * <p>
+     * Exemplo:
+     * </p>
+     * 
+     * <pre>
+     * {@literal @}GerarDtd("meu-schema.dtd")
+     * </pre>
      * 
      * @return o caminho do arquivo
      */
