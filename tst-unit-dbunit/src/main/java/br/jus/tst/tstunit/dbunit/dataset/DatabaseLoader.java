@@ -62,12 +62,18 @@ public class DatabaseLoader implements Serializable {
                 connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
             });
 
-            for (OperacaoDataSet operacaoAtual : operacoes) {
-                LOGGER.debug("Executando: {}", operacaoAtual);
-                operacaoAtual.executarOperacaoPreTestes(connection);
-            }
+            operacoes.forEach(operacaoAtual -> executarOperacaoPreTestes(operacaoAtual, connection));
         } catch (DatabaseUnitException | SQLException | JdbcException exception) {
             throw new DBUnitException("Erro ao efetuar carga do banco de dados", exception);
+        }
+    }
+
+    private void executarOperacaoPreTestes(OperacaoDataSet operacao, IDatabaseConnection connection) {
+        try {
+            LOGGER.debug("Executando operação pré-testes: {}", operacao);
+            operacao.executarOperacaoPreTestes(connection);
+        } catch (DatabaseUnitException | SQLException exception) {
+            throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
         }
     }
 
@@ -83,10 +89,20 @@ public class DatabaseLoader implements Serializable {
         try (Connection jdbcConnection = jdbcConnectionSupplier.get()) {
             IDatabaseConnection connection = openDbUnitConnection(jdbcConnection);
 
-            for (OperacaoDataSet operacaoAtual : operacoes) {
-                operacaoAtual.executarOperacaoPosTestes(connection);
+            for (int i = operacoes.size() - 1; i >= 0; i--) {
+                // processando na ordem inversa
+                executarOperacaoPosTestes(operacoes.get(i), connection);
             }
         } catch (DatabaseUnitException | SQLException | JdbcException exception) {
+            throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
+        }
+    }
+
+    private void executarOperacaoPosTestes(OperacaoDataSet operacao, IDatabaseConnection connection) {
+        try {
+            LOGGER.debug("Executando operação pós-testes: {}", operacao);
+            operacao.executarOperacaoPosTestes(connection);
+        } catch (DatabaseUnitException | SQLException exception) {
             throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
         }
     }
