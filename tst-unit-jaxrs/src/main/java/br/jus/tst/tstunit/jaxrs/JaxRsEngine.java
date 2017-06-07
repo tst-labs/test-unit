@@ -73,13 +73,22 @@ public interface JaxRsEngine {
     JaxRsEngine registrarRecurso(Object instancia);
 
     /**
-     * Registra um {@link Provider} do JAX-RS.
+     * Registra uma classe de {@link Provider} do JAX-RS.
      * 
      * @param providerClass
      *            classe a ser registrada como <em>provider</em>
      * @return {@code this}, para chamadas encadeadas de método
      */
     JaxRsEngine registrarProvider(Class<?> providerClass);
+
+    /**
+     * Registra uma instância de {@link Provider} do JAX-RS.
+     * 
+     * @param provider
+     *            instância a ser registrada como <em>provider</em>
+     * @return {@code this}, para chamadas encadeadas de método
+     */
+    JaxRsEngine registrarProvider(Object provider);
 
     /**
      * Define um objeto no contexto do JAX-RS.

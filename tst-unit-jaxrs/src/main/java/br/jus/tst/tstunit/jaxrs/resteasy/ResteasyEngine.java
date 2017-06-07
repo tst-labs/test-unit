@@ -66,8 +66,15 @@ public class ResteasyEngine implements JaxRsEngine {
 
     @Override
     public JaxRsEngine registrarProvider(Class<?> providerClass) {
-        logger.debug("Registrando provider: {}", providerClass);
+        logger.debug("Registrando class de provider: {}", providerClass);
         dispatcher.getProviderFactory().registerProvider(providerClass);
+        return this;
+    }
+
+    @Override
+    public JaxRsEngine registrarProvider(Object provider) {
+        logger.debug("Registrando instância de provider: {}", provider);
+        dispatcher.getProviderFactory().registerProviderInstance(provider);
         return this;
     }
 

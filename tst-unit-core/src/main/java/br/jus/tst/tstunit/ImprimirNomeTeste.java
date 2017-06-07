@@ -41,7 +41,7 @@ public @interface ImprimirNomeTeste {
      * </p>
      * 
      * <pre>
-     *  Classe {0} - Método {1}
+     *  {@literal @}ImprimirNomeTeste(formatoMensagem = "Classe {0} - Método {1}")
      * </pre>
      * 
      * @return o formato a ser utilizado
