@@ -17,8 +17,25 @@ public class JsonToObjectConverterFasterxml implements JsonToObjectConverter {
 
     private ObjectMapper objectMapper;
 
+    /**
+     * Cria um novo conversor utilizando a instância de {@link ObjectMapper} informada.
+     * 
+     * @param objectMapper
+     *            instância a ser utilizada
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
+     */
     public JsonToObjectConverterFasterxml(ObjectMapper objectMapper) {
         this.objectMapper = Objects.requireNonNull(objectMapper, "objectMapper");
+    }
+
+    /**
+     * Cria uma nova instância utilizando um {@link ObjectMapper} <em>default</em>.
+     * 
+     * @see ObjectMapper#ObjectMapper()
+     */
+    public JsonToObjectConverterFasterxml() {
+        this(new ObjectMapper());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package br.jus.tst.tstunit.jaxrs.jackson;
+package br.jus.tst.tstunit.jaxrs;
 
 /**
  * Exceção lançada quando ocorre algum erro ao converter JSON em objeto Java.

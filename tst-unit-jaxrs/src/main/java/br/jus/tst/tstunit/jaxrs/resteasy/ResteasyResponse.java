@@ -14,7 +14,6 @@ import org.apache.http.HttpStatus;
 import org.jboss.resteasy.mock.MockHttpResponse;
 
 import br.jus.tst.tstunit.jaxrs.*;
-import br.jus.tst.tstunit.jaxrs.jackson.JsonConverterException;
 
 /**
  * Implementação de resposta REST utilizando o RestEasy.

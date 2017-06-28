@@ -10,6 +10,7 @@ Histórico de mudanças
 
 **??? - 1.5.0**
 - _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
+- _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
 
 **03/05/2017 - 1.4.0**
 - _[TST Unit JAX-RS]_ Criação do módulo. 
