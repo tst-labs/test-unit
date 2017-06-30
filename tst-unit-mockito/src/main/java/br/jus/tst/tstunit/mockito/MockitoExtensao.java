@@ -1,11 +1,11 @@
 package br.jus.tst.tstunit.mockito;
 
 import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.model.*;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
+import br.jus.tst.tstunit.time.MedidorTempoExecucao;
 
 /**
  * {@link Extensao} que habilita o uso do Mockito nos testes.
@@ -33,16 +33,11 @@ public class MockitoExtensao extends AbstractExtensao<HabilitarMockito> {
     @Override
     public void beforeTestes(Object instancia) {
         LOGGER.info("Inicializando os mocks");
-        MockitoAnnotations.initMocks(instancia);
+        MedidorTempoExecucao.getInstancia().medir(() -> MockitoAnnotations.initMocks(instancia), "Inicialização de Mocks");
     }
 
     @Override
     public void inicializar(Configuracao configuracao, RunNotifier notifier) {
         LOGGER.info("Mockito habilitado");
-    }
-
-    @Override
-    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) {
-        return defaultStatement;
     }
 }

@@ -9,6 +9,8 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.*;
 import org.slf4j.*;
 
+import br.jus.tst.tstunit.time.*;
+
 /**
  * <p>
  * <code>{@literal @}TstUnitRunner</code> é um {@link Runner} do JUnit que facilita o uso de vários recursos em classes de testes.
@@ -52,12 +54,15 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
         this.classeTeste = classeTeste;
         configuracao = new Configuracao();
         NOME_ARQUIVO_PROPRIEDADES_PARAM.ifPresent(configuracao::setNomeArquivoPropriedades);
-        
+
         try {
             configuracao.carregar();
         } catch (TstUnitException exception) {
             LOGGER.debug("Erro ao carregar propriedades", exception);
         }
+
+        LOGGER.debug("Configurando Medidor de Tempo de Execução");
+        MedidorTempoExecucao.getInstancia().configurar(configuracao);
 
         extensoes = new ExtensoesLoader(PACOTE_EXTENSOES, classeTeste).carregarExtensoes();
         LOGGER.info("Extensões habilitadas: {}", extensoes);
@@ -126,7 +131,8 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
 
     @Override
     protected Statement methodBlock(FrameworkMethod method) {
-        Statement statement = super.methodBlock(method);
+        Statement statement = new StatementComMedidor(super.methodBlock(method));
+
         for (Extensao<?> extensao : extensoes) {
             LOGGER.debug("Executando extensão: {}", extensao.getClass().getSimpleName());
             try {

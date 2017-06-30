@@ -11,6 +11,7 @@ Histórico de mudanças
 **??? - 1.5.0**
 - _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
 - _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
+- _[TST Unit Core]_ Criando a funcionalidade de medir o tempo de execução gasto em cada uma das etapas do teste.
 
 **03/05/2017 - 1.4.0**
 - _[TST Unit JAX-RS]_ Criação do módulo. 
@@ -85,23 +86,56 @@ public class MinhaClasseTeste {
     }
 }
 ```
-
 Sem mais nenhuma configuração adicional, seu teste passa a contar com alguns recursos básicos, como a impressão dos nomes dos testes que estão rodando:
 
 ```
 >>>>>>>>>> Executando: br.jus.tst.teste.MinhaClasseTeste.teste <<<<<<<<<<
 ```
 
-Esse recurso pode ser desativado ou customizado através da anotação `@ImprimirNomeTeste`.
+Para utilizar outros recursos, você pode adicionar extensões, que adicionam novas funcionalidades ao TST Unit.
 
-O valor padrão, que é utilizado quando nenhuma anotação `@ImprimirNomeTeste` está presente na classe de testes, pode ser customizado através de um arquivo `tstunit.properties` em seu _classpath_:
+### Customização
+
+O recurso que imprime o nome de cada teste no console pode ser desativado ou customizado através da anotação `@ImprimirNomeTeste`.
+
+O valor padrão, que é utilizado quando nenhuma anotação `@ImprimirNomeTeste` está presente na classe de testes, pode ser configurado através de um arquivo `tstunit.properties` em seu _classpath_:
 
 ```
 # Desabilita a impressão dos nomes dos testes por padrão
 core.printtestname.default=false
 ```
 
-Para utilizar outros recursos, você pode adicionar extensões, que adicionam novas funcionalidades ao TST Unit.
+### Medição do tempo de execução
+
+Existe um recurso que permite visualizar o tempo de execução gasto em cada uma das etapas do teste. Isso é útil principalmente quando seu teste utiliza muitas extensões e o tempo total de execução esteja ficando muito alto.
+
+Para habilitar (e customizar) esse recurso, basta configurar através do arquivo `tstunit.properties`:
+
+```
+# Habilita o Medidor de Tempo de Execução
+core.medidortempoexecucao.habilitado=true
+# Customiza a mensagem que é exibida no console - normalmente não é necessário alterar
+# core.medidortempoexecucao.mensagens.formato=\n[TST UNIT - MEDIDOR] %s levou %d milisegundos\n
+# Indica se as mensagens devem ser geradas em formato ANSI (com cores, por exemplo)
+# core.medidortempoexecucao.consoleansi=true
+# Define um tempo (milisegundos) a partir do qual a execução de determinada operação é considerada no nível "alerta"
+# core.medidortempoexecucao.duracao.alerta=500
+# Define um tempo (milisegundos) a partir do qual a execução de determinada operação é considerada no nível "perigo"
+# core.medidortempoexecucao.duracao.perigo=1000
+```
+
+Assim, ao executar seus testes, você verá no console informações como:
+
+```
+[TST UNIT - MEDIDOR] XXX levou 901 milisegundos
+
+[TST UNIT - MEDIDOR] YYY levou 500 milisegundos
+
+[TST UNIT - MEDIDOR] ZZZ levou 15 milisegundos
+
+```
+
+Caso a propriedade `core.medidortempoexecucao.consoleansi` tenha valor `true`, os valores referentes aos tempos de execução serão impressos com cores para indicar se o tempo ultrapassou os valores definidos como _alerta_ ou _perigo_.
 
 ### Utilizando em projetos com versões inferiores ao Java 8
 

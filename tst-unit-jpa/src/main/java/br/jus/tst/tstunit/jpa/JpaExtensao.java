@@ -4,13 +4,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
 import br.jus.tst.tstunit.jpa.cdi.EntityManagerFactoryProducerExtension;
 import br.jus.tst.tstunit.jpa.util.*;
+import br.jus.tst.tstunit.time.MedidorTempoExecucao;
 
 /**
  * {@link Extensao} que habilita o JPA nos testes.
@@ -43,9 +43,9 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
     @Override
     public void beforeTestes(Object instancia) {
-        LOGGER.info("Criando schema através do {}", geradorSchema);
+        LOGGER.debug("Criando schema através do {}", geradorSchema);
         try {
-            geradorSchema.criar();
+            MedidorTempoExecucao.getInstancia().medir(() -> geradorSchema.criar(), "Geração do schema de Banco de Dados");
         } catch (JpaException exception) {
             LOGGER.error("Erro ao criar schema", exception);
             throw exception;
@@ -54,9 +54,9 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
     @Override
     public void afterTestes() {
-        LOGGER.info("Derrubando schema através do {}", geradorSchema);
+        LOGGER.debug("Derrubando schema através do {}", geradorSchema);
         try {
-            geradorSchema.destruir();
+            MedidorTempoExecucao.getInstancia().medir(() -> geradorSchema.destruir(), "Exclusão do schema de Banco de Dados");
         } catch (JpaException exception) {
             LOGGER.error("Erro ao derrubar schema", exception);
             throw exception;
@@ -99,11 +99,5 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
         ormProperties.put(ormPropertyKey, propriedadesJdbc.getProperty(jdbcPropertyKey));
         ormProperties.remove(jdbcPropertyKey);
         return this;
-    }
-
-    @Override
-    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) {
-        assertExtensaoHabilitada();
-        return defaultStatement;
     }
 }

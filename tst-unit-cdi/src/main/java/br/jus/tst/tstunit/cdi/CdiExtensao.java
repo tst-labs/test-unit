@@ -16,6 +16,7 @@ import org.junit.runners.model.*;
 import org.slf4j.*;
 
 import br.jus.tst.tstunit.*;
+import br.jus.tst.tstunit.time.MedidorTempoExecucao;
 
 /**
  * {@link Extensao} que habilita o uso do CDI nos testes.
@@ -125,7 +126,7 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
             weld = new CdiUnitWeld();
 
             try {
-                container = weld.initialize();
+                container = MedidorTempoExecucao.getInstancia().medir((w) -> weld.initialize(), "Inicialização do WELD").apply(weld);
             } catch (Throwable exception) {
                 if (startupException == null) {
                     startupException = exception;

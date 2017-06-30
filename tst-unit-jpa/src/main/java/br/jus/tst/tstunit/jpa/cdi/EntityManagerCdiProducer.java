@@ -40,13 +40,13 @@ public class EntityManagerCdiProducer implements EntityManagerProducer, Bean<Ent
 
     @Override
     public EntityManager create(CreationalContext<EntityManager> creationalContext) {
-        LOGGER.info("Criando novo EntityManager");
+        LOGGER.debug("Criando novo EntityManager");
         return criar();
     }
 
     @Override
     public void destroy(EntityManager instance, CreationalContext<EntityManager> creationalContext) {
-        LOGGER.info("Fechando EntityManager: {}", instance);
+        LOGGER.debug("Fechando EntityManager: {}", instance);
         destruir(instance);
     }
 

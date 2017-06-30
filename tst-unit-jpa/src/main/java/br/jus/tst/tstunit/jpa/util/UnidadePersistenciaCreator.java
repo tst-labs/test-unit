@@ -3,6 +3,8 @@ package br.jus.tst.tstunit.jpa.util;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 
+import org.apache.commons.lang3.builder.*;
+
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
 
 /**
@@ -40,6 +42,12 @@ public class UnidadePersistenciaCreator implements Serializable {
             @Override
             public String nome() {
                 return nomeUnidadePersistencia;
+            }
+
+            @Override
+            public String toString() {
+                return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("annotationType", annotationType()).append("qualifierClass", qualifierClass())
+                        .append("nome", nome()).toString();
             }
         } };
     }

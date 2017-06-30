@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
 import org.apache.commons.lang3.Validate;
+import org.junit.runners.model.*;
 
 /**
  * Implementação base para todas as extensões.
@@ -40,6 +41,12 @@ public abstract class AbstractExtensao<A extends Annotation> implements Extensao
     @SuppressWarnings("unchecked")
     public boolean isHabilitada() {
         return getClasseTeste().getAnnotation((Class<A>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]) != null;
+    }
+
+    @Override
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+        assertExtensaoHabilitada();
+        return defaultStatement;
     }
 
     /**

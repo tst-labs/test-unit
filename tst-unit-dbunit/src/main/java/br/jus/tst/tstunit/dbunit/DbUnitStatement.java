@@ -11,6 +11,7 @@ import org.junit.runners.model.Statement;
 import br.jus.tst.tstunit.dbunit.dataset.DatabaseLoader;
 import br.jus.tst.tstunit.dbunit.dtd.GeradorDtd;
 import br.jus.tst.tstunit.dbunit.script.ScriptRunner;
+import br.jus.tst.tstunit.time.MedidorTempoExecucao;
 
 /**
  * {@link Statement} que define o comportamento de um caso de teste que utilize o DBUnit.
@@ -90,8 +91,7 @@ public class DbUnitStatement extends Statement {
     private final Optional<ScriptRunner> scriptRunner;
     private final Optional<GeradorDtd> geradorDtd;
 
-    DbUnitStatement(Statement defaultStatement, Optional<DatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner,
-            Optional<GeradorDtd> geradorDtd) {
+    DbUnitStatement(Statement defaultStatement, Optional<DatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner, Optional<GeradorDtd> geradorDtd) {
         this.defaultStatement = Objects.requireNonNull(defaultStatement, "defaultStatement");
         this.databaseLoader = databaseLoader;
         this.geradorDtd = geradorDtd;
@@ -113,15 +113,17 @@ public class DbUnitStatement extends Statement {
 
     @Override
     public void evaluate() throws Throwable {
-        scriptRunner.ifPresent(executarScriptAntes());
-        geradorDtd.ifPresent(GeradorDtd::gerar);
-        databaseLoader.ifPresent(DatabaseLoader::carregarBancoDados);
+        MedidorTempoExecucao medidorTempoExecucao = MedidorTempoExecucao.getInstancia();
+
+        medidorTempoExecucao.medir(() -> scriptRunner.ifPresent(executarScriptAntes()), "Execução de Scripts ANTES do teste");
+        medidorTempoExecucao.medir(() -> geradorDtd.ifPresent(GeradorDtd::gerar), "Geração de DTD");
+        medidorTempoExecucao.medir(() -> databaseLoader.ifPresent(DatabaseLoader::carregarBancoDados), "Carga do Banco de Dados");
 
         try {
             defaultStatement.evaluate();
         } finally {
-            databaseLoader.ifPresent(DatabaseLoader::limparBancoDados);
-            scriptRunner.ifPresent(executarScriptDepois());
+            medidorTempoExecucao.medir(() -> databaseLoader.ifPresent(DatabaseLoader::limparBancoDados), "Limpeza do Banco de Dados");
+            medidorTempoExecucao.medir(() -> scriptRunner.ifPresent(executarScriptDepois()), "Execução de Scripts APÓS o teste");
         }
     }
 

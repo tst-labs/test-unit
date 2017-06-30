@@ -79,7 +79,7 @@ public class Configuracao implements Serializable {
      * @return o valor da propriedade
      */
     public Optional<Boolean> getPropriedadeBoolean(String key) {
-        String value = properties != null ? properties.getProperty(key) : null;
+        String value = isCarregado() ? properties.getProperty(key) : null;
         return StringUtils.isEmpty(value) ? Optional.empty() : Optional.of(BooleanUtils.toBoolean(value));
     }
 
@@ -94,7 +94,7 @@ public class Configuracao implements Serializable {
      *             caso as propriedades não tenham sido carregadas ainda
      */
     public Properties getSubPropriedades(String prefixo) {
-        Validate.validState(properties != null, "Ainda não foram carregadas as propriedades do arquivo %s", nomeArquivoPropriedades);
+        Validate.validState(isCarregado(), "Ainda não foram carregadas as propriedades do arquivo %s", nomeArquivoPropriedades);
         if (StringUtils.isNotBlank(prefixo)) {
             Properties jdbcProperties = new Properties();
             properties.keySet().stream().map(keyObject -> keyObject.toString()).filter(key -> key.startsWith(prefixo))
@@ -103,5 +103,14 @@ public class Configuracao implements Serializable {
         } else {
             return this.properties;
         }
+    }
+
+    /**
+     * Verifica se as propriedades já foram carregadas.
+     * 
+     * @return {@code true}/{@code false}
+     */
+    public boolean isCarregado() {
+        return properties != null;
     }
 }
