@@ -11,43 +11,47 @@ Histórico de mudanças
 ----------
 
 **??? - 1.5.0**
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
-- ![Novo](docs/new-feature.png "Nova Funcionalidade") _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
-- ![Novo](docs/new-feature.png "Nova Funcionalidade") _[TST Unit Core]_ Criando a funcionalidade de medir o tempo de execução gasto em cada uma das etapas do teste.
+- ![Melhoria][melhoria] _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
+- ![Novo][novo] _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
+- ![Novo][novo] _[TST Unit Core]_ Criando a funcionalidade de medir o tempo de execução gasto em cada uma das etapas do teste.
 
 **03/05/2017 - 1.4.0**
-- ![Bug](docs/bug.png "Bug") _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 2.2.1 para 3.1.3 devido a problemas surgidos no desenvolvimento dos testes.
-- ![Novo](docs/new-feature.png "Nova Funcionalidade") _[TST Unit JAX-RS]_ Criação do módulo. 
+- ![Bug][bug] _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 2.2.1 para 3.1.3 devido a problemas surgidos no desenvolvimento dos testes.
+- ![Novo][novo] _[TST Unit JAX-RS]_ Criação do módulo. 
 
 **27/03/2017 - 1.3.1**
-- ![Bug](docs/bug.png "Bug") _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
-- ![Bug](docs/bug.png "Bug") _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
-- ![Bug](docs/bug.png "Bug") _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
+- ![Bug][bug] _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
+- ![Bug][bug] _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
+- ![Bug][bug] _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
 
 **22/11/2016 - 1.3.0**
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
 
 **13/10/2016 - 1.2.0**
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit JPA]_ Desacoplamento do _CDI_.
-- ![Novo](docs/new-feature.png "Nova Funcionalidade") _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ Desacoplamento do _CDI_.
+- ![Novo][novo] _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
 
 **08/09/2016 - 1.1.2**
-- ![Bug](docs/bug.png "Bug") _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
-- ![Bug](docs/bug.png "Bug") _[TST Unit CDI]_ Removendo dependências transitiva do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
+- ![Bug][bug] _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
+- ![Bug][bug] _[TST Unit CDI]_ Removendo dependências transitiva do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
 
 **02/09/2016 - 1.1.1**
-- ![Bug](docs/bug.png "Bug") _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
+- ![Bug][bug] _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
 
 **31/08/2016 - 1.1.0**
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
-- ![Melhoria](docs/improvement.png "Melhoria") _[TST Unit JPA]_ O `EntityManager` gerado pela `TestEntityManagerProducer` agora possui o qualificador `@ApplicationScoped`.
-- ![Novo](docs/new-feature.png "Nova Funcionalidade") _[todos]_ Adicionando suporte a testes parametrizados.
+- ![Melhoria][melhoria] _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
+- ![Melhoria][melhoria] _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
+- ![Melhoria][melhoria] _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ O `EntityManager` gerado pela `TestEntityManagerProducer` agora possui o qualificador `@ApplicationScoped`.
+- ![Novo][novo] _[todos]_ Adicionando suporte a testes parametrizados.
 
 **19/07/2016 - 1.0.0**
 - Primeiro release do projeto.
+
+[bug]: docs/bug.png
+[melhoria]: docs/improvement.png
+[novo]: docs/new-feature.png
 
 TODO List
 ---------
