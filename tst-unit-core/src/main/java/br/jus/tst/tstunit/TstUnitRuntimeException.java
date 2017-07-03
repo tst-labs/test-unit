@@ -23,6 +23,16 @@ public class TstUnitRuntimeException extends RuntimeException {
     }
 
     /**
+     * Cria uma nova exceção com a causa-raiz.
+     * 
+     * @param cause
+     *            a causa-raiz
+     */
+    public TstUnitRuntimeException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
      * Cria uma nova exceção com uma mensagem de erro.
      * 
      * @param message

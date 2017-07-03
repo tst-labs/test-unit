@@ -1,10 +1,9 @@
 package br.jus.tst.tstunit.time;
 
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 import org.junit.runners.model.Statement;
-
-import br.jus.tst.tstunit.TstUnitRuntimeException;
 
 /**
  * Implementação de {@link Statement} que utiliza um {@link MedidorTempoExecucao}.
@@ -30,11 +29,20 @@ public class StatementComMedidor extends Statement {
 
     @Override
     public void evaluate() throws Throwable { // NOSONAR
-        MedidorTempoExecucao.getInstancia().medir(() -> {
-            try {
-                defaultStatement.evaluate();
-            } catch (Throwable exception) { // NOSONAR
-                throw new TstUnitRuntimeException("Erro ao executar Statement: " + defaultStatement, exception);
+        MedidorTempoExecucao.getInstancia().medir(new Callable<Void>() {
+
+            @Override
+            public Void call() throws Exception {
+                try {
+                    defaultStatement.evaluate();
+                } catch (Throwable throwed) { // NOSONAR
+                    if (throwed instanceof Error) { // NOSONAR
+                        throw (Error) throwed; // NOSONAR
+                    } else {
+                        throw (Exception) throwed; // NOSONAR
+                    }
+                }
+                return null;
             }
         }, "Execução do código do próprio teste");
     }
