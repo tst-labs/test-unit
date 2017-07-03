@@ -1,6 +1,8 @@
 TST Unit
 ==============================
 
+![Build Status](http://jenkins.tst.jus.br/buildStatus/icon?job=tst-unit "Build Status")
+
 Biblioteca que auxilia no desenvolvimento de testes unitários e de integração.
 
 ---
@@ -9,43 +11,47 @@ Histórico de mudanças
 ----------
 
 **??? - 1.5.0**
-- _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
-- _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
-- _[TST Unit Core]_ Criando a funcionalidade de medir o tempo de execução gasto em cada uma das etapas do teste.
+- ![Melhoria][melhoria] _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
+- ![Novo][novo] _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
+- ![Novo][novo] _[TST Unit Core]_ Criando a funcionalidade de medir o tempo de execução gasto em cada uma das etapas do teste.
 
 **03/05/2017 - 1.4.0**
-- _[TST Unit JAX-RS]_ Criação do módulo. 
-- _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 2.2.1 para 3.1.3 devido a problemas surgidos no desenvolvimento dos testes.
+- ![Bug][bug] _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 2.2.1 para 3.1.3 devido a problemas surgidos no desenvolvimento dos testes.
+- ![Novo][novo] _[TST Unit JAX-RS]_ Criação do módulo. 
 
 **27/03/2017 - 1.3.1**
-- _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
-- _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
-- _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
+- ![Bug][bug] _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
+- ![Bug][bug] _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
+- ![Bug][bug] _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
 
 **22/11/2016 - 1.3.0**
-- _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
 
 **13/10/2016 - 1.2.0**
-- _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
-- _[TST Unit JPA]_ Desacoplamento do _CDI_.
-- _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ Desacoplamento do _CDI_.
+- ![Novo][novo] _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
 
 **08/09/2016 - 1.1.2**
-- _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
-- _[TST Unit CDI]_ Removendo dependências transitiva do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
+- ![Bug][bug] _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
+- ![Bug][bug] _[TST Unit CDI]_ Removendo dependências transitiva do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
 
 **02/09/2016 - 1.1.1**
-- _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
+- ![Bug][bug] _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
 
 **31/08/2016 - 1.1.0**
-- _[todos]_ Adicionando suporte a testes parametrizados.
-- _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
-- _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
-- _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
-- _[TST Unit JPA]_ O `EntityManager` gerado pela `TestEntityManagerProducer` agora possui o qualificador `@ApplicationScoped`.
+- ![Melhoria][melhoria] _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
+- ![Melhoria][melhoria] _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
+- ![Melhoria][melhoria] _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
+- ![Melhoria][melhoria] _[TST Unit JPA]_ O `EntityManager` gerado pela `TestEntityManagerProducer` agora possui o qualificador `@ApplicationScoped`.
+- ![Novo][novo] _[todos]_ Adicionando suporte a testes parametrizados.
 
 **19/07/2016 - 1.0.0**
 - Primeiro release do projeto.
+
+[bug]: docs/bug.png "Bug"
+[melhoria]: docs/improvement.png "Melhoria"
+[novo]: docs/new-feature.png "Nova Funcionalidade"
 
 TODO List
 ---------

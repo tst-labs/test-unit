@@ -1,10 +1,12 @@
 package br.jus.tst.tstunit.time;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.builder.*;
 import org.apache.commons.lang3.time.StopWatch;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
@@ -13,40 +15,45 @@ import com.diogonunes.jcdp.color.api.Ansi.FColor;
 import br.jus.tst.tstunit.*;
 
 /**
+ * Permite que seja medido o tempo de execução de uma operação.
  * 
  * @author Thiago Miranda
  * @since 30 de jun de 2017
  */
-public class MedidorTempoExecucao {
+public class MedidorTempoExecucao implements Serializable {
+
+    private static final long serialVersionUID = 3431653094150490207L;
 
     public static final String FORMATO_MENSAGENS_PADRAO = "\n[TST UNIT - MEDIDOR] %s levou %d milisegundos\n";
-
-    private static final String COR_ANSI_DEFAULT = "\u001B[0m";
-    private static final String COR_ANSI_VERMELHO = "\u001B[31m";
-    private static final String COR_ANSI_AMARELO = "\u001B[33m";
-    private static final String COR_ANSI_VERDE = "\u001B[32m";
-
-    private static final String FORMATO_MENSAGEM_COM_INDICADOR = "%s%s%s";
 
     private static final MedidorTempoExecucao INSTANCIA_SINGLETON = new MedidorTempoExecucao();
 
     private boolean habilitado;
     private String formatoMensagens;
 
-    private long duracaoAlerta;
-    private long duracaoPerigo;
-    private boolean consoleAnsi;
+    private transient long duracaoAlerta;
+    private transient long duracaoPerigo;
+    private transient boolean consoleAnsi;
 
     private MedidorTempoExecucao() {
     }
 
+    /**
+     * Obtém a instância única (<em>singleton</em>).
+     * 
+     * @return a instância
+     */
     public static MedidorTempoExecucao getInstancia() {
         return INSTANCIA_SINGLETON;
     }
 
     /**
+     * Configura a instância de acordo com as definições informadas.
      * 
      * @param configuracao
+     *            definições de configuração a serem utilizadas
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
      */
     public void configurar(Configuracao configuracao) {
         Objects.requireNonNull(configuracao, "configuracao");
@@ -60,10 +67,19 @@ public class MedidorTempoExecucao {
     }
 
     /**
+     * Mede o tempo de execução de uma operação representada por um {@link Runnable}.
      * 
      * @param runnable
+     *            a operação a ser medida
+     * @param descricao
+     *            descrição da operação, a ser utilizada nos logs de execução
+     * @throws NullPointerException
+     *             caso seja informado {@code null} como operação
+     * @throws RuntimeException
+     *             caso a operação lance uma exceção
      */
     public void medir(Runnable runnable, String descricao) {
+        Objects.requireNonNull(runnable, "runnable");
         if (habilitado) {
             StopWatch watch = new StopWatch();
             watch.start();
@@ -76,12 +92,21 @@ public class MedidorTempoExecucao {
     }
 
     /**
+     * Mede o tempo de execução de uma operação representada por um {@link Callable}.
      * 
      * @param callable
+     *            a operação a ser medida
      * @param descricao
-     * @return
+     *            descrição da operação, a ser utilizada nos logs de execução
+     * @return o resultado da operação
+     * @throws NullPointerException
+     *             caso seja informado {@code null} como operação
+     * @throws RuntimeException
+     *             caso a operação lance uma exceção
      */
     public <T> T medir(Callable<T> callable, String descricao) {
+        Objects.requireNonNull(callable, "callable");
+
         T resultado;
 
         if (habilitado) {
@@ -111,12 +136,21 @@ public class MedidorTempoExecucao {
     }
 
     /**
+     * Mede o tempo de execução de uma operação representada por uma {@link Function}.
      * 
      * @param function
+     *            a operação a ser medida
      * @param descricao
-     * @return
+     *            descrição da operação, a ser utilizada nos logs de execução
+     * @return uma nova função representando a execução deste método
+     * @throws NullPointerException
+     *             caso seja informado {@code null} como operação
+     * @throws RuntimeException
+     *             caso a operação lance uma exceção
      */
     public <T, R> Function<T, R> medir(Function<T, R> function, String descricao) {
+        Objects.requireNonNull(function, "function");
+
         if (habilitado) {
             return (t) -> {
                 StopWatch watch = new StopWatch();
@@ -164,5 +198,11 @@ public class MedidorTempoExecucao {
 
     private FColor identificarCorPeloTempo(long tempo) {
         return tempo >= duracaoPerigo ? FColor.RED : tempo >= duracaoAlerta ? FColor.YELLOW : FColor.GREEN;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("habilitado", habilitado).append("formatoMensagens", formatoMensagens)
+                .append("duracaoAlerta", duracaoAlerta).append("duracaoPerigo", duracaoPerigo).append("consoleAnsi", consoleAnsi).toString();
     }
 }
