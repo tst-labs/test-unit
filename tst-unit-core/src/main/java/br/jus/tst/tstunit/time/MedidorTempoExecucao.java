@@ -101,10 +101,12 @@ public class MedidorTempoExecucao implements Serializable {
      * @return o resultado da operação
      * @throws NullPointerException
      *             caso seja informado {@code null} como operação
-     * @throws RuntimeException
-     *             caso a operação lance uma exceção
+     * @throws TstUnitRuntimeException
+     *             caso a operação lance uma exceção e o Medidor esteja habilitado
+     * @throws Exception
+     *             caso a operação lance uma exceção e o Medidor não esteja habilitado
      */
-    public <T> T medir(Callable<T> callable, String descricao) {
+    public <T> T medir(Callable<T> callable, String descricao) throws Exception { // NOSONAR
         Objects.requireNonNull(callable, "callable");
 
         T resultado;
@@ -123,13 +125,13 @@ public class MedidorTempoExecucao implements Serializable {
         return resultado;
     }
 
-    private <T> T getResultado(Callable<T> callable) {
+    private <T> T getResultado(Callable<T> callable) throws Exception { // NOSONAR
         T resultado;
 
         try {
             resultado = callable.call();
         } catch (Exception exception) { // NOSONAR
-            throw new TstUnitRuntimeException("Erro ao computar resultado da chamada", exception);
+            throw habilitado ? new TstUnitRuntimeException("Erro ao computar resultado da chamada", exception) : exception; // NOSONAR
         }
 
         return resultado;
