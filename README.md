@@ -12,6 +12,7 @@ Histórico de mudanças
 
 **??? - 1.5.0**
 - ![Melhoria][melhoria] _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
+- ![Melhoria][melhoria] _[TST Unit DbUnit]_ Agora é possível utilizar as anotações `@RodarScriptAntes` e `@RodarScriptDepois` em outros bancos que não H2.
 - ![Novo][novo] _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
 - ![Novo][novo] _[TST Unit Core]_ Criando a funcionalidade de medir o tempo de execução gasto em cada uma das etapas do teste.
 
@@ -20,7 +21,7 @@ Histórico de mudanças
 - ![Novo][novo] _[TST Unit JAX-RS]_ Criação do módulo. 
 
 **27/03/2017 - 1.3.1**
-- ![Bug][bug] _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessida do arquivo `tstunit.properties` sem esse arquivo existir.
+- ![Bug][bug] _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessita do arquivo `tstunit.properties` sem esse arquivo existir.
 - ![Bug][bug] _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
 - ![Bug][bug] _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
 
@@ -34,7 +35,7 @@ Histórico de mudanças
 
 **08/09/2016 - 1.1.2**
 - ![Bug][bug] _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
-- ![Bug][bug] _[TST Unit CDI]_ Removendo dependências transitiva do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
+- ![Bug][bug] _[TST Unit CDI]_ Removendo dependência transitiva do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
 
 **02/09/2016 - 1.1.1**
 - ![Bug][bug] _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
@@ -47,17 +48,17 @@ Histórico de mudanças
 - ![Novo][novo] _[todos]_ Adicionando suporte a testes parametrizados.
 
 **19/07/2016 - 1.0.0**
-- Primeiro release do projeto.
-
-[bug]: docs/bug.png
-[melhoria]: docs/improvement.png
-[novo]: docs/new-feature.png
+- ![Novo][novo] Primeiro release do projeto.
 
 TODO List
 ---------
 
-- ![Novo](docs/new-feature.png "Nova Funcionalidade") Permitir utilização de suites de testes
-- ![Novo](docs/new-feature.png "Nova Funcionalidade") Integração com JBehave
+- ![Novo][novo] Permitir utilização de suites de testes
+- ![Novo][novo] Integração com JBehave
+
+[bug]: docs/bug.png
+[melhoria]: docs/improvement.png
+[novo]: docs/new-feature.png
 
 Requisitos
 ---------

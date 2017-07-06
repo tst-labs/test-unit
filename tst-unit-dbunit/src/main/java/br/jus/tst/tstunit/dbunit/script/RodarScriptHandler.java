@@ -12,12 +12,12 @@ import org.slf4j.*;
 import br.jus.tst.tstunit.annotation.*;
 
 /**
- * Classe que auxilia a criação de instâncias de {@link ScriptRunner} a partir de anotações {@link RodarScriptAntes} e {@link RodarScriptDepois}.
+ * Classe que auxilia a criação de instâncias de {@link ExecutorScripts} a partir de anotações {@link RodarScriptAntes} e {@link RodarScriptDepois}.
  * 
  * @author Thiago Miranda
  * @since 21 de jul de 2016
  */
-public class RodarScriptHandler implements AnnotationHandler<ScriptRunner>, Serializable {
+public class RodarScriptHandler implements AnnotationHandler<ExecutorScripts>, Serializable {
 
     private static final long serialVersionUID = 3920037660526049231L;
     private static final Logger LOGGER = LoggerFactory.getLogger(RodarScriptHandler.class);
@@ -45,7 +45,7 @@ public class RodarScriptHandler implements AnnotationHandler<ScriptRunner>, Seri
     }
 
     @Override
-    public Optional<ScriptRunner> processar(FrameworkMethod method) {
+    public Optional<ExecutorScripts> processar(FrameworkMethod method) {
         List<String> scriptsBefore = annotationExtractor.getAnnotationsFromMethodOrClass(method, RodarScriptAntes.class).stream()
                 .flatMap(anotacao -> Arrays.stream(anotacao.value())).map(caminhoArquivo -> buildCaminhoArquivo(scriptsDirectory, caminhoArquivo))
                 .collect(Collectors.toList());
@@ -56,7 +56,7 @@ public class RodarScriptHandler implements AnnotationHandler<ScriptRunner>, Seri
                 .collect(Collectors.toList());
         LOGGER.debug("Scripts a serem executados após os testes: {}", scriptsAfter);
 
-        return Optional.of(new ScriptRunner(scriptsBefore, scriptsAfter, jdbcConnectionSupplier));
+        return Optional.of(new ExecutorScripts(scriptsBefore, scriptsAfter, jdbcConnectionSupplier));
     }
 
     private String buildCaminhoArquivo(String directory, String nomeArquivo) {

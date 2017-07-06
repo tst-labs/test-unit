@@ -10,7 +10,7 @@ import org.junit.runners.model.Statement;
 
 import br.jus.tst.tstunit.dbunit.dataset.DatabaseLoader;
 import br.jus.tst.tstunit.dbunit.dtd.GeradorDtd;
-import br.jus.tst.tstunit.dbunit.script.ScriptRunner;
+import br.jus.tst.tstunit.dbunit.script.ExecutorScripts;
 import br.jus.tst.tstunit.time.MedidorTempoExecucao;
 
 /**
@@ -31,7 +31,7 @@ public class DbUnitStatement extends Statement {
 
         private Optional<DatabaseLoader> databaseLoader;
         private Optional<GeradorDtd> geradorDtd;
-        private Optional<ScriptRunner> scriptRunner;
+        private Optional<ExecutorScripts> executorScripts;
         private Statement defaultStatement;
 
         /**
@@ -69,33 +69,33 @@ public class DbUnitStatement extends Statement {
         }
 
         /**
-         * Define a instância de {@link ScriptRunner} a ser utilizada para rodar scripts antes e após a execução do <em>statement</em> (obrigatório).
+         * Define a instância de {@link ExecutorScripts} a ser utilizada para rodar scripts antes e após a execução do <em>statement</em> (obrigatório).
          * 
-         * @param scriptRunner
+         * @param executorScripts
          *            a ser utilizado
          * @return {@code this}, para chamadas encadeadas de método
          */
-        public DbUnitStatementBuilder usandoScriptRunner(Optional<ScriptRunner> scriptRunner) {
-            this.scriptRunner = scriptRunner;
+        public DbUnitStatementBuilder usandoScriptRunner(Optional<ExecutorScripts> executorScripts) {
+            this.executorScripts = executorScripts;
             return this;
         }
 
         @Override
         public DbUnitStatement build() {
-            return new DbUnitStatement(defaultStatement, databaseLoader, scriptRunner, geradorDtd);
+            return new DbUnitStatement(defaultStatement, databaseLoader, executorScripts, geradorDtd);
         }
     }
 
     private final Statement defaultStatement;
     private final Optional<DatabaseLoader> databaseLoader;
-    private final Optional<ScriptRunner> scriptRunner;
+    private final Optional<ExecutorScripts> executorScripts;
     private final Optional<GeradorDtd> geradorDtd;
 
-    DbUnitStatement(Statement defaultStatement, Optional<DatabaseLoader> databaseLoader, Optional<ScriptRunner> scriptRunner, Optional<GeradorDtd> geradorDtd) {
+    DbUnitStatement(Statement defaultStatement, Optional<DatabaseLoader> databaseLoader, Optional<ExecutorScripts> executorScripts, Optional<GeradorDtd> geradorDtd) {
         this.defaultStatement = Objects.requireNonNull(defaultStatement, "defaultStatement");
         this.databaseLoader = databaseLoader;
         this.geradorDtd = geradorDtd;
-        this.scriptRunner = scriptRunner;
+        this.executorScripts = executorScripts;
     }
 
     /**
@@ -115,7 +115,7 @@ public class DbUnitStatement extends Statement {
     public void evaluate() throws Throwable {
         MedidorTempoExecucao medidorTempoExecucao = MedidorTempoExecucao.getInstancia();
 
-        medidorTempoExecucao.medir(() -> scriptRunner.ifPresent(executarScriptAntes()), "Execução de Scripts ANTES do teste");
+        medidorTempoExecucao.medir(() -> executorScripts.ifPresent(executarScriptAntes()), "Execução de Scripts ANTES do teste");
         medidorTempoExecucao.medir(() -> geradorDtd.ifPresent(GeradorDtd::gerar), "Geração de DTD");
         medidorTempoExecucao.medir(() -> databaseLoader.ifPresent(DatabaseLoader::carregarBancoDados), "Carga do Banco de Dados");
 
@@ -123,11 +123,11 @@ public class DbUnitStatement extends Statement {
             defaultStatement.evaluate();
         } finally {
             medidorTempoExecucao.medir(() -> databaseLoader.ifPresent(DatabaseLoader::limparBancoDados), "Limpeza do Banco de Dados");
-            medidorTempoExecucao.medir(() -> scriptRunner.ifPresent(executarScriptDepois()), "Execução de Scripts APÓS o teste");
+            medidorTempoExecucao.medir(() -> executorScripts.ifPresent(executarScriptDepois()), "Execução de Scripts APÓS o teste");
         }
     }
 
-    private Consumer<? super ScriptRunner> executarScriptAntes() {
+    private Consumer<? super ExecutorScripts> executarScriptAntes() {
         return runner -> {
             try {
                 runner.executarScriptsAntes();
@@ -137,7 +137,7 @@ public class DbUnitStatement extends Statement {
         };
     }
 
-    private Consumer<? super ScriptRunner> executarScriptDepois() {
+    private Consumer<? super ExecutorScripts> executarScriptDepois() {
         return runner -> {
             try {
                 runner.executarScriptsDepois();

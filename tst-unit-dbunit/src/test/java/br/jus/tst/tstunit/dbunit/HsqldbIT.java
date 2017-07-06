@@ -22,6 +22,8 @@ import br.jus.tst.tstunit.dbunit.script.*;
  */
 /*
  * OBS.: Para rodar este teste individualmente, é necessário passar como parâmetro: -DnomeArquivoPropriedades=tstunit-hsqldb.properties
+ * 
+ * Rodando pelo Maven (mvn test), isso já é feito automaticamente.
  */
 public class HsqldbIT extends AbstractIT {
 
