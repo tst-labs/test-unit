@@ -11,6 +11,7 @@ Histórico de mudanças
 ----------
 
 **??? - 1.5.0**
+- ![Bug][bug] _[TST Unit DbUnit]_ Testes utilizando outros bancos que não H2 ainda estavam rodando código específico para o H2.
 - ![Melhoria][melhoria] _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
 - ![Melhoria][melhoria] _[TST Unit DbUnit]_ Agora é possível utilizar as anotações `@RodarScriptAntes` e `@RodarScriptDepois` em outros bancos que não H2.
 - ![Novo][novo] _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
