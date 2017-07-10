@@ -23,7 +23,7 @@ public class DefaultScriptRunnerIT extends AbstractIT {
     private ScriptRunner defaultScriptRunner;
 
     @BeforeClass
-    public void setUpClass() {
+    public static void setUpClass() {
         DefaultScriptRunner.setLogsDir(new File("target"));
     }
 

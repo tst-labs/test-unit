@@ -41,24 +41,10 @@ public class H2ScriptRunner implements ScriptRunner {
         }
     }
 
-    /**
-     * Verifica se o H2 está sendo utilizado (presente no <em>classpath</em> corrente).
-     * 
-     * @return {@code true}/{@code false}
-     */
-    public static boolean isHabilitado() {
-        try {
-            Class.forName("org.h2.tools.RunScript", false, Thread.currentThread().getContextClassLoader());
-            return true;
-        } catch (ClassNotFoundException exception) {
-            LOGGER.debug("Erro ao carregar classe do H2", exception);
-            return false;
-        }
-    }
-
     @Override
     public void runScript(Reader reader) throws IOException, SQLException {
         try {
+            LOGGER.debug("Executando {} na conexão JDBC {}", reader, connection);
             RunScript.execute(connection, reader);
         } catch (DbException exception) {
             throw new SQLException(exception);

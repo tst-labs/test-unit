@@ -1,12 +1,17 @@
 package br.jus.tst.tstunit.dbunit.script;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.*;
 import java.util.function.*;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.slf4j.*;
+
+import br.jus.tst.tstunit.dbunit.DBUnitException;
 
 /**
  * Classe responsável por executar scripts de banco de dados.
@@ -44,14 +49,37 @@ public class ExecutorScripts implements Serializable {
         this.scriptsBefore = CollectionUtils.isEmpty(scriptsBefore) ? Collections.emptyList() : new ArrayList<>(scriptsBefore);
         this.scriptsAfter = CollectionUtils.isEmpty(scriptsAfter) ? Collections.emptyList() : new ArrayList<>(scriptsAfter);
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
+        identificarScriptRunner(jdbcConnectionSupplier);
+    }
 
-        if (H2ScriptRunner.isHabilitado()) {
-            LOGGER.info("Utilizando implementação do H2 para executar Scripts SQL");
-            scriptRunnerSupplier = (connection) -> new H2ScriptRunner(connection);
-        } else {
+    @SuppressWarnings("unchecked")
+    private void identificarScriptRunner(Supplier<Connection> jdbcConnectionSupplier) {
+        String provedorBancoDados;
+        try (Connection connection = jdbcConnectionSupplier.get()) {
+            provedorBancoDados = StringUtils.deleteWhitespace(connection.getMetaData().getDatabaseProductName());
+            LOGGER.debug("Provedor de banco de dados: {}", provedorBancoDados);
+        } catch (SQLException exception) {
+            throw new DBUnitException("Erro ao identificar provedor de banco de dados", exception);
+        }
+
+        try {
+            Class<? extends ScriptRunner> scriptRunnerClass = (Class<? extends ScriptRunner>) Class.forName(
+                    String.format("%s.%sScriptRunner", ScriptRunner.class.getPackage().getName(), provedorBancoDados), false, Thread.currentThread().getContextClassLoader());
+            LOGGER.info("Utilizando implementação do {} para executar Scripts SQL", provedorBancoDados);
+            scriptRunnerSupplier = (connection) -> newScriptRunner(scriptRunnerClass, connection);
+        } catch (ClassNotFoundException exception) {
+            LOGGER.debug("Não há implementação específica para o {}", provedorBancoDados, exception);
             LOGGER.info("Utilizando implementação própria para executar Scripts SQL");
             scriptRunnerSupplier = (connection) -> new DefaultScriptRunner(connection, false, true);
             DefaultScriptRunner.setLogsDir(new File(DIRETORIO_LOGS_PADRAO));
+        }
+    }
+
+    private ScriptRunner newScriptRunner(Class<? extends ScriptRunner> scriptRunnerClass, Connection connection) {
+        try {
+            return ConstructorUtils.invokeConstructor(scriptRunnerClass, new Object[] { connection }, new Class<?>[] { Connection.class });
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException exception) {
+            throw new DBUnitException("Erro ao instanciar executor de Scripts: " + scriptRunnerClass, exception);
         }
     }
 

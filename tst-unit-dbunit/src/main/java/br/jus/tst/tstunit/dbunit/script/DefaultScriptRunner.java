@@ -30,8 +30,6 @@ import java.util.regex.*;
 
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.TstUnitRuntimeException;
-
 /**
  * Tool to run database scripts
  *
@@ -83,7 +81,7 @@ public class DefaultScriptRunner implements ScriptRunner {
                 logWriter = new PrintWriter(new FileWriter(logFile, false));
             }
         } catch (IOException e) {
-            LOGGER.error("Unable to access or create the db_create log");
+            LOGGER.error("Unable to access or create the db_create log", e);
         }
         try {
             if (logFile.exists()) {
@@ -92,7 +90,7 @@ public class DefaultScriptRunner implements ScriptRunner {
                 errorLogWriter = new PrintWriter(new FileWriter(errorLogFile, false));
             }
         } catch (IOException e) {
-            LOGGER.error("Unable to access or create the  db_create error log");
+            LOGGER.error("Unable to access or create the  db_create error log", e);
         }
         String timeStamp = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss").format(new java.util.Date());
         println("\n-------\n" + timeStamp + "\n-------\n");
@@ -133,44 +131,20 @@ public class DefaultScriptRunner implements ScriptRunner {
         this.errorLogWriter = errorLogWriter;
     }
 
-    /**
-     * Runs an SQL script (read in using the Reader parameter)
-     *
-     * @param reader
-     *            - the source of the script
-     */
     @Override
     public void runScript(Reader reader) throws IOException, SQLException {
+        boolean originalAutoCommit = connection.getAutoCommit();
         try {
-            boolean originalAutoCommit = connection.getAutoCommit();
-            try {
-                if (originalAutoCommit != autoCommit) {
-                    connection.setAutoCommit(autoCommit);
-                }
-
-                runScript(connection, reader);
-            } finally {
-                connection.setAutoCommit(originalAutoCommit);
+            if (originalAutoCommit != autoCommit) {
+                connection.setAutoCommit(autoCommit);
             }
-        } catch (IOException | SQLException e) {
-            throw e;
-        } catch (Exception exception) {
-            throw new TstUnitRuntimeException("Error running script. Cause: " + exception.getLocalizedMessage(), exception);
+
+            runScript(connection, reader);
+        } finally {
+            connection.setAutoCommit(originalAutoCommit);
         }
     }
 
-    /**
-     * Runs an SQL script (read in using the Reader parameter) using the connection passed in
-     *
-     * @param conn
-     *            - the connection to use for the script
-     * @param reader
-     *            - the source of the script
-     * @throws SQLException
-     *             if any SQL errors occur
-     * @throws IOException
-     *             if there is an error reading from the Reader
-     */
     private void runScript(Connection conn, Reader reader) throws IOException, SQLException {
         StringBuffer command = null;
         try {
@@ -236,7 +210,7 @@ public class DefaultScriptRunner implements ScriptRunner {
         }
 
         ResultSet rs = statement.getResultSet();
-        if (hasResults && rs != null) {
+        if (hasResults) {
             ResultSetMetaData md = rs.getMetaData();
             int cols = md.getColumnCount();
             for (int i = 1; i <= cols; i++) {
@@ -255,7 +229,7 @@ public class DefaultScriptRunner implements ScriptRunner {
 
         try {
             statement.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             // Ignore to workaround a bug in Jakarta DBCP
             LOGGER.debug("Error closing the Statement", e);
         }
