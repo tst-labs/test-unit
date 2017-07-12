@@ -810,3 +810,24 @@ public class MinhaClasseTeste {
     }
 }
 ```
+
+#### Problemas conhecidos
+
+##### Javassist
+
+Caso ocorra a situação de uma ou mais extensões não serem carregadas em seus testes, verifique se o _POM_ de seu projeto possui múltiplas dependências do _Javassist_ com _groupId_ distintos (ex.: `org.javassist` e `javassist`). Nesse caso, é necessário excluir a versão mais antiga do seu projeto, como no exemplo abaixo:
+
+```
+<dependency>
+    <groupId>...</groupId>
+    <artifactId>...</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+Esse problema é facilmente identificado elevando-se o nível de log geral ou apenas do pacote `br.jus.tst.tstunit` para `DEBUG` e analisando-se as mensagens impressas no console.
