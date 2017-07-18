@@ -24,8 +24,11 @@ import br.jus.tst.tstunit.jaxrs.*;
 public class ResteasyResponse implements MockResponse {
 
     private MockHttpResponse httpResponse;
-    private Class<?> tipoObjetoResposta;
+
+    @Deprecated
     private TypeReference<?> typeReferenceResposta;
+    @Deprecated
+    private Class<?> tipoObjetoResposta;
 
     public ResteasyResponse(MockHttpResponse response) {
         this.httpResponse = Objects.requireNonNull(response, "response");
@@ -55,17 +58,14 @@ public class ResteasyResponse implements MockResponse {
     }
 
     @Override
-    public MockResponse deveRetornarRespostaDoTipo(String contentType) {
-        return deveRetornarRespostaDoTipo(MediaType.valueOf(contentType));
-    }
-
-    @Override
+    @Deprecated
     public MockResponse deveRetornarObjetoDoTipo(Class<?> tipo) {
         this.tipoObjetoResposta = Objects.requireNonNull(tipo, "tipo");
         return this;
     }
 
     @Override
+    @Deprecated
     public MockResponse deveRetornarObjetoDoTipo(TypeReference<?> typeReference) {
         this.typeReferenceResposta = Objects.requireNonNull(typeReference, "typeReferenceResposta");
         return this;
@@ -107,6 +107,7 @@ public class ResteasyResponse implements MockResponse {
     }
 
     @Override
+    @Deprecated
     @SuppressWarnings("unchecked")
     public <T> T getObjetoRespostaUsando(JsonToObjectConverter converter) {
         Objects.requireNonNull(converter, "converter");

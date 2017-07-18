@@ -23,7 +23,30 @@ public interface MockRequest {
 
     MockRequest contentType(MediaType contentType);
 
+    /**
+     * Define o conteúdo da requisição como um objeto, utilizando o conversor informado para transformá-lo em um JSON.
+     * 
+     * @param conteudo
+     *            o objeto a ser gravado na requisição
+     * @param converter
+     *            conversor de objetos Java em JSON
+     * @return {@code this}, para chamadas encadeadas de método
+     * 
+     * @deprecated Para gravar um conteúdo em JSON, utilizar {@link #content(Object, ObjectToJsonFunction)}. Este método será removido em versões futuras.
+     */
+    @Deprecated
     MockRequest content(Object conteudo, JsonToObjectConverter converter);
+
+    /**
+     * Define o conteúdo da requisição como um objeto, utilizando a função informada para transformá-lo em um JSON.
+     * 
+     * @param conteudo
+     *            o objeto a ser gravado na requisição
+     * @param converter
+     *            conversor de objetos Java em JSON
+     * @return {@code this}, para chamadas encadeadas de método
+     */
+    MockRequest content(Object conteudo, ObjectToJsonFunction converter);
 
     MockRequest content(byte[] conteudo);
 }
