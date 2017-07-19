@@ -13,7 +13,7 @@ Histórico de mudanças
 **??? - 1.6.0**
 - ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Toda a API que encapsulava a biblioteca de manipulação de JSON utilizada (_Jackson_, _Gson_, etc) está agora `@Deprecated`. Delegando para o código cliente a forma de converter objetos Java em JSON e vice-versa.
 
-**18/07/2017 - 1.5.0**
+**19/07/2017 - 1.5.0**
 - ![Bug][bug] _[TST Unit DbUnit]_ Testes utilizando outros bancos que não H2 ainda estavam rodando código específico para o H2.
 - ![Melhoria][melhoria] _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
 - ![Melhoria][melhoria] _[TST Unit DbUnit]_ Agora é possível utilizar as anotações `@RodarScriptAntes` e `@RodarScriptDepois` em outros bancos que não H2.
