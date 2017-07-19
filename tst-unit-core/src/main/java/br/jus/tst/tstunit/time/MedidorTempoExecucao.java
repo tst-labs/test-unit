@@ -105,6 +105,8 @@ public class MedidorTempoExecucao implements Serializable {
      *             caso a operação lance uma exceção e o Medidor esteja habilitado
      * @throws Exception
      *             caso a operação lance uma exceção e o Medidor não esteja habilitado
+     * @param <T>
+     *            o tipo de objeto retornado pela operação informada
      */
     public <T> T medir(Callable<T> callable, String descricao) throws Exception { // NOSONAR
         Objects.requireNonNull(callable, "callable");
@@ -149,6 +151,10 @@ public class MedidorTempoExecucao implements Serializable {
      *             caso seja informado {@code null} como operação
      * @throws RuntimeException
      *             caso a operação lance uma exceção
+     * @param <T>
+     *            tipo de dado de entrada da função informada
+     * @param <R>
+     *            tipo de dado de saída da função informada
      */
     public <T, R> Function<T, R> medir(Function<T, R> function, String descricao) {
         Objects.requireNonNull(function, "function");

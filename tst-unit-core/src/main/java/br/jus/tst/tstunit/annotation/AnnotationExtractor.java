@@ -36,7 +36,7 @@ public class AnnotationExtractor implements Serializable {
     /**
      * <p>
      * Identifica todas as anotações presentes na classe de teste ou no método informado. A ordem das anotações dentro da lista segue o padrão de 1º anotações
-     * da classe -> 2º anotações do método.
+     * da classe -&gt; 2º anotações do método.
      * </p>
      * 
      * @param method

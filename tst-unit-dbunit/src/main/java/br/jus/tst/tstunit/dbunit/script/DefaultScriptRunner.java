@@ -31,9 +31,12 @@ import java.util.regex.*;
 import org.slf4j.*;
 
 /**
- * Tool to run database scripts
+ * Implementação simples de {@link ScriptRunner}, independente de banco de dados utilizado.
  *
- * @see https://github.com/BenoitDuffez/DefaultScriptRunner
+ * @author BenoitDuffez
+ * @author Thiago Miranda
+ * 
+ * @see <a href="https://github.com/BenoitDuffez/DefaultScriptRunner">Original</a>
  */
 public class DefaultScriptRunner implements ScriptRunner {
 
@@ -66,7 +69,15 @@ public class DefaultScriptRunner implements ScriptRunner {
     private boolean fullLineDelimiter;
 
     /**
-     * Default constructor
+     * Cria uma nova instância do executor de scripts.
+     * 
+     * @param connection
+     *            a conexão JDBC a ser utilizada
+     * @param autoCommit
+     *            define se o modo <a href="https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html#disable_auto_commit">auto-commit</a> da
+     *            conexão está habilitado ou não
+     * @param stopOnError
+     *            define se o script deve parar quando ocorrer algum erro SQL
      */
     public DefaultScriptRunner(Connection connection, boolean autoCommit, boolean stopOnError) {
         this.connection = connection;

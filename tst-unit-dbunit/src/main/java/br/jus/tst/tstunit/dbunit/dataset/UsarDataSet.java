@@ -14,7 +14,7 @@ import org.dbunit.operation.DatabaseOperation;
  * Indica que uma classe ou método de teste necessita do uso de um arquivo <em>DataSet</em> do <em>DBUnit</em>.
  * </p>
  * <p>
- * OBS.: Caso a anotação seja definida tanto numa classe de testes quanto em seus métodos, a ordem de execução será sempre 1º classe -> 2º método.
+ * OBS.: Caso a anotação seja definida tanto numa classe de testes quanto em seus métodos, a ordem de execução será sempre 1º classe -&gt; 2º método.
  * </p>
  * 
  * @author Thiago Miranda
@@ -106,8 +106,7 @@ public @interface UsarDataSet {
      * 
      * <pre>
      * {@literal @}UsarDataSet("meu-dataset1.xml")
-     * 
-     * <pre>
+     * </pre>
      * 
      * @return o nome do arquivo
      */
@@ -124,8 +123,7 @@ public @interface UsarDataSet {
      * 
      * <pre>
      * {@literal @}UsarDataSet(value = "meu-dataset.xml", operacaoPreTestes = Operacao.CLEAN_INSERT)
-     * 
-     * <pre>
+     * </pre>
      * 
      * @return a operação a ser executada antes do teste
      * @see DatabaseOperation
@@ -143,8 +141,7 @@ public @interface UsarDataSet {
      * 
      * <pre>
      * {@literal @}UsarDataSet(value = "meu-dataset.xml", operacaoPosTestes = Operacao.DELETE_ALL)
-     * 
-     * <pre>
+     * </pre>
      * 
      * @return a operação a ser executada após o teste
      * @see DatabaseOperation

@@ -23,7 +23,7 @@ public class JsonToObjectConverterGson implements JsonToObjectConverter {
     /**
      * Cria um novo conversor utilizando a instância de {@link Gson} informada.
      * 
-     * @param objectMapper
+     * @param gson
      *            instância a ser utilizada
      * @throws NullPointerException
      *             caso seja informado {@code null}
