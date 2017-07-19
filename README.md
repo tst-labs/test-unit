@@ -696,7 +696,7 @@ public class MinhaClasseTeste {
 
     @Test
     public void teste() {
-        MeuObjeto meuObjeto = jaxRsEngine.get(...).executar().getObjetoRespostaUsando(stream -> objectMapper.readValue(stream, MeuObjeto.class);
+        MeuObjeto meuObjeto = jaxRsEngine.get(...).executar().getObjetoRespostaUsando(stream -> objectMapper.readValue(stream, MeuObjeto.class));
         ...
     }
 }

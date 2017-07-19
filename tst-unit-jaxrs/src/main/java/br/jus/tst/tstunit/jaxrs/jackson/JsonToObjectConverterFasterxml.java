@@ -12,7 +12,11 @@ import br.jus.tst.tstunit.jaxrs.*;
  * 
  * @author Thiago Miranda
  * @since 4 de abr de 2017
+ * 
+ * @deprecated Para obter a resposta em JSON, utilizar {@link MockResponse#getObjetoRespostaUsando(JsonToObjectFunction)}. Esta classe será removida em
+ *             versões futuras.
  */
+@Deprecated
 public class JsonToObjectConverterFasterxml implements JsonToObjectConverter {
 
     private ObjectMapper objectMapper;

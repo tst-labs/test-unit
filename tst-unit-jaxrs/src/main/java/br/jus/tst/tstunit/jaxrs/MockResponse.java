@@ -2,6 +2,7 @@ package br.jus.tst.tstunit.jaxrs;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Objects;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
@@ -44,7 +45,9 @@ public interface MockResponse {
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
+     * @deprecated Para obter a resposta em JSON, utilizar {@link #getObjetoRespostaUsando(JsonToObjectFunction)}. Este método será removido em versões futuras.
      */
+    @Deprecated
     MockResponse deveRetornarObjetoDoTipo(Class<?> tipo);
 
     /**
@@ -55,7 +58,9 @@ public interface MockResponse {
      * @return {@code this}, para chamadas encadeadas de método
      * @throws AssertionError
      *             caso a asserção falhe
+     * @deprecated Para obter a resposta em JSON, utilizar {@link #getObjetoRespostaUsando(JsonToObjectFunction)}. Este método será removido em versões futuras.
      */
+    @Deprecated
     MockResponse deveRetornarObjetoDoTipo(TypeReference<?> typeReference);
 
     /**
@@ -67,7 +72,9 @@ public interface MockResponse {
      * @throws AssertionError
      *             caso a asserção falhe
      */
-    MockResponse deveRetornarRespostaDoTipo(String contentType);
+    default MockResponse deveRetornarRespostaDoTipo(String contentType) {
+        return deveRetornarRespostaDoTipo(MediaType.valueOf(contentType));
+    }
 
     /**
      * Asserção de que a resposta retorne conteúdo do tipo informado.
@@ -124,8 +131,32 @@ public interface MockResponse {
      * @return a instância criada a partir do JSON de resposta
      * @throws JaxRsException
      *             caso ocorra algum erro ao converter o conteúdo da resposta
+     * 
+     * @deprecated Para obter a resposta em JSON, utilizar {@link #getObjetoRespostaUsando(JsonToObjectFunction)}. Este método será removido em versões futuras.
      */
+    @Deprecated
     <T> T getObjetoRespostaUsando(JsonToObjectConverter converter);
+
+    /**
+     * Obtém um POJO representando o JSON retornado como resposta.
+     * 
+     * @param conversor
+     *            função a a ser utilizada para converter a resposta JSON em um POJO.
+     * @param <T>
+     *            o tipo de objeto esperado
+     * @return a instância criada a partir do JSON de resposta
+     * @throws NullPointerException
+     *             caso seja informado {@code null}
+     * @throws JaxRsException
+     *             caso ocorra algum erro ao converter o conteúdo da resposta
+     */
+    default <T> T getObjetoRespostaUsando(JsonToObjectFunction<T> conversor) {
+        try {
+            return Objects.requireNonNull(conversor, "conversor").apply(getConteudoResposta());
+        } catch (Exception exception) { // NOSONAR
+            throw new JaxRsException("Erro ao obter conteúdo da resposta JSON", exception);
+        }
+    }
 
     /**
      * Obtém o conteúdo da resposta como um <em>stream</em>

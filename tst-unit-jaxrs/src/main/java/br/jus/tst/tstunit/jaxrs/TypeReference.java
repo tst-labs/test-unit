@@ -4,7 +4,11 @@ import java.lang.reflect.*;
 
 /**
  * @see org.codehaus.jackson.type.TypeReference
+ * 
+ * @deprecated Para obter a resposta em JSON, utilizar {@link MockResponse#getObjetoRespostaUsando(JsonToObjectFunction)}. Esta classe será removida em versões
+ *             futuras.
  */
+@Deprecated
 public abstract class TypeReference<T> implements Comparable<TypeReference<T>> {
 
     private final Type _type;
@@ -18,7 +22,7 @@ public abstract class TypeReference<T> implements Comparable<TypeReference<T>> {
 
         _type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
     }
-    
+
     public Type getType() {
         return _type;
     }

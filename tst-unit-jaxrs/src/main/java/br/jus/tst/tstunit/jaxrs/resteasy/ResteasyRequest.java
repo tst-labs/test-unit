@@ -7,6 +7,7 @@ import java.util.*;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.*;
@@ -62,9 +63,35 @@ public class ResteasyRequest implements MockRequest {
         return contentType(MediaType.valueOf(contentType));
     }
 
+    /**
+     * @throws NullPointerException
+     *             caso {@code converter} seja informado {@code null}
+     */
     @Override
+    @Deprecated
     public MockRequest content(Object conteudo, JsonToObjectConverter converter) {
         this.conteudoOptional = conteudo != null ? Objects.requireNonNull(converter, "converter").objectToJson(conteudo) : Optional.empty();
+        return this;
+    }
+
+    /**
+     * @throws NullPointerException
+     *             caso {@code converter} seja informado {@code null}
+     */
+    @Override
+    public MockRequest content(Object conteudo, ObjectToJsonFunction converter) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        if (conteudo != null) {
+            try {
+                Objects.requireNonNull(converter, "converter").apply(stream, conteudo);
+            } catch (Exception exception) {
+                throw new JaxRsException("Erro ao converter objeto em JSON: " + conteudo, exception);
+            }
+        }
+
+        this.conteudoOptional = stream.size() > 0 ? Optional.of(new ByteArrayInputStream(stream.toByteArray())) : Optional.empty();
+
         return this;
     }
 

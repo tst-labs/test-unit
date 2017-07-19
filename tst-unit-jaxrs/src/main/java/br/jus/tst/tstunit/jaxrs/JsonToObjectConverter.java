@@ -8,7 +8,11 @@ import java.util.Optional;
  * 
  * @author Thiago Miranda
  * @since 4 de abr de 2017
+ * 
+ * @deprecated Para obter uma resposta em JSON, utilizar {@link MockResponse#getObjetoRespostaUsando(JsonToObjectFunction)}. Para converter objetos em JSON,
+ *             utilizar {@link ObjectToJsonFunction}. Esta interface será removida em versões futuras.
  */
+@Deprecated
 public interface JsonToObjectConverter {
 
     <T> T jsonToObject(InputStream stream, TypeReference<T> typeReference);

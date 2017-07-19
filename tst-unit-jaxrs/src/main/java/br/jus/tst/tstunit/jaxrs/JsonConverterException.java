@@ -5,7 +5,11 @@ package br.jus.tst.tstunit.jaxrs;
  * 
  * @author Thiago Miranda
  * @since 4 de abr de 2017
+ * 
+ * @deprecated Para obter a resposta em JSON, utilizar {@link MockResponse#getObjetoRespostaUsando(JsonToObjectFunction)}. Esta classe será removida em versões
+ *             futuras.
  */
+@Deprecated
 public class JsonConverterException extends RuntimeException {
 
     private static final long serialVersionUID = 8750109369398041343L;
