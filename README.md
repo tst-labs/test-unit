@@ -5,7 +5,9 @@ TST Unit
 
 Biblioteca que auxilia no desenvolvimento de testes unitários e de integração.
 
----
+- Evita o retrabalho relacionado à configuração de diversas ferramentas utilizadas, como _CDI_, _DBUnit_ e _JPA_.
+- Fornece algumas funcionalidades adicionais, como medição do tempo de execução de cada etapa do teste (inicialização de frameworks, carga de banco de dados, etc).
+- É extensível. 
 
 Histórico de mudanças
 ----------
