@@ -8,7 +8,7 @@ import org.junit.*;
  * @author Thiago Miranda
  * @since 26 de jan de 2017
  */
-public class ConfiguracaoTest {
+public class ConfiguracaoTeste {
 
     private Configuracao configuracao;
 
