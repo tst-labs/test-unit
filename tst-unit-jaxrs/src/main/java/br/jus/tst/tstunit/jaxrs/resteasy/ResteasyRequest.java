@@ -2,13 +2,15 @@ package br.jus.tst.tstunit.jaxrs.resteasy;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.*;
 import org.jglue.cdiunit.ContextController;
@@ -48,8 +50,17 @@ public class ResteasyRequest implements MockRequest {
 
     @Override
     public MockRequest pathParams(Object... params) {
-        this.pathParams = ArrayUtils.clone(params);
+        this.pathParams = Arrays.stream(params).map(this::encodeParam).collect(Collectors.toList()).toArray();
+
         return this;
+    }
+
+    private String encodeParam(Object param) {
+        try {
+            return URLEncoder.encode(param.toString(), Charset.defaultCharset().name()).replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException exception) {
+            throw new JaxRsException("Erro ao processar parâmetro: " + param, exception);
+        }
     }
 
     @Override

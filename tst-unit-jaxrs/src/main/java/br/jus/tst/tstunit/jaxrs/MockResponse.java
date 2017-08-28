@@ -138,7 +138,17 @@ public interface MockResponse {
     <T> T getObjetoRespostaUsando(JsonToObjectConverter converter);
 
     /**
+     * <p>
      * Obtém um POJO representando o JSON retornado como resposta.
+     * </p>
+     * <p>
+     * Exemplo de utilização:
+     * </p>
+     * 
+     * <pre>
+     * MockResponse response = ...;
+     * Objeto obj = response.getObjetoRespostaUsando((stream) -> meuConversor.readObject(stream));
+     * </pre>
      * 
      * @param conversor
      *            função a a ser utilizada para converter a resposta JSON em um POJO.
