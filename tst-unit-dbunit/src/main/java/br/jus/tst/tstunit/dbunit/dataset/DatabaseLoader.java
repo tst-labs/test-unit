@@ -73,7 +73,7 @@ public class DatabaseLoader implements Serializable {
             LOGGER.debug("Executando operação pré-testes: {}", operacao);
             operacao.executarOperacaoPreTestes(connection);
         } catch (DatabaseUnitException | SQLException exception) {
-            throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
+            throw new DBUnitException("Erro ao executar operação pré-testes", exception);
         }
     }
 
@@ -103,7 +103,7 @@ public class DatabaseLoader implements Serializable {
             LOGGER.debug("Executando operação pós-testes: {}", operacao);
             operacao.executarOperacaoPosTestes(connection);
         } catch (DatabaseUnitException | SQLException exception) {
-            throw new DBUnitException("Erro ao efetuar limpeza do banco de dados", exception);
+            throw new DBUnitException("Erro ao executar operação pós-testes", exception);
         }
     }
 
