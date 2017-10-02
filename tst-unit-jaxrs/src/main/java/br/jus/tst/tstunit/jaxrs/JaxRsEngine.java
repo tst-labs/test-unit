@@ -64,6 +64,15 @@ public interface JaxRsEngine {
     MockRequest delete(String uriTemplate);
 
     /**
+     * Inicia a criação de uma requisição HTTP HEAD.
+     * 
+     * @param uriTemplate
+     *            template da URI da requisição
+     * @return a requisição sendo criada
+     */
+    MockRequest head(String uriTemplate);
+
+    /**
      * Registra uma instância como sendo um recurso JAX-RS (um objeto cuja classe está anotada com {@literal @}{@link Path}, por exemplo).
      * 
      * @param instancia
@@ -104,7 +113,7 @@ public interface JaxRsEngine {
     <T> JaxRsEngine definirObjetoContexto(Class<T> classe, T instancia);
 
     /**
-     * Obtém a instância do framework sendo utilizado como implementação.
+     * Obtém a instância que fornece acesso à API do framework JAX-RS sendo utilizado. O retorno deste método é específico da implementação utilizada.
      * 
      * @return a instância
      */

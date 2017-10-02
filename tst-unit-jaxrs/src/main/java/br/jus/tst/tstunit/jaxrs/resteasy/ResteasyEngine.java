@@ -58,6 +58,12 @@ public class ResteasyEngine implements JaxRsEngine {
     }
 
     @Override
+    public MockRequest head(String uriTemplate) {
+        logger.debug("HEAD {}", uriTemplate);
+        return new ResteasyRequest(HttpMethod.HEAD, dispatcher, uriTemplate, contextController);
+    }
+
+    @Override
     public JaxRsEngine registrarRecurso(Object instancia) {
         logger.debug("Registrando instância de recurso do tipo: {}", instancia.getClass());
         dispatcher.getRegistry().addResourceFactory(new SingletonResource(instancia));
