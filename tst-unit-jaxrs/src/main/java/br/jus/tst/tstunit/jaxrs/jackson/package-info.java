@@ -1,5 +1,6 @@
 /**
- * @deprecated Para obter a resposta em JSON, utilizar {@link MockResponse#getObjetoRespostaUsando(JsonToObjectFunction)}. Este pacote será removido em
- *             versões futuras.
+ * @deprecated Para obter a resposta em JSON, utilizar
+ *             {@link br.jus.tst.tstunit.jaxrs.MockResponse#getObjetoRespostaUsando(br.jus.tst.tstunit.jaxrs.JsonToObjectFunction)}. Este pacote será removido
+ *             em versões futuras.
  */
 package br.jus.tst.tstunit.jaxrs.jackson;

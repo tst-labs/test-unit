@@ -3,16 +3,17 @@ package br.jus.tst.tstunit.jaxrs.resteasy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Collections;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.cdi.ResteasyCdiExtension;
 import org.jboss.weld.log.LoggerProducer;
 import org.jglue.cdiunit.AdditionalClasses;
@@ -99,5 +100,41 @@ public class ResteasyEngineIT {
 
         assertThat(string).contains(String.valueOf(numero));
         assertThat(string).contains(novoConteudo);
+    }
+
+    @Test
+    public void deveriaProcessarQueryParamInformada1() {
+        String numero = "1";
+
+        int numeroConvertido = Integer.valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParam("validar", Boolean.TRUE).executar().deveRetornarStatusOk()
+                .deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
+
+        assertThat(numeroConvertido).isEqualTo(1);
+    }
+
+    @Test
+    public void deveriaProcessarQueryParamInformada2() {
+        jaxRsEngine.get("strings/%s").pathParams("@").queryParam("validar", Boolean.TRUE).executar().deveRetornarStatus(Status.BAD_REQUEST).naoDeveRetornarConteudo();
+    }
+
+    @Test
+    public void deveriaProcessarMultiplasQueryParams() {
+        String numero = "1";
+
+        int numeroConvertido = Integer
+                .valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParams(Collections.singletonMap("validar", ArrayUtils.toArray(Boolean.TRUE))).executar()
+                        .deveRetornarStatusOk().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
+
+        assertThat(numeroConvertido).isEqualTo(1);
+    }
+
+    @Test
+    public void deveriaProcessarQueryParamNaoInformada() {
+        String numero = "1";
+
+        int numeroConvertido = Integer.valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).executar().deveRetornarStatusOk()
+                .deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
+
+        assertThat(numeroConvertido).isEqualTo(1);
     }
 }

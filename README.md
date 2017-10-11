@@ -14,6 +14,8 @@ Histórico de mudanças
 
 **??? - 1.6.0**
 - ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Toda a API que encapsulava a biblioteca de manipulação de JSON utilizada (_Jackson_, _Gson_, etc) está agora `@Deprecated`. Delegando para o código cliente a forma de converter objetos Java em JSON e vice-versa.
+- ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Adicionando suporte ao método HTTP `HEAD`.
+- ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Adicionando suporte a _query params_.
 - ![Bug][bug] _[TST Unit JAX-RS]_ Ocorria erro ao usar parâmetros de URL contendo espaços em branco ou caracteres especiais.
 
 **19/07/2017 - 1.5.0**

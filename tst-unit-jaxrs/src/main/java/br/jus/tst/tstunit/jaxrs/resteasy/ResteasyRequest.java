@@ -34,6 +34,7 @@ public class ResteasyRequest implements MockRequest {
     private HttpMethod httpMethod;
     private String uriTemplate;
     private Object[] pathParams;
+    private Map<String, Object[]> queryParams;
     private ContextController contextController;
 
     private Optional<MediaType> mediaTypeOptional;
@@ -44,6 +45,7 @@ public class ResteasyRequest implements MockRequest {
         this.dispatcher = Objects.requireNonNull(dispatcher, "dispatcher");
         this.uriTemplate = Objects.requireNonNull(uriTemplate, "uriTemplate");
         this.contextController = Objects.requireNonNull(contextController, "contextController");
+        this.queryParams = new HashMap<>();
 
         mediaTypeOptional = Optional.empty();
         conteudoOptional = Optional.empty();
@@ -52,7 +54,6 @@ public class ResteasyRequest implements MockRequest {
     @Override
     public MockRequest pathParams(Object... params) {
         this.pathParams = Arrays.stream(params).map(this::encodeParam).collect(Collectors.toList()).toArray();
-
         return this;
     }
 
@@ -69,15 +70,39 @@ public class ResteasyRequest implements MockRequest {
         }
     }
 
+    /**
+     * @throws NullPointerException
+     *             caso qualquer parâmetro seja {@code null}
+     */
+    @Override
+    public MockRequest queryParam(String key, Object... values) {
+        queryParams.put(Objects.requireNonNull(key, "key"), Objects.requireNonNull(values, "values"));
+        return this;
+    }
+
+    /**
+     * @throws NullPointerException
+     *             caso {@code params} seja {@code null}
+     */
+    @Override
+    public MockRequest queryParams(Map<String, Object[]> params) {
+        queryParams.putAll(Objects.requireNonNull(params, "params"));
+        return this;
+    }
+
     @Override
     public MockRequest contentType(MediaType contentType) {
         mediaTypeOptional = Optional.ofNullable(contentType);
         return this;
     }
 
+    /**
+     * @throws NullPointerException
+     *             caso {@code contentType} seja {@code null}
+     */
     @Override
     public MockRequest contentType(String contentType) {
-        return contentType(MediaType.valueOf(contentType));
+        return contentType(MediaType.valueOf(Objects.requireNonNull(contentType, "contentType")));
     }
 
     /**
@@ -131,7 +156,15 @@ public class ResteasyRequest implements MockRequest {
     }
 
     protected String uriFormatada() {
-        return String.format(uriTemplate, pathParams);
+        StringBuilder uriBuilder = new StringBuilder(String.format(uriTemplate, pathParams));
+
+        if (!queryParams.isEmpty()) {
+            uriBuilder.append('?').append(1).append('=').append(1);
+        }
+
+        queryParams.forEach((key, values) -> Arrays.stream(values).forEach((value) -> uriBuilder.append('&').append(key).append('=').append(value)));
+
+        return uriBuilder.toString();
     }
 
     protected void invoke(MockHttpRequest request, MockHttpResponse response) {
