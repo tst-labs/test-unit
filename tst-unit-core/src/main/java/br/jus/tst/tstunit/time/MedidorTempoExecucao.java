@@ -20,7 +20,7 @@ import br.jus.tst.tstunit.*;
  * @author Thiago Miranda
  * @since 30 de jun de 2017
  */
-public class MedidorTempoExecucao implements Serializable {
+public final class MedidorTempoExecucao implements Serializable {
 
     private static final long serialVersionUID = 3431653094150490207L;
 
@@ -159,8 +159,9 @@ public class MedidorTempoExecucao implements Serializable {
     public <T, R> Function<T, R> medir(Function<T, R> function, String descricao) {
         Objects.requireNonNull(function, "function");
 
+        Function<T, R> newFunction;
         if (habilitado) {
-            return (t) -> {
+            newFunction = (t) -> {
                 StopWatch watch = new StopWatch();
                 watch.start();
                 R resultado = function.apply(t);
@@ -169,8 +170,9 @@ public class MedidorTempoExecucao implements Serializable {
                 return resultado;
             };
         } else {
-            return (t) -> function.apply(t);
+            newFunction = function::apply;
         }
+        return newFunction;
     }
 
     public boolean isHabilitado() {

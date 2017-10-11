@@ -43,22 +43,4 @@ public class TstUnitRunnerTeste {
 
         verify(extensao).inicializar(configuracao, notifier);
     }
-
-    @Test
-    @Ignore
-    public void testCreateTest() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testClassBlockRunNotifier() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testMethodBlockFrameworkMethod() {
-        fail("Not yet implemented");
-    }
 }

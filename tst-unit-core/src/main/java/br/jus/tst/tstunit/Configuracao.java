@@ -95,14 +95,16 @@ public class Configuracao implements Serializable {
      */
     public Properties getSubPropriedades(String prefixo) {
         Validate.validState(isCarregado(), "Ainda não foram carregadas as propriedades do arquivo %s", nomeArquivoPropriedades);
+
+        Properties subProperties;
         if (StringUtils.isNotBlank(prefixo)) {
-            Properties jdbcProperties = new Properties();
+            subProperties = new Properties();
             properties.keySet().stream().map(keyObject -> keyObject.toString()).filter(key -> key.startsWith(prefixo))
-                    .forEach(key -> jdbcProperties.setProperty(StringUtils.removeStart(key, prefixo + '.'), properties.getProperty(key)));
-            return jdbcProperties;
+                    .forEach(key -> subProperties.setProperty(StringUtils.removeStart(key, prefixo + '.'), properties.getProperty(key)));
         } else {
-            return this.properties;
+            subProperties = this.properties;
         }
+        return subProperties;
     }
 
     /**

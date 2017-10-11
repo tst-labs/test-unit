@@ -29,7 +29,7 @@ public class EntityManagerFactoryCdiProducer implements Bean<EntityManagerFactor
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityManagerFactoryCdiProducer.class);
 
-    private final UnidadePersistencia unidadePersistencia;
+    private transient final UnidadePersistencia unidadePersistencia;
     private final Map<String, String> propriedadesAdicionais;
 
     /**

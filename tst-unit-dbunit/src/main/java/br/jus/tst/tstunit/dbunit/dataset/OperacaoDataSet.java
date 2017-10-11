@@ -16,7 +16,7 @@ import org.dbunit.operation.DatabaseOperation;
  * @author Thiago Miranda
  * @since 3 de mai de 2017
  */
-public class OperacaoDataSet implements Serializable {
+public final class OperacaoDataSet implements Serializable {
 
     private static final long serialVersionUID = 3617026518809867576L;
 

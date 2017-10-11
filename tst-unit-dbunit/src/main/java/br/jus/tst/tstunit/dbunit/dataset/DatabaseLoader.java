@@ -1,6 +1,5 @@
 package br.jus.tst.tstunit.dbunit.dataset;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.*;
 import java.util.function.Supplier;
@@ -19,13 +18,12 @@ import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
  * @author Thiago Miranda
  * @since 4 de jul de 2016
  */
-public class DatabaseLoader implements Serializable {
+public class DatabaseLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseLoader.class);
-    private static final long serialVersionUID = 4244174398976628116L;
 
-    private transient final Supplier<Connection> jdbcConnectionSupplier;
-    private transient final List<OperacaoDataSet> operacoes;
+    private final Supplier<Connection> jdbcConnectionSupplier;
+    private final List<OperacaoDataSet> operacoes;
 
     private Optional<IDataTypeFactory> dataTypeFactoryOptional;
     private String schema;

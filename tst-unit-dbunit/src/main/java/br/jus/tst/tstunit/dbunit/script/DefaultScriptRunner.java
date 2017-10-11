@@ -47,6 +47,7 @@ public class DefaultScriptRunner implements ScriptRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultScriptRunner.class);
     private static final String DEFAULT_DELIMITER;
+    private static final String MESSAGE_SEPARATOR = "\n-------\n";
 
     private static File logsDir;
 
@@ -104,8 +105,8 @@ public class DefaultScriptRunner implements ScriptRunner {
             LOGGER.error("Unable to access or create the  db_create error log", e);
         }
         String timeStamp = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss").format(new java.util.Date());
-        println("\n-------\n" + timeStamp + "\n-------\n");
-        printlnError("\n-------\n" + timeStamp + "\n-------\n");
+        println(MESSAGE_SEPARATOR + timeStamp + MESSAGE_SEPARATOR);
+        printlnError(MESSAGE_SEPARATOR + timeStamp + MESSAGE_SEPARATOR);
     }
 
     public static File getLogsDir() {

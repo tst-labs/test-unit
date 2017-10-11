@@ -21,14 +21,12 @@ import br.jus.tst.tstunit.dbunit.jdbc.JdbcException;
  * @author ThiagoColbert
  * @since 29 de mai de 2016
  */
-public class GeradorDtd implements Serializable {
+public class GeradorDtd {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GeradorDtd.class);
 
-    private static final long serialVersionUID = -4939611691160487785L;
-
-    private transient final Supplier<Connection> jdbcConnectionSupplier;
-    private transient final File arquivoDtd;
+    private final Supplier<Connection> jdbcConnectionSupplier;
+    private final File arquivoDtd;
 
     private Optional<IDataTypeFactory> dataTypeFactoryOptional;
 

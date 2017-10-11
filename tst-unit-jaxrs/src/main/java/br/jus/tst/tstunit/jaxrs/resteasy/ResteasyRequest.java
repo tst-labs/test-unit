@@ -58,16 +58,20 @@ public class ResteasyRequest implements MockRequest {
     }
 
     private Object encodeParam(Object param) {
+        Object encodedParam;
+
         try {
             if (ClassUtils.isPrimitiveWrapper(param.getClass())) {
                 // parâmetro primitivo - não é necessãrio encoding
-                return param;
+                encodedParam = param;
             } else {
-                return URLEncoder.encode(param.toString(), Charset.defaultCharset().name()).replaceAll("\\+", "%20");
+                encodedParam = URLEncoder.encode(param.toString(), Charset.defaultCharset().name()).replaceAll("\\+", "%20");
             }
         } catch (UnsupportedEncodingException exception) {
             throw new JaxRsException("Erro ao processar parâmetro: " + param, exception);
         }
+
+        return encodedParam;
     }
 
     /**
@@ -127,7 +131,7 @@ public class ResteasyRequest implements MockRequest {
         if (conteudo != null) {
             try {
                 Objects.requireNonNull(converter, "converter").apply(stream, conteudo);
-            } catch (Exception exception) {
+            } catch (Exception exception) { // NOSONAR
                 throw new JaxRsException("Erro ao converter objeto em JSON: " + conteudo, exception);
             }
         }

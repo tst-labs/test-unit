@@ -61,13 +61,16 @@ public class EntityManagerCacheProducer implements EntityManagerProducer {
 
     @Override
     public EntityManager criar() throws JpaException {
+        EntityManager entityManagerFactory;
+
         if (CACHE.containsKey(qualifierClass)) {
-            return CACHE.get(qualifierClass);
+            entityManagerFactory = CACHE.get(qualifierClass);
         } else {
-            EntityManager entityManagerFactory = EntityManagerProducer.super.criar();
+            entityManagerFactory = EntityManagerProducer.super.criar();
             CACHE.put(qualifierClass, entityManagerFactory);
-            return entityManagerFactory;
         }
+
+        return entityManagerFactory;
     }
 
     @Override

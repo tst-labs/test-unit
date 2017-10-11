@@ -21,11 +21,9 @@ import br.jus.tst.tstunit.dbunit.operation.DbUnitOperations;
  * @author Thiago Miranda
  * @since 21 de jul de 2016
  */
-public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader>, Serializable {
+public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsarDataSetHandler.class);
-
-    private static final long serialVersionUID = -476332749779353903L;
 
     private final String datasetsDirectory;
     private final Supplier<Connection> jdbcConnectionSupplier;

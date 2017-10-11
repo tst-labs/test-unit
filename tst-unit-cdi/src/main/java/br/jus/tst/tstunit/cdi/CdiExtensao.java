@@ -127,15 +127,14 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
 
             try {
                 container = MedidorTempoExecucao.getInstancia().medir((w) -> weld.initialize(), "Inicialização do WELD").apply(weld);
-            } catch (Throwable exception) {
+            } catch (ClassFormatError error) { // NOSONAR
+                throw error;
+            } catch (Throwable exception) { // NOSONAR
                 if (startupException == null) {
                     startupException = exception;
                 }
-                if (exception instanceof ClassFormatError) {
-                    throw exception;
-                }
             }
-        } catch (Throwable exception) {
+        } catch (Throwable exception) { // NOSONAR
             startupException = new Exception("Erro ao inicializar Weld", exception);
         }
 

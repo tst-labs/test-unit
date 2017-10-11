@@ -37,13 +37,16 @@ public class EntityManagerFactoryCacheProducer implements EntityManagerFactoryPr
 
     @Override
     public EntityManagerFactory criar() throws JpaException {
+        EntityManagerFactory entityManagerFactory;
+
         if (CACHE.containsKey(unidadePersistencia)) {
-            return CACHE.get(unidadePersistencia);
+            entityManagerFactory = CACHE.get(unidadePersistencia);
         } else {
-            EntityManagerFactory entityManagerFactory = EntityManagerFactoryProducer.super.criar();
+            entityManagerFactory = EntityManagerFactoryProducer.super.criar();
             CACHE.put(unidadePersistencia, entityManagerFactory);
-            return entityManagerFactory;
         }
+
+        return entityManagerFactory;
     }
 
     @Override

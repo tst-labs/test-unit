@@ -24,9 +24,9 @@ public class AnnotationProxy implements Annotation, InvocationHandler, Serializa
 
     private static final long serialVersionUID = 6907601010599429454L;
 
-    private final Class<? extends Annotation> annotationType;
-    private final Map<String, Object> values;
-    private final int hashCode;
+    private transient final Class<? extends Annotation> annotationType;
+    private transient final Map<String, Object> values;
+    private transient final int hashCode;
 
     public AnnotationProxy(AnnotationDescriptor<?> descriptor) {
         this.annotationType = descriptor.type();
@@ -36,10 +36,15 @@ public class AnnotationProxy implements Annotation, InvocationHandler, Serializa
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        Object result;
+
         if (values.containsKey(method.getName())) {
-            return values.get(method.getName());
+            result = values.get(method.getName());
+        } else {
+            result = method.invoke(this, args);
         }
-        return method.invoke(this, args);
+
+        return result;
     }
 
     @Override

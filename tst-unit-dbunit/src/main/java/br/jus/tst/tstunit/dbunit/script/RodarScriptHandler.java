@@ -1,6 +1,6 @@
 package br.jus.tst.tstunit.dbunit.script;
 
-import java.io.*;
+import java.io.File;
 import java.sql.Connection;
 import java.util.*;
 import java.util.function.Supplier;
@@ -17,9 +17,8 @@ import br.jus.tst.tstunit.annotation.*;
  * @author Thiago Miranda
  * @since 21 de jul de 2016
  */
-public class RodarScriptHandler implements AnnotationHandler<ExecutorScripts>, Serializable {
+public class RodarScriptHandler implements AnnotationHandler<ExecutorScripts> {
 
-    private static final long serialVersionUID = 3920037660526049231L;
     private static final Logger LOGGER = LoggerFactory.getLogger(RodarScriptHandler.class);
 
     private final String scriptsDirectory;

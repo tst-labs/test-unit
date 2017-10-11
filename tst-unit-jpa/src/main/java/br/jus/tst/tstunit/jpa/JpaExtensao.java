@@ -27,7 +27,7 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaExtensao.class);
 
-    private GeradorSchema geradorSchema;
+    private transient GeradorSchema geradorSchema;
 
     /**
      * Cria uma nova instância da extensão para a classe de testes informada.
