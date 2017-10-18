@@ -41,8 +41,9 @@ public class DatabaseLoader {
     public DatabaseLoader(List<OperacaoDataSet> operacoes, Supplier<Connection> jdbcConnectionSupplier) {
         this.operacoes = new ArrayList<>(Objects.requireNonNull(operacoes, "operacoes"));
         this.jdbcConnectionSupplier = Objects.requireNonNull(jdbcConnectionSupplier, "jdbcConnectionSupplier");
+        this.dataTypeFactoryOptional = Optional.empty();
     }
-
+    
     /**
      * Carrega os dados no banco de dados.
      * 
@@ -121,7 +122,7 @@ public class DatabaseLoader {
         this.dataTypeFactoryOptional = dataTypeFactoryOptional;
     }
 
-    private DatabaseConnection openDbUnitConnection(Connection jdbcConnection) throws DatabaseUnitException {
+    protected DatabaseConnection openDbUnitConnection(Connection jdbcConnection) throws DatabaseUnitException {
         LOGGER.debug("Criando conexão do DBUnit a partir da conexão JDBC: {}", jdbcConnection);
         return new DatabaseConnection(jdbcConnection, schema);
     }

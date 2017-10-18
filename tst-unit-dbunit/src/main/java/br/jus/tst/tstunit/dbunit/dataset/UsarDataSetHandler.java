@@ -5,9 +5,9 @@ import java.sql.Connection;
 import java.util.*;
 import java.util.function.Supplier;
 
-import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.dataset.xml.*;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.*;
 
@@ -91,7 +91,7 @@ public class UsarDataSetHandler implements AnnotationHandler<DatabaseLoader> {
         return directory + File.separatorChar + nomeArquivo;
     }
 
-    private FlatXmlDataSet carregarDataSet(String nomeArquivo) {
+    private IDataSet carregarDataSet(String nomeArquivo) {
         LOGGER.debug("Carregando arquivo de DataSet: {}", nomeArquivo);
         Optional<InputStream> dataSetStreamOptional = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivo));
         try {

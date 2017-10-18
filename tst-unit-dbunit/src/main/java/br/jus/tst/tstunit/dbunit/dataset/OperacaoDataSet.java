@@ -7,7 +7,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.builder.*;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
@@ -28,7 +28,7 @@ public final class OperacaoDataSet implements Serializable {
             this.instancia = new OperacaoDataSet();
         }
 
-        public Builder comDataSet(FlatXmlDataSet dataSet) {
+        public Builder comDataSet(IDataSet dataSet) {
             this.instancia.dataSet = Objects.requireNonNull(dataSet, "dataSet");
             return this;
         }
@@ -49,7 +49,7 @@ public final class OperacaoDataSet implements Serializable {
         }
     }
 
-    private transient FlatXmlDataSet dataSet;
+    private transient IDataSet dataSet;
     private transient DatabaseOperation operacaoAntesTestes;
     private transient DatabaseOperation operacaoAposTestes;
 

@@ -42,6 +42,9 @@ public interface MockRequest {
      * <pre>
      * jaxRsEngine.get("meu-recurso").queryParam("apenasAtivos", Boolean.TRUE);
      * // gerará uma URI 'meu-recurso?apenasAtivos=true'
+     * 
+     * jaxRsEngine.get("meu-recurso").queryParam("id", 1, 2, 3);
+     * // gerará uma URI 'meu-recurso?id=1&id=2&id=3'
      * </pre>
      * 
      * @param key
