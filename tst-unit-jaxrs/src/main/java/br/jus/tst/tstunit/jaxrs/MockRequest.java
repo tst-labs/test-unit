@@ -21,8 +21,10 @@ public interface MockRequest {
      * </p>
      * 
      * <pre>
-     * jaxRsEngine.get("meu-recurso/%d/%s").pathParams(1, "fulano");
-     * // gerará uma URI 'meu-recurso/1/fulano'
+     * {@code 
+     *  jaxRsEngine.get("meu-recurso/%d/%s").pathParams(1, "fulano");
+     *  // gerará uma URI 'meu-recurso/1/fulano'
+     * }
      * </pre>
      * 
      * @param params
@@ -40,11 +42,13 @@ public interface MockRequest {
      * </p>
      * 
      * <pre>
-     * jaxRsEngine.get("meu-recurso").queryParam("apenasAtivos", Boolean.TRUE);
-     * // gerará uma URI 'meu-recurso?apenasAtivos=true'
+     * {@code 
+     *  jaxRsEngine.get("meu-recurso").queryParam("apenasAtivos", Boolean.TRUE);
+     *  // gerará uma URI 'meu-recurso?apenasAtivos=true'
      * 
-     * jaxRsEngine.get("meu-recurso").queryParam("id", 1, 2, 3);
-     * // gerará uma URI 'meu-recurso?id=1&id=2&id=3'
+     *  jaxRsEngine.get("meu-recurso").queryParam("id", 1, 2, 3);
+     *  // gerará uma URI 'meu-recurso?id=1&id=2&id=3'
+     * }
      * </pre>
      * 
      * @param key
@@ -64,9 +68,11 @@ public interface MockRequest {
      * </p>
      * 
      * <pre>
-     * jaxRsEngine.get("meu-recurso")
-     *         .queryParams(java.util.Collections.singletonMap("id", new Object[] { 1, 2, 3 }));
-     * // gerará uma URI 'meu-recurso?id=1&amp;id=2&amp;id=3'
+     * {@code 
+     *  jaxRsEngine.get("meu-recurso")
+     *      .queryParams(java.util.Collections.singletonMap("id", new Object[] { 1, 2, 3 }));
+     *  // gerará uma URI 'meu-recurso?id=1&amp;id=2&amp;id=3'
+     * }
      * </pre>
      * 
      * @param params
