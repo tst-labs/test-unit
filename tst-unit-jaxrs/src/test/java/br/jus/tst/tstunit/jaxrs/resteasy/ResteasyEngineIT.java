@@ -104,9 +104,7 @@ public class ResteasyEngineIT {
 
     @Test
     public void deveriaProcessarQueryParamInformada1() {
-        String numero = "1";
-
-        int numeroConvertido = Integer.valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParam("validar", Boolean.TRUE).executar().deveRetornarStatusOk()
+        int numeroConvertido = Integer.valueOf(jaxRsEngine.get("strings/%d").pathParams(1).queryParam("validar", Boolean.TRUE).executar().deveRetornarStatusOk()
                 .deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
 
         assertThat(numeroConvertido).isEqualTo(1);
@@ -114,7 +112,7 @@ public class ResteasyEngineIT {
 
     @Test
     public void deveriaProcessarQueryParamInformada2() {
-        jaxRsEngine.get("strings/%s").pathParams("@").queryParam("validar", Boolean.TRUE).executar().deveRetornarStatus(Status.BAD_REQUEST).naoDeveRetornarConteudo();
+        jaxRsEngine.get("strings/%d").pathParams(-10).queryParam("validar", Boolean.TRUE).executar().deveRetornarStatus(Status.BAD_REQUEST).naoDeveRetornarConteudo();
     }
 
     @Test
