@@ -146,8 +146,10 @@ public interface MockResponse {
      * </p>
      * 
      * <pre>
-     * MockResponse response = ...;
-     * Objeto obj = response.getObjetoRespostaUsando((stream) -&gt; meuConversor.readObject(stream));
+     * {@code 
+     *  MockResponse response = ...;
+     *  Objeto obj = response.getObjetoRespostaUsando((stream) -> meuConversor.readObject(stream));
+     * }
      * </pre>
      * 
      * @param conversor
