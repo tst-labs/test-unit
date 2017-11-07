@@ -12,7 +12,9 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-**??? - 1.6.0**
+**??? - 1.6.1**
+
+**07/11/2017 - 1.6.0**
 - ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Toda a API que encapsulava a biblioteca de manipulação de JSON utilizada (_Jackson_, _Gson_, etc) está agora `@Deprecated`. Delegando para o código cliente a forma de converter objetos Java em JSON e vice-versa.
 - ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Adicionando suporte ao método HTTP `HEAD`.
 - ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Adicionando suporte a _query params_.
