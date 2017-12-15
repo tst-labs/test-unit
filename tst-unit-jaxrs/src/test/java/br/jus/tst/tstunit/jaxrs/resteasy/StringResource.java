@@ -1,11 +1,11 @@
 package br.jus.tst.tstunit.jaxrs.resteasy;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * Classe utilizada nos testes.
@@ -22,8 +22,8 @@ public class StringResource {
     @GET
     @Path("{NUMERO}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String converterParaString(@PathParam("NUMERO") int numero, @QueryParam("validar") @DefaultValue("true") Boolean validar) {
-        if (BooleanUtils.isTrue(validar) && numero <= 0) {
+    public String converterParaString(@PathParam("NUMERO") int numero, @QueryParam("validar") @DefaultValue("true") List<Boolean> validar) {
+        if (validar.contains(Boolean.TRUE) && numero <= 0) {
             throw new WebApplicationException(Status.BAD_REQUEST);
         } else {
             return String.valueOf(numero);

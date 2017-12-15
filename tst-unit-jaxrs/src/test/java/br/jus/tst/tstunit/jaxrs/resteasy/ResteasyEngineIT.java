@@ -17,7 +17,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.cdi.ResteasyCdiExtension;
 import org.jboss.weld.log.LoggerProducer;
 import org.jglue.cdiunit.AdditionalClasses;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
@@ -122,6 +123,17 @@ public class ResteasyEngineIT {
         int numeroConvertido = Integer
                 .valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParams(Collections.singletonMap("validar", ArrayUtils.toArray(Boolean.TRUE))).executar()
                         .deveRetornarStatusOk().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
+
+        assertThat(numeroConvertido).isEqualTo(1);
+    }
+
+    @Test
+    public void deveriaProcessarQueryParamMultiplosValores() {
+        String numero = "1";
+
+        int numeroConvertido = Integer
+                .valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParams(Collections.singletonMap("validar", ArrayUtils.toArray(Boolean.FALSE, Boolean.TRUE)))
+                        .executar().deveRetornarStatusOk().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
 
         assertThat(numeroConvertido).isEqualTo(1);
     }
