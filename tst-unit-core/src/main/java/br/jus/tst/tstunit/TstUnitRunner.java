@@ -52,7 +52,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
     public TstUnitRunner(Class<?> classeTeste) throws InitializationError {
         super(classeTeste);
         this.classeTeste = classeTeste;
-        configuracao = new Configuracao();
+        configuracao = Configuracao.getInstance();
         NOME_ARQUIVO_PROPRIEDADES_PARAM.ifPresent(configuracao::setNomeArquivoPropriedades);
 
         try {

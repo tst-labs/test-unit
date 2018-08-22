@@ -14,7 +14,7 @@ public class ConfiguracaoTeste {
 
     @Before
     public void setUp() {
-        configuracao = new Configuracao();
+        configuracao = Configuracao.getInstance();
     }
 
     @Test(expected = TstUnitException.class)

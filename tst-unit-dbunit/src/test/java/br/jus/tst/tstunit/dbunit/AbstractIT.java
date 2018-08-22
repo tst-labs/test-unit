@@ -16,10 +16,10 @@ import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 public abstract class AbstractIT {
 
     protected JdbcConnectionSupplier criarConnectionSupplier(String nomeArquivoPropriedades) throws TstUnitException {
-        return new JdbcConnectionSupplier(new Configuracao().setNomeArquivoPropriedades(nomeArquivoPropriedades).carregar().getSubPropriedades("jdbc"));
+        return new JdbcConnectionSupplier(Configuracao.getInstance().setNomeArquivoPropriedades(nomeArquivoPropriedades).carregar().getSubPropriedades("jdbc"));
     }
-    
+
     protected JdbcConnectionSupplier criarConnectionSupplier() throws TstUnitException {
-        return new JdbcConnectionSupplier(new Configuracao().carregar().getSubPropriedades("jdbc"));
+        return new JdbcConnectionSupplier(Configuracao.getInstance().carregar().getSubPropriedades("jdbc"));
     }
 }

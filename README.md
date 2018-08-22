@@ -12,7 +12,8 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 Histórico de mudanças
 ----------
 
-**??? - 1.6.1**
+**??? - 1.7.0**
+- ![Melhoria][melhoria] _[TST Unit Core]_ A classe `Configuracao` passa a ser um _singleton_.
 
 **07/11/2017 - 1.6.0**
 - ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Toda a API que encapsulava a biblioteca de manipulação de JSON utilizada (_Jackson_, _Gson_, etc) está agora `@Deprecated`. Delegando para o código cliente a forma de converter objetos Java em JSON e vice-versa.
@@ -436,7 +437,7 @@ Caso seja necessário ter acesso direto às conexões utilizadas pelo _TST Unit 
 
 ```java
 	try {
-	    Configuracao configuracao = new Configuracao().carregar();
+	    Configuracao configuracao = Configuracao.getInstance().carregar();
 	    JdbcConnectionSupplier connectionSupplier = new JdbcConnectionSupplier(configuracao.getSubPropriedades("jdbc"));
 	    Connection connection = connectionSupplier.get(); // uma conexão com o banco utilizado pelo TST Unit DBUnit
 	} catch (TstUnitException exception) {

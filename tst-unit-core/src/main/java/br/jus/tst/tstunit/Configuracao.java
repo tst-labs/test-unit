@@ -21,11 +21,26 @@ public class Configuracao implements Serializable {
 
     private static final String NOME_PADRAO_ARQUIVO_PROPRIEDADES = "tstunit.properties";
 
+    private static Configuracao singleton;
+
     private transient String nomeArquivoPropriedades;
     private transient Properties properties;
 
-    public Configuracao() {
+    private Configuracao() {
         nomeArquivoPropriedades = NOME_PADRAO_ARQUIVO_PROPRIEDADES;
+    }
+
+    /**
+     * Obtém a instância única da classe.
+     * 
+     * @return a instância única
+     */
+    public static Configuracao getInstance() {
+        if (singleton == null) {
+            singleton = new Configuracao();
+        }
+
+        return singleton;
     }
 
     public String getNomeArquivoPropriedades() {
