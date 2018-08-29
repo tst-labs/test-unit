@@ -14,7 +14,7 @@ import org.slf4j.*;
  * @author Thiago Miranda
  * @since 4 de jul de 2016
  */
-public class Configuracao implements Serializable {
+public final class Configuracao implements Serializable {
 
     private static final long serialVersionUID = 3577294568759890149L;
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuracao.class);
@@ -23,7 +23,8 @@ public class Configuracao implements Serializable {
 
     private static Configuracao singleton;
 
-    private transient String nomeArquivoPropriedades;
+    private String nomeArquivoPropriedades;
+    
     private transient Properties properties;
 
     private Configuracao() {
