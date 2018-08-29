@@ -30,7 +30,7 @@ public class TstUnitRunnerTeste {
 
     @Test
     public void testRunNotifier() throws InitializationError, TstUnitException {
-        Configuracao configuracao = mock(Configuracao.class);
+        Configuracao configuracao = Configuracao.getInstance();
         ExtensoesLoader extensoesLoader = mock(ExtensoesLoader.class);
         RunNotifier notifier = mock(RunNotifier.class);
         Extensao<?> extensao = mock(Extensao.class);
