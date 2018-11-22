@@ -2,18 +2,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>br.jus.tst</groupId>
-        <artifactId>tst-unit-parent</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <artifactId>test-unit-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>tst-unit-cdi</artifactId>
-    <name>TST Unit - CDI</name>
+    <artifactId>test-unit-cdi</artifactId>
+    <name>TEST Unit - CDI</name>
     <description>Módulo do projeto que permite rodar testes que necessitem do CDI.</description>
 
     <dependencies>
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-core</artifactId>
+            <artifactId>test-unit-core</artifactId>
         </dependency>
 
         <dependency>

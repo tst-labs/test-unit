@@ -2,18 +2,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>br.jus.tst</groupId>
-        <artifactId>tst-unit-parent</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <artifactId>test-unit-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>tst-unit-dbunit</artifactId>
-    <name>TST Unit - DBUnit</name>
+    <artifactId>test-unit-dbunit</artifactId>
+    <name>TEST Unit - DBUnit</name>
     <description>Módulo que permite rodar testes que necessitem do DBUnit.</description>
 
     <dependencies>
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-core</artifactId>
+            <artifactId>test-unit-core</artifactId>
         </dependency>
 
         <dependency>
@@ -32,7 +32,7 @@
 
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-mockito</artifactId>
+            <artifactId>test-unit-mockito</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

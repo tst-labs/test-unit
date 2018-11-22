@@ -6,17 +6,17 @@
         <version>2.0.53</version>
     </parent>
 
-    <artifactId>tst-unit-parent</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <artifactId>test-unit-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>TST Unit</name>
+    <name>TEST Unit</name>
     <description>Projeto que oferece funcionalidades de auxílio no desenvolvimento de testes.</description>
 
     <properties>
-        <ciManagement.project.id>tst-unit</ciManagement.project.id>
+        <ciManagement.project.id>test-unit</ciManagement.project.id>
         <git.group.name>tst</git.group.name>
-        <git.project.name>tst-unit</git.project.name>
+        <git.project.name>test-unit</git.project.name>
 
         <junit.version>4.12</junit.version>
 
@@ -26,12 +26,12 @@
     </properties>
 
     <modules>
-        <module>tst-unit-core</module>
-        <module>tst-unit-cdi</module>
-        <module>tst-unit-dbunit</module>
-        <module>tst-unit-mockito</module>
-        <module>tst-unit-jpa</module>
-        <module>tst-unit-jaxrs</module>
+        <module>test-unit-core</module>
+        <module>test-unit-cdi</module>
+        <module>test-unit-dbunit</module>
+        <module>test-unit-mockito</module>
+        <module>test-unit-jpa</module>
+        <module>test-unit-jaxrs</module>
     </modules>
 
     <build>
@@ -93,28 +93,28 @@
 
             <dependency>
                 <groupId>br.jus.tst</groupId>
-                <artifactId>tst-unit-core</artifactId>
+                <artifactId>test-unit-core</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>br.jus.tst</groupId>
-                <artifactId>tst-unit-mockito</artifactId>
+                <artifactId>test-unit-mockito</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>br.jus.tst</groupId>
-                <artifactId>tst-unit-cdi</artifactId>
+                <artifactId>test-unit-cdi</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>br.jus.tst</groupId>
-                <artifactId>tst-unit-dbunit</artifactId>
+                <artifactId>test-unit-dbunit</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>

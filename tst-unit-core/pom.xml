@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>br.jus.tst</groupId>
-        <artifactId>tst-unit-parent</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <artifactId>test-unit-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>tst-unit-core</artifactId>
-    <name>TST Unit - Core</name>
+    <artifactId>test-unit-core</artifactId>
+    <name>TEST Unit - Core</name>
     <description>Classes principais do projeto.</description>
 
     <dependencies>

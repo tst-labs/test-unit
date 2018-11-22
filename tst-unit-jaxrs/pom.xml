@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>br.jus.tst</groupId>
-        <artifactId>tst-unit-parent</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <artifactId>test-unit-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>tst-unit-jaxrs</artifactId>
-    <name>TST Unit - JAX-RS</name>
+    <artifactId>test-unit-jaxrs</artifactId>
+    <name>TEST Unit - JAX-RS</name>
     <description>Módulo que auxilia no desenvolvimento de testes de serviços JAX-RS.</description>
 
     <properties>
@@ -17,11 +17,11 @@
     <dependencies>
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-cdi</artifactId>
+            <artifactId>test-unit-cdi</artifactId>
         </dependency>
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-mockito</artifactId>
+            <artifactId>test-unit-mockito</artifactId>
             <scope>test</scope>
         </dependency>
 

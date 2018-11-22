@@ -3,27 +3,27 @@
 
     <parent>
         <groupId>br.jus.tst</groupId>
-        <artifactId>tst-unit-parent</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <artifactId>test-unit-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>tst-unit-jpa</artifactId>
-    <name>TST Unit - JPA</name>
+    <artifactId>test-unit-jpa</artifactId>
+    <name>TEST Unit - JPA</name>
     <description>Módulo do projeto que permite rodar testes que necessitem do JPA.</description>
 
     <dependencies>
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-core</artifactId>
+            <artifactId>test-unit-core</artifactId>
         </dependency>
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-cdi</artifactId>
+            <artifactId>test-unit-cdi</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>br.jus.tst</groupId>
-            <artifactId>tst-unit-dbunit</artifactId>
+            <artifactId>test-unit-dbunit</artifactId>
             <optional>true</optional>
         </dependency>
 

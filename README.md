@@ -1,7 +1,7 @@
-TST Unit
+TEST Unit
 ==============================
 
-![Build Status](http://jenkins.tst.jus.br/buildStatus/icon?job=tst-unit "Build Status")
+[![Build Status](https://travis-ci.org/tst-labs/test-unit.svg?branch=master)](https://travis-ci.org/tst-labs/test-unit)
 
 Biblioteca que auxilia no desenvolvimento de testes unitários e de integração.
 
@@ -9,64 +9,14 @@ Biblioteca que auxilia no desenvolvimento de testes unitários e de integração
 - Fornece algumas funcionalidades adicionais, como medição do tempo de execução de cada etapa do teste (inicialização de frameworks, carga de banco de dados, etc).
 - É extensível. 
 
+Inicialmente prospectada como uma biblioteca privada do TST e nomeada **TST Unit**, seu código foi aberto em 2018, passando a se chamar **TEST Unit**.
+
 Histórico de mudanças
 ----------
 
-**??? - 1.7.0**
-- ![Melhoria][melhoria] _[TST Unit Core]_ A classe `Configuracao` passa a ser um _singleton_.
-
-**07/11/2017 - 1.6.0**
-- ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Toda a API que encapsulava a biblioteca de manipulação de JSON utilizada (_Jackson_, _Gson_, etc) está agora `@Deprecated`. Delegando para o código cliente a forma de converter objetos Java em JSON e vice-versa.
-- ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Adicionando suporte ao método HTTP `HEAD`.
-- ![Melhoria][melhoria] _[TST Unit JAX-RS]_ Adicionando suporte a _query params_.
-- ![Bug][bug] _[TST Unit JAX-RS]_ Ocorria erro ao usar parâmetros de URL contendo espaços em branco ou caracteres especiais.
-
-**19/07/2017 - 1.5.0**
-- ![Bug][bug] _[TST Unit DbUnit]_ Testes utilizando outros bancos que não H2 ainda estavam rodando código específico para o H2.
-- ![Melhoria][melhoria] _[TST Unit DbUnit]_ Alterando anotação `@UsarDataSet` para suportar múltiplos valores e também customizar a operação a ser executada.
-- ![Melhoria][melhoria] _[TST Unit DbUnit]_ Agora é possível utilizar as anotações `@RodarScriptAntes` e `@RodarScriptDepois` em outros bancos que não H2.
-- ![Novo][novo] _[TST Unit JAX-RS]_ Adicionando suporte ao _Gson_.
-- ![Novo][novo] _[TST Unit Core]_ Criando a funcionalidade de medir o tempo de execução gasto em cada uma das etapas do teste.
-
-**03/05/2017 - 1.4.0**
-- ![Bug][bug] _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 2.2.1 para 3.1.3 devido a problemas surgidos no desenvolvimento dos testes.
-- ![Novo][novo] _[TST Unit JAX-RS]_ Criação do módulo. 
-
-**27/03/2017 - 1.3.1**
-- ![Bug][bug] _[TST Unit Core]_ Corrigindo `NullPointerException` quando utilizava uma extensão que necessita do arquivo `tstunit.properties` sem esse arquivo existir.
-- ![Bug][bug] _[TST Unit DBUnit]_ A propriedade `dbunit.dataTypeFactoryClass` estava obrigatória ao invés de opcional.
-- ![Bug][bug] _[TST Unit CDI]_ Alterando versão do _CDI Unit_ de 3.1.3 para 2.2.1 para melhor se adequar à realidade do TST.
-
-**22/11/2016 - 1.3.0**
-- ![Melhoria][melhoria] _[TST Unit JPA]_ Evitando duplicação de configuração de propriedades do banco de dados caso o teste também utilize o _TST Unit DbUnit_.
-
-**13/10/2016 - 1.2.0**
-- ![Melhoria][melhoria] _[TST Unit JPA]_ Adicionando suporte a várias instâncias simultâneas de `EntityManager` nos testes.
-- ![Melhoria][melhoria] _[TST Unit JPA]_ Desacoplamento do _CDI_.
-- ![Novo][novo] _[TST Unit DBUnit]_ Agora é possível integração com outros bancos que não H2.
-
-**08/09/2016 - 1.1.2**
-- ![Bug][bug] _[TST Unit Core]_ Atualizando versão do _Reflections_ para uma estável.
-- ![Bug][bug] _[TST Unit CDI]_ Removendo dependência transitiva do _Reflections_ para corrigir bug de `NoSuchMethodError` dentro do _CDI Unit_.
-
-**02/09/2016 - 1.1.1**
-- ![Bug][bug] _[TST Unit CDI]_ Correção de bug introduzido na versão anterior que causava falha em testes com dependência circular.
-
-**31/08/2016 - 1.1.0**
-- ![Melhoria][melhoria] _[TST Unit DBUnit]_ As anotações `@RodarScriptAntes` e `@RodarScriptDepois` agora aceitam múltiplos arquivos como parâmetro.
-- ![Melhoria][melhoria] _[TST Unit DBUnit]_ Parametrizando operações a serem executadas antes e após cada teste - propriedades `dbunit.beforeTests.operation` e `dbunit.afterTests.operation`.
-- ![Melhoria][melhoria] _[TST Unit DBUnit]_ Refatoração geral do módulo, que ocasionou mudanças de pacotes das anotações.
-- ![Melhoria][melhoria] _[TST Unit JPA]_ O `EntityManager` gerado pela `TestEntityManagerProducer` agora possui o qualificador `@ApplicationScoped`.
-- ![Novo][novo] _[todos]_ Adicionando suporte a testes parametrizados.
-
-**19/07/2016 - 1.0.0**
+**??? - 1.0.0**
 - ![Novo][novo] Primeiro release do projeto.
 
-TODO List
----------
-
-- ![Novo][novo] Permitir utilização de suites de testes
-- ![Novo][novo] Integração com JBehave
 
 [bug]: docs/bug.png
 [melhoria]: docs/improvement.png
@@ -80,12 +30,12 @@ Requisitos
 Uso
 ----------
 
-Para utilizar o TST Unit em seu projeto, adicione o módulo abaixo como dependência:
+Para utilizar o TEST Unit em seu projeto, adicione o módulo abaixo como dependência:
 
 ```xml
 <dependency>
     <groupId>br.jus.tst</groupId>
-    <artifactId>tst-unit-core</artifactId>
+    <artifactId>test-unit-core</artifactId>
     <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
@@ -111,7 +61,7 @@ Sem mais nenhuma configuração adicional, seu teste passa a contar com alguns r
 >>>>>>>>>> Executando: br.jus.tst.teste.MinhaClasseTeste.teste <<<<<<<<<<
 ```
 
-Para utilizar outros recursos, você pode adicionar extensões, que adicionam novas funcionalidades ao TST Unit.
+Para utilizar outros recursos, você pode adicionar extensões, que adicionam novas funcionalidades ao TEST Unit.
 
 ### Customização
 
@@ -190,17 +140,17 @@ Ainda assim, caso tente rodar os testes diretamente de sua IDE, pode ser que ela
 
 As extensões atualmente existentes são:
 
-* _tst-unit-cdi_: habilita o uso de [CDI](http://weld.cdi-spec.org/) nos testes (obs.: como muitas vezes o uso de CDI é feito em conjunto com mocks, o Mockito também já é habilitado por padrão através dessa extensão, não sendo necessário o uso da _tst-unit-mockito_);
-* _tst-unit-dbunit_: habilita o uso do [DBUnit](http://dbunit.sourceforge.net/) nos testes;
-* _tst-unit-mockito_: habilita o uso do [Mockito](http://mockito.org/) nos testes;
-* _tst-unit-jpa_: habilita o uso de JPA nos testes.
+* _test-unit-cdi_: habilita o uso de [CDI](http://weld.cdi-spec.org/) nos testes (obs.: como muitas vezes o uso de CDI é feito em conjunto com mocks, o Mockito também já é habilitado por padrão através dessa extensão, não sendo necessário o uso da _test-unit-mockito_);
+* _test-unit-dbunit_: habilita o uso do [DBUnit](http://dbunit.sourceforge.net/) nos testes;
+* _test-unit-mockito_: habilita o uso do [Mockito](http://mockito.org/) nos testes;
+* _test-unit-jpa_: habilita o uso de JPA nos testes.
 
 Para usar uma extensão, basta adicionar a respectiva dependência ao seu projeto:
 
 ```xml
 <dependency>
     <groupId>br.jus.tst</groupId>
-    <artifactId>tst-unit-dbunit</artifactId>
+    <artifactId>test-unit-dbunit</artifactId>
     <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
@@ -222,7 +172,7 @@ public class MinhaClasseTeste {
 }
 ```
 
-#### TST Unit CDI
+#### TEST Unit CDI
 
 Habilita o CDI nos testes. Observar que as precondições para funcionamento do CDI devem ser seguidas (como ter um `beans.xml` no seu _classpath_). Por comodidade, essa extensão já habilita o uso do Mockito nos testes. É utilizado o [Weld](http://weld.cdi-spec.org/) como implementação do CDI.
 
@@ -233,7 +183,7 @@ A maior parte do funcionamento é delegado para o [CDI Unit](http://jglue.org/cd
 ```xml
 <dependency>
     <groupId>br.jus.tst</groupId>
-    <artifactId>tst-unit-cdi</artifactId>
+    <artifactId>test-unit-cdi</artifactId>
     <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
@@ -272,14 +222,14 @@ A anotação `@EJB` não é automaticamente processada na execução dos testes,
 
 Outra opção é a solução fornecida pelo _CDI Unit_, através da anotação `@SupportEjb`: [CDI Unit - EJB Support](http://jglue.org/cdi-unit-user-guide/#ejb).
 
-#### TST Unit DBUnit
+#### TEST Unit DBUnit
 
 ##### Dependência
 
 ```xml
 <dependency>
     <groupId>br.jus.tst</groupId>
-    <artifactId>tst-unit-dbunit</artifactId>
+    <artifactId>test-unit-dbunit</artifactId>
     <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
@@ -405,11 +355,11 @@ public class GeradorDbUnitDtd {
 }
 ```
 
-Lembre-se que o _schema_ de banco de dados precisa estar criado para que possa ser exportado pela ferramenta. Como opções, você pode usar a anotação `@RodarScriptAntes` para executar um arquivo de script que crie o _schema_ ou também tirar proveito da extensão _TST Unit JPA_ - em conjunto com configurações do próprio JPA, é possível delegar para sua implementação de JPA (ex.: Hibernate) a criação do _schema_. Para maiores informações sobre uso do _TST Unit JPA_, veja abaixo.
+Lembre-se que o _schema_ de banco de dados precisa estar criado para que possa ser exportado pela ferramenta. Como opções, você pode usar a anotação `@RodarScriptAntes` para executar um arquivo de script que crie o _schema_ ou também tirar proveito da extensão _TEST Unit JPA_ - em conjunto com configurações do próprio JPA, é possível delegar para sua implementação de JPA (ex.: Hibernate) a criação do _schema_. Para maiores informações sobre uso do _TEST Unit JPA_, veja abaixo.
 
 ##### Nota sobre transações
 
-Ao realizar operações de inserção, deleção e atualização em seus testes com JPA/Hibernate, pode ser que você observe-as não sendo efetivadas no banco de dados caso seu código de produção dependa de um gerenciador de transações ativo (o que não existe durante a execução dos testes). Assim, você deverá iniciar e finalizar suas transações manualmente, como no exemplo abaixo, que utiliza CDI (ver _TST Unit JPA_):
+Ao realizar operações de inserção, deleção e atualização em seus testes com JPA/Hibernate, pode ser que você observe-as não sendo efetivadas no banco de dados caso seu código de produção dependa de um gerenciador de transações ativo (o que não existe durante a execução dos testes). Assim, você deverá iniciar e finalizar suas transações manualmente, como no exemplo abaixo, que utiliza CDI (ver _TEST Unit JPA_):
 
 ```java
     @Inject
@@ -433,26 +383,26 @@ Ao realizar operações de inserção, deleção e atualização em seus testes 
 
 ##### Acessando as conexões diretamente
 
-Caso seja necessário ter acesso direto às conexões utilizadas pelo _TST Unit DBUnit_, você pode fazer conforme o exemplo abaixo:
+Caso seja necessário ter acesso direto às conexões utilizadas pelo _TEST Unit DBUnit_, você pode fazer conforme o exemplo abaixo:
 
 ```java
 	try {
 	    Configuracao configuracao = Configuracao.getInstance().carregar();
 	    JdbcConnectionSupplier connectionSupplier = new JdbcConnectionSupplier(configuracao.getSubPropriedades("jdbc"));
-	    Connection connection = connectionSupplier.get(); // uma conexão com o banco utilizado pelo TST Unit DBUnit
+	    Connection connection = connectionSupplier.get(); // uma conexão com o banco utilizado pelo TEST Unit DBUnit
 	} catch (TstUnitException exception) {
 	    // TODO Tratar exception
 	}
 ```
 
-#### TST Unit JPA
+#### TEST Unit JPA
 
 ##### Dependência
 
 ```xml
 <dependency>
     <groupId>br.jus.tst</groupId>
-    <artifactId>tst-unit-jpa</artifactId>
+    <artifactId>test-unit-jpa</artifactId>
     <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
@@ -488,7 +438,7 @@ OBS.: Não é necessário fechar a instância de `EntityManager` fornecida, pois
 
 ##### Integração com outros módulos
 
-É possível usar essa extensão em conjunto com a _TST Unit CDI_, de modo que seus testes ficarão com uma estrutura semelhante à essa:
+É possível usar essa extensão em conjunto com a _TEST Unit CDI_, de modo que seus testes ficarão com uma estrutura semelhante à essa:
 
 ```java
 package br.jus.tst.teste;
@@ -513,7 +463,7 @@ public class MinhaClasseTeste {
 
 Nota sobre `GeradorSchemaCdi`: esta classe tem a função de utilizar a instância de `EntityManager` fornecida pelo contêiner do CDI para gerar o _schema_ de banco de dados. Notar que, para isso, é necessário habilitar a função _ hbm2ddl_ do seu framework ORM (Hibernate).
 
-Caso você queira usar essa extensão em conjunto com a _TST Unit DBUnit_, é possível gerar o _schema_ de banco antes de cada teste:
+Caso você queira usar essa extensão em conjunto com a _TEST Unit DBUnit_, é possível gerar o _schema_ de banco antes de cada teste:
 
 ```java
 package br.jus.tst.teste;
@@ -551,7 +501,7 @@ Basta definir a propriedade `hibernate.hbm2ddl.auto` no seu arquivo `persistence
 </persistence-unit>
 ```
 
-OBS.: O valor `create-drop` não é suportado dessa forma pois o JPA irá derrubar o _schema_ assim que o último `EntityManager` for fechado, ocasionando erros na execução do _TST Unit DBUnit_, que irá tentar limpar o banco de dados em seguida.
+OBS.: O valor `create-drop` não é suportado dessa forma pois o JPA irá derrubar o _schema_ assim que o último `EntityManager` for fechado, ocasionando erros na execução do _TEST Unit DBUnit_, que irá tentar limpar o banco de dados em seguida.
 
 Para evitar duplicação de configuração de banco de dados (arquivos `persistence.xml` e `tstunit.properties`), é possível utilizar apenas o último, deixando seu `persistence.xml` de testes com uma configuração mínima, conforme exemplo abaixo:
 
@@ -578,7 +528,7 @@ jpa.orm.hibernate.format_sql=true
 jpa.orm.hibernate.hbm2ddl.auto=create-drop
 ```
 
-Notar quer as propriedades de conexão JDBC definidas pelo _TST Unit DBUnit_ (prefixo `jdbc`), caso presentes neste arquivo, também serão repassadas para o framework ORM com as devidas alterações de nome/chave.
+Notar quer as propriedades de conexão JDBC definidas pelo _TEST Unit DBUnit_ (prefixo `jdbc`), caso presentes neste arquivo, também serão repassadas para o framework ORM com as devidas alterações de nome/chave.
 
 ##### Múltiplas unidades de persistência no mesmo teste
 
@@ -613,14 +563,14 @@ public class MinhaClasseTeste {
 }
 ```
 
-#### TST Unit Mockito
+#### TEST Unit Mockito
 
 ##### Dependência
 
 ```xml
 <dependency>
     <groupId>br.jus.tst</groupId>
-    <artifactId>tst-unit-mockito</artifactId>
+    <artifactId>test-unit-mockito</artifactId>
     <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
@@ -645,14 +595,14 @@ public class MinhaClasseTeste {
 }
 ```
 
-#### TST Unit JAX-RS
+#### TEST Unit JAX-RS
 
 ##### Dependência
 
 ```xml
 <dependency>
     <groupId>br.jus.tst</groupId>
-    <artifactId>tst-unit-jaxrs</artifactId>
+    <artifactId>test-unit-jaxrs</artifactId>
     <version>[1.0.0,)</version>
     <scope>test</scope>
 </dependency>
@@ -660,7 +610,7 @@ public class MinhaClasseTeste {
 
 ##### Uso
 
-Esta extensão funciona em conjunto com a _TST Unit CDI_. Dessa forma, basta incluir alguns itens na anotação `@AdditionalClasses`, além de injetar a instância de `JaxRsEngine`, que fornece acesso a todas as funcionalidades da extensão.
+Esta extensão funciona em conjunto com a _TEST Unit CDI_. Dessa forma, basta incluir alguns itens na anotação `@AdditionalClasses`, além de injetar a instância de `JaxRsEngine`, que fornece acesso a todas as funcionalidades da extensão.
 
 Utilizando RestEasy:
 
@@ -712,7 +662,7 @@ public class MinhaClasseTeste {
 
 #### Testes parametrizados
 
-O TST Unit também oferece suporte a testes parametrizados. Para isso, sua classe de teste deve utilizar algumas anotações diferentes:
+O TEST Unit também oferece suporte a testes parametrizados. Para isso, sua classe de teste deve utilizar algumas anotações diferentes:
 
 ```java
 @RunWith(Parameterized.class)
@@ -736,7 +686,7 @@ public class MeuTesteParametrizado {
 }
 ```
 
-Notar que o _runner_ definido em `@RunWith` deve ser o `Parameterized.class`, ao invés de `TstUnitRunner.class`. A outra anotação, `@UseParametersRunnerFactory`, é fornecida pelo próprio JUnit e é utilizada aqui para conectar o _runner_ de testes parametrizados com o _runner_ do TST Unit.
+Notar que o _runner_ definido em `@RunWith` deve ser o `Parameterized.class`, ao invés de `TstUnitRunner.class`. A outra anotação, `@UseParametersRunnerFactory`, é fornecida pelo próprio JUnit e é utilizada aqui para conectar o _runner_ de testes parametrizados com o _runner_ do TEST Unit.
 
 Outras anotações das extensões podem ser utilizadas normalmente:
 
@@ -759,7 +709,7 @@ public class MeuTesteParametrizado {
 
 #### Criando novas extensões
 
-Caso seja necessário adicionar uma nova extensão ao TST Unit, basta seguir os passos abaixo:
+Caso seja necessário adicionar uma nova extensão ao TEST Unit, basta seguir os passos abaixo:
 
 1. Crie uma anotação para habilitar a extensão nas classes de teste:
 
