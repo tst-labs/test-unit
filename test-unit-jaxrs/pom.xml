@@ -1,82 +1,86 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>br.jus.tst</groupId>
-        <artifactId>test-unit-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>br.jus.tst</groupId>
+		<artifactId>test-unit-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
-    <artifactId>test-unit-jaxrs</artifactId>
-    <name>TEST Unit - JAX-RS</name>
-    <description>Módulo que auxilia no desenvolvimento de testes de serviços JAX-RS.</description>
+	<artifactId>test-unit-jaxrs</artifactId>
+	<name>TEST Unit - JAX-RS</name>
+	<description>Módulo que auxilia no desenvolvimento de testes de serviços JAX-RS.</description>
 
-    <properties>
-        <jboss.resteasy.version>2.3.10.Final</jboss.resteasy.version>
-    </properties>
+	<properties>
+		<jboss.resteasy.version>2.3.10.Final</jboss.resteasy.version>
+		<jackson-jaxrs.version>1.9.13</jackson-jaxrs.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>br.jus.tst</groupId>
-            <artifactId>test-unit-cdi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>br.jus.tst</groupId>
-            <artifactId>test-unit-mockito</artifactId>
-            <scope>test</scope>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>br.jus.tst</groupId>
+			<artifactId>test-unit-cdi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>br.jus.tst</groupId>
+			<artifactId>test-unit-mockito</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
-        </dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.3</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-cdi</artifactId>
-            <version>${jboss.resteasy.version}</version>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>${jboss.resteasy.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-cdi</artifactId>
+			<version>${jboss.resteasy.version}</version>
+			<optional>true</optional>
+		</dependency>
 
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-jaxrs</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.8.11.1</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.0</version>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>${jackson-jaxrs.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.8.11.1</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.0</version>
+			<optional>true</optional>
+		</dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<optional>true</optional>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.weld</groupId>
-            <artifactId>weld-logger</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.weld</groupId>
+			<artifactId>weld-logger</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.5.2</version>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.5.2</version>
+		</dependency>
+	</dependencies>
 </project>
