@@ -71,7 +71,7 @@
                                 <include>**/HsqldbIT.java</include>
                             </includes>
                             <systemPropertyVariables>
-                                <nomeArquivoPropriedades>tstunit-hsqldb.properties</nomeArquivoPropriedades>
+                                <nomeArquivoPropriedades>testunit-hsqldb.properties</nomeArquivoPropriedades>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>

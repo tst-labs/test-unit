@@ -1,8 +1,6 @@
 package br.jus.tst.tstunit.dbunit;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.sql.*;
@@ -21,7 +19,7 @@ import br.jus.tst.tstunit.dbunit.script.*;
  * @since 7 de out de 2016
  */
 /*
- * OBS.: Para rodar este teste individualmente, é necessário passar como parâmetro: -DnomeArquivoPropriedades=tstunit-hsqldb.properties
+ * OBS.: Para rodar este teste individualmente, é necessário passar como parâmetro: -DnomeArquivoPropriedades=testunit-hsqldb.properties
  * 
  * Rodando pelo Maven (mvn test), isso já é feito automaticamente.
  */
@@ -36,6 +34,8 @@ public class HsqldbIT extends AbstractIT {
         try (Connection connection = connectionSupplier.get()) {
             assertThat(connection.getMetaData().getDriverName().toUpperCase(), containsString("HSQL"));
         }
+
+        assertThat(System.getProperty("nomeArquivoPropriedades"), is(equalTo(NOME_ARQUIVO_PROPRIEDADES)));
     }
 
     @Test
