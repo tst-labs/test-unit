@@ -46,7 +46,7 @@ E então, utilize a classe `TSTUnitRunner` para rodar seus testes:
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 public class MinhaClasseTeste {
 
     @Test
@@ -67,7 +67,7 @@ Para utilizar outros recursos, você pode adicionar extensões, que adicionam no
 
 O recurso que imprime o nome de cada teste no console pode ser desativado ou customizado através da anotação `@ImprimirNomeTeste`.
 
-O valor padrão, que é utilizado quando nenhuma anotação `@ImprimirNomeTeste` está presente na classe de testes, pode ser configurado através de um arquivo `tstunit.properties` em seu _classpath_:
+O valor padrão, que é utilizado quando nenhuma anotação `@ImprimirNomeTeste` está presente na classe de testes, pode ser configurado através de um arquivo `testunit.properties` em seu _classpath_:
 
 ```
 # Desabilita a impressão dos nomes dos testes por padrão
@@ -78,7 +78,7 @@ core.printtestname.default=false
 
 Existe um recurso que permite visualizar o tempo de execução gasto em cada uma das etapas do teste. Isso é útil principalmente quando seu teste utiliza muitas extensões e o tempo total de execução esteja ficando muito alto.
 
-Para habilitar (e customizar) esse recurso, basta configurar através do arquivo `tstunit.properties`:
+Para habilitar (e customizar) esse recurso, basta configurar através do arquivo `testunit.properties`:
 
 ```
 # Habilita o Medidor de Tempo de Execução
@@ -161,7 +161,7 @@ Cada extensão define uma anotação que pode ser incluída em suas classes de t
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarXxx
 public class MinhaClasseTeste {
 
@@ -196,7 +196,7 @@ Além da anotação `@HabilitarCdiAndMockito`, as anotações do CDI Unit podem 
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalClasses({ MeuProdutor.class }) // anotação do CDI Unit
 public class MinhaClasseTeste {
@@ -237,7 +237,7 @@ Outra opção é a solução fornecida pelo _CDI Unit_, através da anotação `
 
 ##### Uso
 
-Para utilizar essa extensão, é necessário ter um arquivo `tstunit.properties` em seu _classpath_ (normalmente em `src/test/resources`). O conteúdo desse arquivo deve ter as propriedades abaixo:
+Para utilizar essa extensão, é necessário ter um arquivo `testunit.properties` em seu _classpath_ (normalmente em `src/test/resources`). O conteúdo desse arquivo deve ter as propriedades abaixo:
 
 ```
 # Valores obrigatórios:
@@ -276,7 +276,7 @@ Além da anotação `@HabilitarDbUnit`, existe um outro conjunto de anotações 
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarDbUnit(nomeSchema = "TT")
 @RodarScriptAntes("criar-schema.sql")
 @RodarScriptDepois("drop-schema.sql")
@@ -300,7 +300,7 @@ public class MinhaClasseTeste {
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarDbUnit(nomeSchema = "TT")
 @RodarScriptAntes("criar-schema.sql")
 @RodarScriptDepois("drop-schema.sql")
@@ -323,7 +323,7 @@ public class MinhaClasseTeste {
 
 Note que são utilizados no total 3 arquivos no teste `testeMultiplosDatasets`: `meu-dataset-geral.xml`, `meu-dataset-1.xml` e `meu-dataset-2.xml`. O comportamento é que os arquivos sejam processados na ordem: arquivos definidos a nível de classe (sequencialmente) -> arquivos definidos a nível de método (sequencialmente).
 
-**Importante:** A anotação `@UsarDataSets` permite que sejam customizadas as operações a serem executadas antes e após cada teste. Caso isso não seja feito, o comportamento padrão define que sejam usadas as operações configuradas no arquivo `tstunit.properties` (ver acima em _Uso_). Isso pode não ser o desejado, visto que, por exemplo, caso a operação pré-testes configurada seja `CLEAN_INSERT`, isso fará com que todas as tabelas referenciadas em cada arquivo de dados sejam apagadas assim que o arquivo for processado. No exemplo acima, o fluxo de execução foi definido da seguinte forma:
+**Importante:** A anotação `@UsarDataSets` permite que sejam customizadas as operações a serem executadas antes e após cada teste. Caso isso não seja feito, o comportamento padrão define que sejam usadas as operações configuradas no arquivo `testunit.properties` (ver acima em _Uso_). Isso pode não ser o desejado, visto que, por exemplo, caso a operação pré-testes configurada seja `CLEAN_INSERT`, isso fará com que todas as tabelas referenciadas em cada arquivo de dados sejam apagadas assim que o arquivo for processado. No exemplo acima, o fluxo de execução foi definido da seguinte forma:
 
 1. `CLEAN_INSERT "meu-dataset-geral.xml"` (_default_)
 2. `INSERT "meu-dataset-1.xml"` (customizado)
@@ -339,7 +339,7 @@ O módulo também fornece um recurso que auxilia na geração de arquivos [DTD](
 Para utilizá-lo, crie uma classe de teste em seu projeto semelhante a essa:
 
 ```
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarDbUnit
 public class GeradorDbUnitDtd {
 
@@ -390,7 +390,7 @@ Caso seja necessário ter acesso direto às conexões utilizadas pelo _TEST Unit
 	    Configuracao configuracao = Configuracao.getInstance().carregar();
 	    JdbcConnectionSupplier connectionSupplier = new JdbcConnectionSupplier(configuracao.getSubPropriedades("jdbc"));
 	    Connection connection = connectionSupplier.get(); // uma conexão com o banco utilizado pelo TEST Unit DBUnit
-	} catch (TstUnitException exception) {
+	} catch (TestUnitException exception) {
 	    // TODO Tratar exception
 	}
 ```
@@ -415,7 +415,7 @@ Utilize a anotação `@HabilitarJpa` em seus testes:
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarJpa(nomeUnidadePersistencia = "meuPU")
 public class MinhaClasseTeste {
 
@@ -443,7 +443,7 @@ OBS.: Não é necessário fechar a instância de `EntityManager` fornecida, pois
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalClasses({ EntityManagerFactoryProducerExtension.class }) // extensão que habilita os produtores do JPA
 @HabilitarJpa(nomeUnidadePersistencia = "meuPU", geradorSchema = GeradorSchemaCdi.class)
@@ -468,7 +468,7 @@ Caso você queira usar essa extensão em conjunto com a _TEST Unit DBUnit_, é p
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalClasses({ EntityManagerFactoryProducerExtension.class })
 @HabilitarDbUnit
@@ -503,7 +503,7 @@ Basta definir a propriedade `hibernate.hbm2ddl.auto` no seu arquivo `persistence
 
 OBS.: O valor `create-drop` não é suportado dessa forma pois o JPA irá derrubar o _schema_ assim que o último `EntityManager` for fechado, ocasionando erros na execução do _TEST Unit DBUnit_, que irá tentar limpar o banco de dados em seguida.
 
-Para evitar duplicação de configuração de banco de dados (arquivos `persistence.xml` e `tstunit.properties`), é possível utilizar apenas o último, deixando seu `persistence.xml` de testes com uma configuração mínima, conforme exemplo abaixo:
+Para evitar duplicação de configuração de banco de dados (arquivos `persistence.xml` e `testunit.properties`), é possível utilizar apenas o último, deixando seu `persistence.xml` de testes com uma configuração mínima, conforme exemplo abaixo:
 
 ```xml
 <persistence-unit name="meuPU" transaction-type="RESOURCE_LOCAL">
@@ -513,7 +513,7 @@ Para evitar duplicação de configuração de banco de dados (arquivos `persiste
 </persistence-unit>
 ```
 
-E no `tstunit.properties`, configurações adicionais a serem repassadas para seu framework ORM podem ser definidas através do prefixo `jpa.orm`:
+E no `testunit.properties`, configurações adicionais a serem repassadas para seu framework ORM podem ser definidas através do prefixo `jpa.orm`:
 
 ```
 #jdbc.driverClass=
@@ -537,7 +537,7 @@ Caso seu teste utilize mais de uma unidade de persistência, o corpo da anotaç�
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarJpa(unidadesPersistencia = {
 		@UnidadePersistencia(nome = "testePU", qualifierClass = TestePU.class),
         @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) }, geradorSchema = GeradorSchemaCdi.class)
@@ -581,7 +581,7 @@ public class MinhaClasseTeste {
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarMockito
 public class MinhaClasseTeste {
 
@@ -617,7 +617,7 @@ Utilizando RestEasy:
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalClasses({ ResteasyCdiExtension.class, ResteasyEngine.class })
 public class MinhaClasseTeste {
@@ -640,7 +640,7 @@ Como atualmente o Jackson pode ser encontrado sob dois _groupId_s e pacotes dife
 ```java
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalClasses({ ResteasyCdiExtension.class, ResteasyEngine.class })
 public class MinhaClasseTeste {
@@ -666,7 +666,7 @@ O TEST Unit também oferece suporte a testes parametrizados. Para isso, sua clas
 
 ```java
 @RunWith(Parameterized.class)
-@UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
+@UseParametersRunnerFactory(TestUnitParameterizedRunnerFactory.class)
 public class MeuTesteParametrizado {
 
     @Parameters
@@ -686,13 +686,13 @@ public class MeuTesteParametrizado {
 }
 ```
 
-Notar que o _runner_ definido em `@RunWith` deve ser o `Parameterized.class`, ao invés de `TstUnitRunner.class`. A outra anotação, `@UseParametersRunnerFactory`, é fornecida pelo próprio JUnit e é utilizada aqui para conectar o _runner_ de testes parametrizados com o _runner_ do TEST Unit.
+Notar que o _runner_ definido em `@RunWith` deve ser o `Parameterized.class`, ao invés de `TestUnitRunner.class`. A outra anotação, `@UseParametersRunnerFactory`, é fornecida pelo próprio JUnit e é utilizada aqui para conectar o _runner_ de testes parametrizados com o _runner_ do TEST Unit.
 
 Outras anotações das extensões podem ser utilizadas normalmente:
 
 ```java
 @RunWith(Parameterized.class)
-@UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
+@UseParametersRunnerFactory(TestUnitParameterizedRunnerFactory.class)
 @HabilitarCdiAndMockito
 @AdditionalPackages({ TestEntityManagerProducer.class })
 @HabilitarJpa(nomeUnidadePersistencia = "meuPU")
@@ -741,12 +741,12 @@ import br.jus.tst.tstunit.*;
 public class MinhaExtensao extends AbstractExtensao<HabilitarMinhaExtensao> {
 
     @Override
-    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TestUnitException {
         // TODO Gerado automaticamente
     }
 
     @Override
-    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TestUnitException {
         // TODO Gerado automaticamente
         return null;
     }
@@ -760,7 +760,7 @@ Dê uma olhada na API da classe `AbstractExtensao` e da interface `Extensao` par
 ```
 package br.jus.tst.teste;
 
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarMinhaExtensao
 public class MinhaClasseTeste {
 

@@ -13,12 +13,12 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
 
 /**
- * Testes unitários da {@link TstUnitRunner}.
+ * Testes unitários da {@link TestUnitRunner}.
  * 
  * @author Thiago Miranda
  * @since 8 de jul de 2016
  */
-public class TstUnitRunnerTeste {
+public class TestUnitRunnerTeste {
 
     public static class Teste {
 
@@ -29,7 +29,7 @@ public class TstUnitRunnerTeste {
     }
 
     @Test
-    public void testRunNotifier() throws InitializationError, TstUnitException {
+    public void testRunNotifier() throws InitializationError, TestUnitException {
         Configuracao configuracao = Configuracao.getInstance();
         ExtensoesLoader extensoesLoader = mock(ExtensoesLoader.class);
         RunNotifier notifier = mock(RunNotifier.class);
@@ -38,7 +38,7 @@ public class TstUnitRunnerTeste {
         when(extensoesLoader.getClasseTeste()).thenReturn(Teste.class);
         when(extensoesLoader.carregarExtensoes()).thenReturn(Arrays.asList(extensao));
 
-        TstUnitRunner runner = new TstUnitRunner(configuracao, extensoesLoader);
+        TestUnitRunner runner = new TestUnitRunner(configuracao, extensoesLoader);
         runner.run(notifier);
 
         verify(extensao).inicializar(configuracao, notifier);

@@ -1,7 +1,7 @@
 package br.jus.tst.tstunit.jaxrs;
 
 /**
- * Exceção lançada quando ocorre algum erro em tempo de execução no TST Unit JAX-RS.
+ * Exceção lançada quando ocorre algum erro em tempo de execução no TEST Unit JAX-RS.
  * 
  * @author Thiago Miranda
  * @since 29 de mar de 2017

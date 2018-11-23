@@ -24,7 +24,7 @@ public final class MedidorTempoExecucao implements Serializable {
 
     private static final long serialVersionUID = 3431653094150490207L;
 
-    public static final String FORMATO_MENSAGENS_PADRAO = "\n[TST UNIT - MEDIDOR] %s levou %d milisegundos\n";
+    public static final String FORMATO_MENSAGENS_PADRAO = "\n[TEST Unit - MEDIDOR] %s levou %d milisegundos\n";
 
     private static final MedidorTempoExecucao INSTANCIA_SINGLETON = new MedidorTempoExecucao();
 
@@ -101,7 +101,7 @@ public final class MedidorTempoExecucao implements Serializable {
      * @return o resultado da operação
      * @throws NullPointerException
      *             caso seja informado {@code null} como operação
-     * @throws TstUnitRuntimeException
+     * @throws TestUnitRuntimeException
      *             caso a operação lance uma exceção e o Medidor esteja habilitado
      * @throws Exception
      *             caso a operação lance uma exceção e o Medidor não esteja habilitado
@@ -133,7 +133,7 @@ public final class MedidorTempoExecucao implements Serializable {
         try {
             resultado = callable.call();
         } catch (Exception exception) { // NOSONAR
-            throw habilitado ? new TstUnitRuntimeException("Erro ao computar resultado da chamada", exception) : exception; // NOSONAR
+            throw habilitado ? new TestUnitRuntimeException("Erro ao computar resultado da chamada", exception) : exception; // NOSONAR
         }
 
         return resultado;

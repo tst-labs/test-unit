@@ -13,7 +13,7 @@ import br.jus.tst.tstunit.time.*;
 
 /**
  * <p>
- * <code>{@literal @}TstUnitRunner</code> é um {@link Runner} do JUnit que facilita o uso de vários recursos em classes de testes.
+ * <code>{@literal @}TestUnitRunner</code> é um {@link Runner} do JUnit que facilita o uso de vários recursos em classes de testes.
  * </p>
  * 
  * <p>
@@ -22,7 +22,7 @@ import br.jus.tst.tstunit.time.*;
  * 
  * <pre>
  * <code>
- * &#064;RunWith(TstUnitRunner.class) // Roda os testes com o TST Unit
+ * &#064;RunWith(TestUnitRunner.class) // Roda os testes com o TEST Unit
  * class MeuTeste {
  *   ... // Código do teste
  * }</code>
@@ -31,9 +31,9 @@ import br.jus.tst.tstunit.time.*;
  * @author Thiago Miranda
  * @since 1 de jul de 2016
  */
-public class TstUnitRunner extends BlockJUnit4ClassRunner {
+public class TestUnitRunner extends BlockJUnit4ClassRunner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TstUnitRunner.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestUnitRunner.class);
     private static final String PACOTE_EXTENSOES = "br.jus.tst.tstunit";
     private static final Optional<String> NOME_ARQUIVO_PROPRIEDADES_PARAM = Optional.ofNullable(System.getProperty("nomeArquivoPropriedades"));
 
@@ -49,7 +49,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
      * @throws InitializationError
      *             caso ocorra algum erro ao inicializar o <em>runner</em>
      */
-    public TstUnitRunner(Class<?> classeTeste) throws InitializationError {
+    public TestUnitRunner(Class<?> classeTeste) throws InitializationError {
         super(classeTeste);
         this.classeTeste = classeTeste;
         configuracao = Configuracao.getInstance();
@@ -57,7 +57,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
 
         try {
             configuracao.carregar();
-        } catch (TstUnitException exception) {
+        } catch (TestUnitException exception) {
             LOGGER.debug("Erro ao carregar propriedades", exception);
         }
 
@@ -75,7 +75,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
      * @param extensoesLoader
      * @throws InitializationError
      */
-    TstUnitRunner(Configuracao configuracao, ExtensoesLoader extensoesLoader) throws InitializationError {
+    TestUnitRunner(Configuracao configuracao, ExtensoesLoader extensoesLoader) throws InitializationError {
         super(extensoesLoader.getClasseTeste());
         this.configuracao = configuracao;
         this.classeTeste = extensoesLoader.getClasseTeste();
@@ -84,7 +84,7 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
     }
 
     /**
-     * @throws TstUnitRuntimeException
+     * @throws TestUnitRuntimeException
      *             caso ocorra algum erro ao inicializar os testes
      */
     @Override
@@ -93,8 +93,8 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
         extensoes.forEach(extensao -> {
             try {
                 extensao.inicializar(configuracao, notifier);
-            } catch (TstUnitException exception) {
-                throw new TstUnitRuntimeException("Erro ao inicializar extensão: " + extensao, exception);
+            } catch (TestUnitException exception) {
+                throw new TestUnitRuntimeException("Erro ao inicializar extensão: " + extensao, exception);
             }
         });
 
@@ -137,8 +137,8 @@ public class TstUnitRunner extends BlockJUnit4ClassRunner {
             LOGGER.debug("Executando extensão: {}", extensao.getClass().getSimpleName());
             try {
                 statement = extensao.criarStatement(statement, method);
-            } catch (TstUnitException exception) {
-                throw new TstUnitRuntimeException("Erro ao executar método: " + method, exception);
+            } catch (TestUnitException exception) {
+                throw new TestUnitRuntimeException("Erro ao executar método: " + method, exception);
             }
         }
         return statement;

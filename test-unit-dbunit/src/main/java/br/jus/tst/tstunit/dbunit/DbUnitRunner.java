@@ -55,10 +55,10 @@ public class DbUnitRunner implements Serializable {
      *             caso {@code classeTeste} ou {@code configuracao} seja {@code null}
      * @throws DBUnitException
      *             caso alguma configuração seja inválida
-     * @throws TstUnitException
+     * @throws TestUnitException
      *             caso ocorra algum erro ao carregar as configurações
      */
-    public DbUnitRunner(Class<?> classeTeste, String nomeSchema, Configuracao configuracao) throws TstUnitException {
+    public DbUnitRunner(Class<?> classeTeste, String nomeSchema, Configuracao configuracao) throws TestUnitException {
         this.classeTeste = Objects.requireNonNull(classeTeste, "classeTeste");
         this.configuracao = Objects.requireNonNull(configuracao, "configuracao");
 
@@ -90,10 +90,10 @@ public class DbUnitRunner implements Serializable {
      * @return o statement criado
      * @throws NullPointerException
      *             caso qualquer parâmetro seja {@code null}
-     * @throws TstUnitException
+     * @throws TestUnitException
      *             caso ocorra algum erro durante a operação
      */
-    public Statement criarStatement(Statement statement, FrameworkMethod method) throws TstUnitException {
+    public Statement criarStatement(Statement statement, FrameworkMethod method) throws TestUnitException {
         Objects.requireNonNull(statement, "statement");
         Objects.requireNonNull(method, "method");
 

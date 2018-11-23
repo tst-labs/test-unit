@@ -8,7 +8,7 @@ import java.sql.*;
 
 import org.junit.Test;
 
-import br.jus.tst.tstunit.TstUnitException;
+import br.jus.tst.tstunit.TestUnitException;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 import br.jus.tst.tstunit.dbunit.script.*;
 
@@ -22,7 +22,7 @@ public class RodarScriptIT extends AbstractIT {
 
     @Test
     @RodarScriptAntes("script-funcao.sql")
-    public void deveriaRodarScriptDdlFuncoesAntes() throws SQLException, TstUnitException {
+    public void deveriaRodarScriptDdlFuncoesAntes() throws SQLException, TestUnitException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
         
         try (Connection connection = connectionSupplier.get()) {

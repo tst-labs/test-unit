@@ -13,7 +13,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.*;
 import org.mockito.Mock;
 
-import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
+import br.jus.tst.tstunit.parameters.TestUnitParameterizedRunnerFactory;
 
 /**
  * Testes de integração para a funcionalidade de testes parametrizados.
@@ -22,7 +22,7 @@ import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
  * @since 31 de ago de 2016
  */
 @RunWith(Parameterized.class)
-@UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
+@UseParametersRunnerFactory(TestUnitParameterizedRunnerFactory.class)
 @HabilitarMockito
 public class TesteParametrizadoIT {
 

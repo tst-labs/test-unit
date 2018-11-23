@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.TestUnitRunner;
 
 /**
  * Testes de integração da {@link CdiExtensao} que verifica o funcionamento com dependencias circulares.
@@ -20,7 +20,7 @@ import br.jus.tst.tstunit.TstUnitRunner;
  * @author Thiago Miranda
  * @since 01 de set de 2016
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 public class TesteDependenciaCircularIT {
 

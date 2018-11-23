@@ -167,7 +167,7 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
      *             caso a extensão não esteja habilitada
      */
     @Override
-    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TestUnitException {
         assertExtensaoHabilitada();
         LOGGER.info("Ativando contexto CDI");
         return new CdiStatement(defaultStatement, method);

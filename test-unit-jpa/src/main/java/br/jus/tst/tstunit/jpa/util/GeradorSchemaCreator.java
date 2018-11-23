@@ -6,7 +6,7 @@ import java.util.*;
 
 import org.slf4j.*;
 
-import br.jus.tst.tstunit.TstUnitException;
+import br.jus.tst.tstunit.TestUnitException;
 import br.jus.tst.tstunit.jpa.*;
 
 /**
@@ -31,10 +31,10 @@ public class GeradorSchemaCreator implements Serializable {
      * @return a instância criada
      * @throws NullPointerException
      *             caso qualquer parâmetro seja {@code null}
-     * @throws TstUnitException
+     * @throws TestUnitException
      *             caso ocorra algum erro ao criar a instância
      */
-    public GeradorSchema criarGeradorSchema(Class<? extends GeradorSchema> classe, Map<String, String> propriedadesAdicionais) throws TstUnitException {
+    public GeradorSchema criarGeradorSchema(Class<? extends GeradorSchema> classe, Map<String, String> propriedadesAdicionais) throws TestUnitException {
         GeradorSchema instanciaGeradorSchema;
 
         LOGGER.debug("Criando instância do gerador de schema configurado: {}", classe);
@@ -43,7 +43,7 @@ public class GeradorSchemaCreator implements Serializable {
                     .newInstance(Objects.requireNonNull(propriedadesAdicionais, "propriedadesAdicionais"));
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException exception) {
-            throw new TstUnitException("Erro ao instanciar gerador de schema: " + classe, exception);
+            throw new TestUnitException("Erro ao instanciar gerador de schema: " + classe, exception);
         }
 
         return instanciaGeradorSchema;

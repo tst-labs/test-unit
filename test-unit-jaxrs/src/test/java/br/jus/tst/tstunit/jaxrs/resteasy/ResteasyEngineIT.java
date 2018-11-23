@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.TestUnitRunner;
 import br.jus.tst.tstunit.cdi.HabilitarCdiAndMockito;
 import br.jus.tst.tstunit.jaxrs.*;
 
@@ -32,7 +32,7 @@ import br.jus.tst.tstunit.jaxrs.*;
  * @author Thiago Miranda
  * @since 30 de mar de 2017
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 @AdditionalClasses({ ResteasyCdiExtension.class, ResteasyEngine.class, LoggerProducer.class })
 public class ResteasyEngineIT {

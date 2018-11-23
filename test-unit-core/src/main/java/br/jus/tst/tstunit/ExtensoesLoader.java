@@ -44,7 +44,7 @@ public class ExtensoesLoader implements Serializable {
      * Carrega todas as extensões disponíveis no <em>classpath</em>.
      * 
      * @return as extensões carregadas
-     * @throws TstUnitRuntimeException
+     * @throws TestUnitRuntimeException
      *             caso ocorra algum erro ao carregar as extensões
      */
     public List<Extensao<?>> carregarExtensoes() {
@@ -59,7 +59,7 @@ public class ExtensoesLoader implements Serializable {
             return (Extensao<?>) classeExtensao.getConstructor(classeTeste.getClass()).newInstance(classeTeste);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException exception) {
-            throw new TstUnitRuntimeException("Erro ao instanciar classe da extensão: " + classeExtensao, exception);
+            throw new TestUnitRuntimeException("Erro ao instanciar classe da extensão: " + classeExtensao, exception);
         }
     }
 

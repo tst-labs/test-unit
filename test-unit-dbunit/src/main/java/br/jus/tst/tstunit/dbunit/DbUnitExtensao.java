@@ -33,7 +33,7 @@ public class DbUnitExtensao extends AbstractExtensao<HabilitarDbUnit> {
     }
 
     @Override
-    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TestUnitException {
         assertExtensaoHabilitada();
         LOGGER.info("DBUnit habilitado");
         HabilitarDbUnit habilitarDbUnit = classeTeste.getAnnotation(HabilitarDbUnit.class);
@@ -41,7 +41,7 @@ public class DbUnitExtensao extends AbstractExtensao<HabilitarDbUnit> {
     }
 
     @Override
-    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TestUnitException {
         assertExtensaoHabilitada();
         LOGGER.info("Ativando DBUnit");
         return dbUnitRunner.criarStatement(defaultStatement, method);

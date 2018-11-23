@@ -10,7 +10,7 @@ import org.jboss.weld.exceptions.DeploymentException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.TestUnitRunner;
 
 /**
  * Testes de integração da {@link CdiExtensao}.
@@ -18,7 +18,7 @@ import br.jus.tst.tstunit.TstUnitRunner;
  * @author Thiago Miranda
  * @since 31 de ago de 2016
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarCdiAndMockito
 public class TesteComErroInicializacaoIT {
 

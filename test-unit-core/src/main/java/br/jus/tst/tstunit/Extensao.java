@@ -59,14 +59,14 @@ public interface Extensao<A extends Annotation> {
      * Inicializa a extensão. Este método é invocado assim que a execução dos testes é acionada.
      * 
      * @param configuracao
-     *            as configurações do TST Unit
+     *            as configurações do TEST Unit
      * @param notifier
      *            notificador do JUnit
-     * @throws TstUnitException
+     * @throws TestUnitException
      *             caso ocorra algum erro durante a operação
      * @see Runner#run(RunNotifier)
      */
-    void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException;
+    void inicializar(Configuracao configuracao, RunNotifier notifier) throws TestUnitException;
 
     /**
      * Obtém um {@link Statement} configurado para a extensão.
@@ -76,8 +76,8 @@ public interface Extensao<A extends Annotation> {
      * @param method
      *            o método de teste sendo executado
      * @return o Statement criado
-     * @throws TstUnitException
+     * @throws TestUnitException
      *             caso ocorra algum erro durante a operação
      */
-    Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException;
+    Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TestUnitException;
 }

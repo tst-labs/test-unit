@@ -16,7 +16,7 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.TestUnitRunner;
 import br.jus.tst.tstunit.mockito.HabilitarMockito;
 
 /**
@@ -25,7 +25,7 @@ import br.jus.tst.tstunit.mockito.HabilitarMockito;
  * @author Thiago Miranda
  * @since 18 de out de 2017
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarMockito
 public class DatabaseLoaderTeste {
 

@@ -8,7 +8,7 @@ import java.sql.*;
 
 import org.junit.Test;
 
-import br.jus.tst.tstunit.TstUnitException;
+import br.jus.tst.tstunit.TestUnitException;
 import br.jus.tst.tstunit.dbunit.dataset.*;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet.Operacao;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
@@ -26,7 +26,7 @@ import br.jus.tst.tstunit.dbunit.script.*;
 public class UsarDataSetIT extends AbstractIT {
 
     @Test
-    public void deveriaImportarDataset() throws TstUnitException, SQLException {
+    public void deveriaImportarDataset() throws TestUnitException, SQLException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
 
         try (Connection connection = connectionSupplier.get()) {
@@ -41,7 +41,7 @@ public class UsarDataSetIT extends AbstractIT {
 
     @Test
     @UsarDataSet(value = "entidades2.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE)
-    public void deveriaUtilizarDatasetsDeClasseEMetodo() throws SQLException, TstUnitException {
+    public void deveriaUtilizarDatasetsDeClasseEMetodo() throws SQLException, TestUnitException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
 
         try (Connection connection = connectionSupplier.get()) {
@@ -57,7 +57,7 @@ public class UsarDataSetIT extends AbstractIT {
     @Test
     @UsarDataSets({ @UsarDataSet(value = "entidades2.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE),
             @UsarDataSet(value = "entidades3.xml", operacaoPreTestes = Operacao.INSERT, operacaoPosTestes = Operacao.NONE) })
-    public void deveriaUtilizarMultiplosDatasets() throws SQLException, TstUnitException {
+    public void deveriaUtilizarMultiplosDatasets() throws SQLException, TestUnitException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
 
         try (Connection connection = connectionSupplier.get()) {

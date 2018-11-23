@@ -1,12 +1,12 @@
 package br.jus.tst.tstunit;
 
 /**
- * Exceção lançada quando ocorre algum erro durante o funcionamento do TST Unit.
+ * Exceção lançada quando ocorre algum erro durante o funcionamento do TEST Unit.
  * 
  * @author Thiago Miranda
- * @since 19 de jul de 2016
+ * @since 4 de jul de 2016
  */
-public class TstUnitRuntimeException extends RuntimeException {
+public class TestUnitException extends Exception {
 
     private static final long serialVersionUID = -4537790044890316767L;
 
@@ -18,18 +18,8 @@ public class TstUnitRuntimeException extends RuntimeException {
      * @param cause
      *            a causa-raiz
      */
-    public TstUnitRuntimeException(String message, Throwable cause) {
+    public TestUnitException(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    /**
-     * Cria uma nova exceção com a causa-raiz.
-     * 
-     * @param cause
-     *            a causa-raiz
-     */
-    public TstUnitRuntimeException(Throwable cause) {
-        super(cause);
     }
 
     /**
@@ -38,7 +28,7 @@ public class TstUnitRuntimeException extends RuntimeException {
      * @param message
      *            a mensagem de erro
      */
-    public TstUnitRuntimeException(String message) {
+    public TestUnitException(String message) {
         super(message);
     }
 }

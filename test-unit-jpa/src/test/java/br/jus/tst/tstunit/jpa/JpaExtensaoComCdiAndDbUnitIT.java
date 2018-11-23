@@ -13,7 +13,7 @@ import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.TestUnitRunner;
 import br.jus.tst.tstunit.cdi.HabilitarCdiAndMockito;
 import br.jus.tst.tstunit.dbunit.HabilitarDbUnit;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet;
@@ -25,7 +25,7 @@ import br.jus.tst.tstunit.jpa.cdi.*;
  * @author Thiago Miranda
  * @since 14 de jul de 2016
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarJpa(nomeUnidadePersistencia = "testePUIntegradoDbUnit", geradorSchema = GeradorSchemaCdi.class)
 @HabilitarCdiAndMockito
 @AdditionalClasses({ EntityManagerFactoryProducerExtension.class })

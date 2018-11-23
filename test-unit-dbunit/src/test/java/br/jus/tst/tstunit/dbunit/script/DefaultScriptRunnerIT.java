@@ -8,7 +8,7 @@ import java.sql.*;
 
 import org.junit.*;
 
-import br.jus.tst.tstunit.TstUnitException;
+import br.jus.tst.tstunit.TestUnitException;
 import br.jus.tst.tstunit.dbunit.AbstractIT;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 
@@ -28,7 +28,7 @@ public class DefaultScriptRunnerIT extends AbstractIT {
     }
 
     @Test
-    public void deveriaExecutarScriptDdl() throws SQLException, TstUnitException, IOException {
+    public void deveriaExecutarScriptDdl() throws SQLException, TestUnitException, IOException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
         String sql = "CREATE TABLE TesteScript (id INTEGER NOT NULL, descricao VARCHAR(100) NOT NULL, PRIMARY KEY(id));";
 

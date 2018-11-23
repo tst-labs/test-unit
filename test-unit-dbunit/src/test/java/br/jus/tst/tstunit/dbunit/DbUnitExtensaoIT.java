@@ -11,7 +11,7 @@ import java.sql.*;
 
 import org.junit.Test;
 
-import br.jus.tst.tstunit.TstUnitException;
+import br.jus.tst.tstunit.TestUnitException;
 import br.jus.tst.tstunit.dbunit.dtd.GerarDtd;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 import br.jus.tst.tstunit.dbunit.script.*;
@@ -27,7 +27,7 @@ public class DbUnitExtensaoIT extends AbstractIT {
     @Test
     @RodarScriptAntes("script-antes.sql")
     @RodarScriptDepois("script-depois.sql")
-    public void deveriaRodarScriptAntesDepois() throws TstUnitException, SQLException {
+    public void deveriaRodarScriptAntesDepois() throws TestUnitException, SQLException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
 
         try (Connection connection = connectionSupplier.get()) {
@@ -42,7 +42,7 @@ public class DbUnitExtensaoIT extends AbstractIT {
 
     @Test
     @RodarScriptAntes({ "script-antes.sql", "script-antes2.sql" })
-    public void deveriaRodarMultiplosScriptsAntesEmOrdem() throws TstUnitException, SQLException {
+    public void deveriaRodarMultiplosScriptsAntesEmOrdem() throws TestUnitException, SQLException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();
 
         try (Connection connection = connectionSupplier.get()) {

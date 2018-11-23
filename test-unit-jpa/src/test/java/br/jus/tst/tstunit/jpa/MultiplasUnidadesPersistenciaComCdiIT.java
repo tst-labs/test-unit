@@ -16,7 +16,7 @@ import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.TestUnitRunner;
 import br.jus.tst.tstunit.cdi.HabilitarCdiAndMockito;
 import br.jus.tst.tstunit.jpa.HabilitarJpa.UnidadePersistencia;
 import br.jus.tst.tstunit.jpa.MultiplasUnidadesPersistenciaComCdiIT.*;
@@ -28,7 +28,7 @@ import br.jus.tst.tstunit.jpa.cdi.*;
  * @author Thiago Miranda
  * @since 03 de out de 2016
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarJpa(unidadesPersistencia = { @UnidadePersistencia(nome = "testePU", qualifierClass = TestePU.class),
         @UnidadePersistencia(nome = "teste2PU", qualifierClass = Teste2PU.class) }, geradorSchema = GeradorSchemaCdi.class)
 @HabilitarCdiAndMockito

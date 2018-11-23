@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
-import br.jus.tst.tstunit.TstUnitRunner;
+import br.jus.tst.tstunit.TestUnitRunner;
 
 /**
  * Testes de integração da {@link MockitoExtensao}.
@@ -16,7 +16,7 @@ import br.jus.tst.tstunit.TstUnitRunner;
  * @author Thiago Miranda
  * @since 14 de jul de 2016
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarMockito
 public class MockitoExtensaoIT {
 

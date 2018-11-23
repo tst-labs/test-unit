@@ -17,8 +17,8 @@ public class ConfiguracaoTeste {
         configuracao = Configuracao.getInstance();
     }
 
-    @Test(expected = TstUnitException.class)
-    public void deveriaLancarExcecaoCasoArquivoNaoExista() throws TstUnitException {
+    @Test(expected = TestUnitException.class)
+    public void deveriaLancarExcecaoCasoArquivoNaoExista() throws TestUnitException {
         configuracao.setNomeArquivoPropriedades("teste.properties");
         configuracao.carregar();
     }

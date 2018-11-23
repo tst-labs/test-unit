@@ -10,12 +10,12 @@ import org.junit.runners.parameterized.TestWithParameters;
 import br.jus.tst.tstunit.*;
 
 /**
- * Implementação adaptada de {@link TstUnitRunner} que permite a execução de testes parametrizados.
+ * Implementação adaptada de {@link TestUnitRunner} que permite a execução de testes parametrizados.
  * 
  * @author Thiago Miranda
  * @since 29 de ago de 2016
  */
-public class TstUnitParameterizedRunner extends TstUnitRunner {
+public class TestUnitParameterizedRunner extends TestUnitRunner {
 
     private final List<Object> parametros;
     private final String nome;
@@ -28,7 +28,7 @@ public class TstUnitParameterizedRunner extends TstUnitRunner {
      * @throws InitializationError
      *             caso ocorra algum erro ao inicializar o <em>runner</em>
      */
-    public TstUnitParameterizedRunner(TestWithParameters test) throws InitializationError {
+    public TestUnitParameterizedRunner(TestWithParameters test) throws InitializationError {
         super(test.getTestClass().getJavaClass());
         parametros = test.getParameters();
         nome = test.getName();
@@ -41,7 +41,7 @@ public class TstUnitParameterizedRunner extends TstUnitRunner {
     protected Object createTest() throws Exception {
         List<FrameworkField> annotatedFieldsByParameter = getAnnotatedFieldsByParameter();
         if (annotatedFieldsByParameter.size() != parametros.size()) {
-            throw new TstUnitException("Wrong number of parameters and @Parameter fields." + " @Parameter fields counted: " + annotatedFieldsByParameter.size()
+            throw new TestUnitException("Wrong number of parameters and @Parameter fields." + " @Parameter fields counted: " + annotatedFieldsByParameter.size()
                     + ", available parameters: " + parametros.size() + ".");
         }
 
@@ -56,7 +56,7 @@ public class TstUnitParameterizedRunner extends TstUnitRunner {
             try {
                 field.set(testInstance, parametro);
             } catch (IllegalArgumentException exception) {
-                throw new TstUnitException(getTestClass().getName() + ": Trying to set " + field.getName() + " with the value " + parametro + " that is not the right type ("
+                throw new TestUnitException(getTestClass().getName() + ": Trying to set " + field.getName() + " with the value " + parametro + " that is not the right type ("
                         + parametro.getClass().getSimpleName() + " instead of " + field.getType().getSimpleName() + ").", exception);
             }
         }

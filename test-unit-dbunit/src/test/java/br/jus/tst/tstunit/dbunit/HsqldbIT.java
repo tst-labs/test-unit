@@ -9,7 +9,7 @@ import java.sql.*;
 
 import org.junit.Test;
 
-import br.jus.tst.tstunit.TstUnitException;
+import br.jus.tst.tstunit.TestUnitException;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 import br.jus.tst.tstunit.dbunit.script.*;
@@ -30,7 +30,7 @@ public class HsqldbIT extends AbstractIT {
     private static final String NOME_ARQUIVO_PROPRIEDADES = "tstunit-hsqldb.properties";
 
     @Test
-    public void deveriaUtilizarArquivoCorreto() throws TstUnitException, SQLException {
+    public void deveriaUtilizarArquivoCorreto() throws TestUnitException, SQLException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier(NOME_ARQUIVO_PROPRIEDADES);
 
         try (Connection connection = connectionSupplier.get()) {
@@ -42,7 +42,7 @@ public class HsqldbIT extends AbstractIT {
     @RodarScriptAntes("script-antes.sql")
     @RodarScriptDepois("script-depois.sql")
     @UsarDataSet("entidades.xml")
-    public void deveriaImportarDataset() throws TstUnitException, SQLException {
+    public void deveriaImportarDataset() throws TestUnitException, SQLException {
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier(NOME_ARQUIVO_PROPRIEDADES);
 
         try (Connection connection = connectionSupplier.get()) {

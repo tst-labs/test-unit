@@ -44,7 +44,7 @@ public abstract class AbstractExtensao<A extends Annotation> implements Extensao
     }
 
     @Override
-    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TstUnitException {
+    public Statement criarStatement(Statement defaultStatement, FrameworkMethod method) throws TestUnitException {
         assertExtensaoHabilitada();
         return defaultStatement;
     }

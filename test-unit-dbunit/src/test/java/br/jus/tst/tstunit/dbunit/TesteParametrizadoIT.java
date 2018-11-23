@@ -16,7 +16,7 @@ import br.jus.tst.tstunit.*;
 import br.jus.tst.tstunit.dbunit.dataset.UsarDataSet;
 import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
 import br.jus.tst.tstunit.dbunit.script.*;
-import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
+import br.jus.tst.tstunit.parameters.TestUnitParameterizedRunnerFactory;
 
 /**
  * Testes de integração para a funcionalidade de testes parametrizados.
@@ -25,7 +25,7 @@ import br.jus.tst.tstunit.parameters.TstUnitParameterizedRunnerFactory;
  * @since 30 de ago de 2016
  */
 @RunWith(Parameterized.class)
-@UseParametersRunnerFactory(TstUnitParameterizedRunnerFactory.class)
+@UseParametersRunnerFactory(TestUnitParameterizedRunnerFactory.class)
 public class TesteParametrizadoIT extends AbstractIT {
 
     @Parameters
@@ -42,7 +42,7 @@ public class TesteParametrizadoIT extends AbstractIT {
     @RodarScriptAntes("script-antes.sql")
     @RodarScriptDepois("script-depois.sql")
     @UsarDataSet("entidades.xml")
-    public void teste() throws TstUnitException, SQLException {
+    public void teste() throws TestUnitException, SQLException {
         assertThat(String.valueOf(numero), is(equalTo(numeroString)));
 
         JdbcConnectionSupplier connectionSupplier = criarConnectionSupplier();

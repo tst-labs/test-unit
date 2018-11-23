@@ -64,7 +64,7 @@ public class JpaExtensao extends AbstractExtensao<HabilitarJpa> {
     }
 
     @Override
-    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TstUnitException {
+    public void inicializar(Configuracao configuracao, RunNotifier notifier) throws TestUnitException {
         assertExtensaoHabilitada();
 
         HabilitarJpa habilitarJpa = classeTeste.getAnnotation(HabilitarJpa.class);

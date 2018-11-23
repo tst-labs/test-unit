@@ -6,13 +6,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Testes de integração da {@link TstUnitRunner}.
+ * Testes de integração da {@link TestUnitRunner}.
  * 
  * @author Thiago Miranda
  * @since 14 de jul de 2016
  */
-@RunWith(TstUnitRunner.class)
-public class TstUnitRunnerIT {
+@RunWith(TestUnitRunner.class)
+public class TestUnitRunnerIT {
 
     @Test
     public void test() {

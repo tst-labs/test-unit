@@ -11,15 +11,15 @@ import br.jus.tst.tstunit.dbunit.jdbc.JdbcConnectionSupplier;
  * @author Thiago Miranda
  * @since 24 de mar de 2017
  */
-@RunWith(TstUnitRunner.class)
+@RunWith(TestUnitRunner.class)
 @HabilitarDbUnit
 public abstract class AbstractIT {
 
-    protected JdbcConnectionSupplier criarConnectionSupplier(String nomeArquivoPropriedades) throws TstUnitException {
+    protected JdbcConnectionSupplier criarConnectionSupplier(String nomeArquivoPropriedades) throws TestUnitException {
         return new JdbcConnectionSupplier(Configuracao.getInstance().setNomeArquivoPropriedades(nomeArquivoPropriedades).carregar().getSubPropriedades("jdbc"));
     }
 
-    protected JdbcConnectionSupplier criarConnectionSupplier() throws TstUnitException {
+    protected JdbcConnectionSupplier criarConnectionSupplier() throws TestUnitException {
         return new JdbcConnectionSupplier(Configuracao.getInstance().carregar().getSubPropriedades("jdbc"));
     }
 }

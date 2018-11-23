@@ -19,7 +19,7 @@ public final class Configuracao implements Serializable {
     private static final long serialVersionUID = 3577294568759890149L;
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuracao.class);
 
-    private static final String NOME_PADRAO_ARQUIVO_PROPRIEDADES = "tstunit.properties";
+    private static final String NOME_PADRAO_ARQUIVO_PROPRIEDADES = "testunit.properties";
 
     private static Configuracao singleton;
 
@@ -64,22 +64,22 @@ public final class Configuracao implements Serializable {
      * Carrega as configurações a partir do arquivo.
      * 
      * @return {@code this} para chamadas encadeadas de método
-     * @throws TstUnitException
+     * @throws TestUnitException
      *             caso ocorra algum erro ao carregar as configurações
      */
-    public Configuracao carregar() throws TstUnitException {
+    public Configuracao carregar() throws TestUnitException {
         LOGGER.debug("Carregando propriedades a partir do arquivo: {}", nomeArquivoPropriedades);
 
         Optional<InputStream> propertiesStreamOptional = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(nomeArquivoPropriedades));
         InputStream propertiesStream = propertiesStreamOptional
-                .orElseThrow(() -> new TstUnitException("Nenhum arquivo " + nomeArquivoPropriedades + " encontrado no classpath."));
+                .orElseThrow(() -> new TestUnitException("Nenhum arquivo " + nomeArquivoPropriedades + " encontrado no classpath."));
 
         properties = new Properties();
         try {
             properties.load(propertiesStream);
             LOGGER.trace("Propriedades: {}", properties);
         } catch (IOException exception) {
-            throw new TstUnitException("Erro ao carregar arquivo de propriedades", exception);
+            throw new TestUnitException("Erro ao carregar arquivo de propriedades", exception);
         } finally {
             IOUtils.closeQuietly(propertiesStream);
         }
