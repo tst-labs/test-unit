@@ -27,7 +27,7 @@ import br.jus.tst.tstunit.dbunit.script.*;
  */
 public class HsqldbIT extends AbstractIT {
 
-    private static final String NOME_ARQUIVO_PROPRIEDADES = "tstunit-hsqldb.properties";
+    private static final String NOME_ARQUIVO_PROPRIEDADES = "testunit-hsqldb.properties";
 
     @Test
     public void deveriaUtilizarArquivoCorreto() throws TestUnitException, SQLException {

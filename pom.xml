@@ -9,6 +9,45 @@
 
 	<name>TEST Unit</name>
 	<description>Projeto que oferece funcionalidades de auxílio no desenvolvimento de testes.</description>
+	<url>https://github.com/tst-labs/test-unit</url>
+	<inceptionYear>2016</inceptionYear>
+
+	<organization>
+		<name>Tribunal Superior do Trabalho</name>
+		<url>http://www.tst.jus.br/</url>
+	</organization>
+
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/tst-labs/test-unit</url>
+	</ciManagement>
+
+	<issueManagement>
+		<system>Github.com</system>
+		<url>https://github.com/tst-labs/test-unit/issues</url>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>thiago.miranda</id>
+			<name>Thiago Miranda</name>
+			<organization>Tribunal Superior do Trabalho</organization>
+			<organizationUrl>http://www.tst.jus.br/</organizationUrl>
+			<email>thiago.miranda@tst.jus.br</email>
+			<roles>
+				<role>CRIADOR</role>
+				<role>DESENVOLVEDOR</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<properties>
 		<ciManagement.project.id>test-unit</ciManagement.project.id>
@@ -25,9 +64,11 @@
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
 		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+		<maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5</maven-release-plugin.version>
 		<maven-source-plugin.version>2.3</maven-source-plugin.version>
 		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+		<nexus-staging-maven-plugin>1.6.7</nexus-staging-maven-plugin>
 		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
 
 		<tagBase>${git.base.url}/${git.group.name}/${git.project.name}/tags</tagBase>
@@ -35,7 +76,6 @@
 
 		<java.version>1.8</java.version>
 
-		<issue-management.server.url>http://github.com</issue-management.server.url>
 		<ci.server.url>https://travis-ci.org</ci.server.url>
 		<git.base.domain>github.com</git.base.domain>
 		<git.base.url>https://${git.base.domain}</git.base.url>
@@ -124,6 +164,40 @@
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven-javadoc-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>${maven-gpg-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>${nexus-staging-maven-plugin}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -284,6 +358,17 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<scm>
 		<url>${git.base.url}/${git.group.name}/${git.project.name}/tree/master</url>
