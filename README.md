@@ -14,7 +14,7 @@ Inicialmente prospectada como uma biblioteca privada do TST e nomeada **TST Unit
 Histórico de mudanças
 ----------
 
-**??? - 1.0.0**
+**04/04/2019 - 1.0.0**
 - ![Novo][novo] Primeiro release do projeto.
 
 
