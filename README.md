@@ -14,6 +14,9 @@ Inicialmente prospectada como uma biblioteca privada do TST e nomeada **TST Unit
 Histórico de mudanças
 ----------
 
+**?? - 2.0.0**
+- ![Melhoria][melhoria] _[CDI]_ Atualizando dependência do _CDI-Unit_ para **4.1.0**.
+
 **04/04/2019 - 1.0.0**
 - ![Novo][novo] Primeiro release do projeto.
 
