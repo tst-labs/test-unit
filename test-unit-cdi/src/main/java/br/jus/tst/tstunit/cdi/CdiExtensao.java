@@ -9,7 +9,7 @@ import org.jboss.weld.bootstrap.api.*;
 import org.jboss.weld.bootstrap.spi.Deployment;
 import org.jboss.weld.environment.se.*;
 import org.jboss.weld.resources.spi.ResourceLoader;
-import org.jglue.cdiunit.internal.WeldTestUrlDeployment;
+import org.jglue.cdiunit.internal.*;
 import org.junit.Test;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.*;
@@ -36,7 +36,7 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
         @SuppressWarnings("unused")
         protected Deployment createDeployment(ResourceLoader resourceLoader, Bootstrap bootstrap) {
             try {
-                return new WeldTestUrlDeployment(resourceLoader, bootstrap, classeTeste);
+                return new WeldTestUrlDeployment(resourceLoader, bootstrap, new TestConfiguration(classeTeste, null));
             } catch (IOException exception) {
                 CdiExtensao.this.startupException = exception;
                 throw new CdiException("Erro ao criar Deployment", exception);
@@ -47,7 +47,7 @@ public class CdiExtensao extends AbstractExtensao<HabilitarCdiAndMockito> {
         @Override
         protected Deployment createDeployment(ResourceLoader resourceLoader, CDI11Bootstrap bootstrap) {
             try {
-                return new WeldTestUrlDeployment(resourceLoader, bootstrap, classeTeste);
+                return new WeldTestUrlDeployment(resourceLoader, bootstrap, new TestConfiguration(classeTeste, null));
             } catch (IOException exception) {
                 CdiExtensao.this.startupException = exception;
                 throw new CdiException("Erro ao criar Deployment", exception);
