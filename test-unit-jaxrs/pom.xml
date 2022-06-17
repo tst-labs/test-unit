@@ -12,7 +12,7 @@
 	<description>Módulo que auxilia no desenvolvimento de testes de serviços JAX-RS.</description>
 
 	<properties>
-		<jboss.resteasy.version>2.3.10.Final</jboss.resteasy.version>
+		<jboss.resteasy.version>3.0.11.Final</jboss.resteasy.version>
 		<jackson-jaxrs.version>1.9.13</jackson-jaxrs.version>
 	</properties>
 
