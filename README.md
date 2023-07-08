@@ -14,6 +14,10 @@ Inicialmente prospectada como uma biblioteca privada do TST e nomeada **TST Unit
 Histórico de mudanças
 ----------
 
+**xx/07/2023 - 3.0.0**
+- ![Melhoria][melhoria] _[Core]_ Atualizando para Java 17
+- ![Melhoria][melhoria] _[Mockito]_ Atualizando para Mockito 5.4.0
+
 **17/12/2019 - 2.0.0**
 - ![Melhoria][melhoria] _[CDI]_ Atualizando dependência do _CDI-Unit_ para **4.1.0**.
 

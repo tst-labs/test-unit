@@ -1,8 +1,7 @@
 package br.jus.tst.tstunit.jaxrs.resteasy;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.io.InputStream;
@@ -17,8 +16,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.cdi.ResteasyCdiExtension;
 import org.jboss.weld.log.LoggerProducer;
 import org.jglue.cdiunit.AdditionalClasses;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
@@ -68,7 +66,8 @@ public class ResteasyEngineIT {
         JsonToObjectConverter converter = mock(JsonToObjectConverter.class);
         when(converter.jsonToObject(anyString(), Mockito.eq(String.class))).thenReturn(valorString);
 
-        String resposta = jaxRsEngine.get("strings/%d").pathParams(valor).executar().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).deveRetornarStatusOk()
+        String resposta = jaxRsEngine.get("strings/%d").pathParams(valor).executar().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE)
+                .deveRetornarStatusOk()
                 .deveRetornarObjetoDoTipo(String.class).getObjetoRespostaUsando(converter);
 
         assertThat(resposta).isEqualTo(valorString);
@@ -83,7 +82,8 @@ public class ResteasyEngineIT {
         JsonToObjectFunction<String> converter = mock(JsonToObjectFunction.class);
         when(converter.apply(any(InputStream.class))).thenReturn(valorString);
 
-        String resposta = jaxRsEngine.get("strings/%d").pathParams(valor).executar().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).deveRetornarStatusOk()
+        String resposta = jaxRsEngine.get("strings/%d").pathParams(valor).executar().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE)
+                .deveRetornarStatusOk()
                 .getObjetoRespostaUsando(converter);
 
         assertThat(resposta).isEqualTo(valorString);
@@ -95,7 +95,8 @@ public class ResteasyEngineIT {
         int numero = 1;
         String novoConteudo = "TESTE2";
 
-        String string = jaxRsEngine.put("strings/%d").pathParams(numero).contentType(MediaType.APPLICATION_JSON_TYPE).content(novoConteudo.getBytes(Charset.defaultCharset()))
+        String string = jaxRsEngine.put("strings/%d").pathParams(numero).contentType(MediaType.APPLICATION_JSON_TYPE)
+                .content(novoConteudo.getBytes(Charset.defaultCharset()))
                 .executar().deveRetornarStatusOk().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE)
                 .getConteudoRespostaComoString();
 
@@ -113,7 +114,8 @@ public class ResteasyEngineIT {
 
     @Test
     public void deveriaProcessarQueryParamInformada2() {
-        jaxRsEngine.get("strings/%d").pathParams(-10).queryParam("validar", Boolean.TRUE).executar().deveRetornarStatus(Status.BAD_REQUEST).naoDeveRetornarConteudo();
+        jaxRsEngine.get("strings/%d").pathParams(-10).queryParam("validar", Boolean.TRUE).executar().deveRetornarStatus(Status.BAD_REQUEST)
+                .naoDeveRetornarConteudo();
     }
 
     @Test
@@ -121,7 +123,8 @@ public class ResteasyEngineIT {
         String numero = "1";
 
         int numeroConvertido = Integer
-                .valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParams(Collections.singletonMap("validar", ArrayUtils.toArray(Boolean.TRUE))).executar()
+                .valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParams(Collections.singletonMap("validar", ArrayUtils.toArray(Boolean.TRUE)))
+                        .executar()
                         .deveRetornarStatusOk().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
 
         assertThat(numeroConvertido).isEqualTo(1);
@@ -132,7 +135,8 @@ public class ResteasyEngineIT {
         String numero = "1";
 
         int numeroConvertido = Integer
-                .valueOf(jaxRsEngine.get("strings/%s").pathParams(numero).queryParams(Collections.singletonMap("validar", ArrayUtils.toArray(Boolean.FALSE, Boolean.TRUE)))
+                .valueOf(jaxRsEngine.get("strings/%s").pathParams(numero)
+                        .queryParams(Collections.singletonMap("validar", ArrayUtils.toArray(Boolean.FALSE, Boolean.TRUE)))
                         .executar().deveRetornarStatusOk().deveRetornarRespostaDoTipo(MediaType.TEXT_PLAIN_TYPE).getConteudoRespostaComoString());
 
         assertThat(numeroConvertido).isEqualTo(1);

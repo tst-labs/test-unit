@@ -1,7 +1,6 @@
 package br.jus.tst.tstunit.dbunit.dataset;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.*;
@@ -71,7 +70,7 @@ public class DatabaseLoaderTeste {
         verify(jdbcConnectionSupplier).get();
 
         verifyNoMoreInteractions(jdbcConnectionSupplier, operacaoPreTestes1, operacaoPreTestes2);
-        verifyZeroInteractions(operacaoPosTestes1, operacaoPosTestes2);
+        verifyNoInteractions(operacaoPosTestes1, operacaoPosTestes2);
     }
 
     @Test
@@ -89,6 +88,6 @@ public class DatabaseLoaderTeste {
         verify(jdbcConnectionSupplier).get();
 
         verifyNoMoreInteractions(jdbcConnectionSupplier, operacaoPosTestes1, operacaoPosTestes2);
-        verifyZeroInteractions(operacaoPreTestes1, operacaoPreTestes2);
+        verifyNoInteractions(operacaoPreTestes1, operacaoPreTestes2);
     }
 }

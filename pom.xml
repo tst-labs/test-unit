@@ -4,7 +4,7 @@
 
 	<groupId>br.jus.tst</groupId>
 	<artifactId>test-unit-parent</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>TEST Unit</name>
@@ -60,7 +60,7 @@
 		<h2.version>2.1.210</h2.version>
 		<weld-logger.version>1.0.0-CR2</weld-logger.version>
 
-		<jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
 		<maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
@@ -74,7 +74,7 @@
 		<tagBase>${git.base.url}/${git.group.name}/${git.project.name}/tags</tagBase>
 		<tagNameFormat>@{project.artifactId}-@{project.version}-${maven.build.timestamp}</tagNameFormat>
 
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 
 		<ci.server.url>https://travis-ci.org</ci.server.url>
 		<git.base.domain>github.com</git.base.domain>
